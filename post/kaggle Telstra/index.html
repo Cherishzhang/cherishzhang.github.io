@@ -35,22 +35,27 @@
 
 <blockquote>
 <p>The goal of the <a href="https://www.kaggle.com/c/telstra-recruiting-network/">problem</a> is
-  to predict Telstr network&rsquo;s fault severity at a time at a particular location based on the <em>log data</em> available.
-The target has 3 categories:0,1,2. It&rsquo;s a multiclass classification problems.Different types of features are extracted from log
-  files and other sources: event_type.csv, log_feature.csv, resource_type.csv,severity_type.csv.
-My final score is <em>0.44917(72 of 974)</em> in private leaderboard. Here are my <a href="https://github.com/Cherishzhang/kaggle/tree/master/Telstra">code</a>, and I will record my solution.</p>
+  to predict Telstr network&rsquo;s fault severity at a time at a particular location based on the <em>log data</em> available.</p>
+
+<p>The target has 3 categories:0,1,2. It&rsquo;s a multiclass classification problems.Different types of features are extracted from log
+  files and other sources: event_type.csv, log_feature.csv, resource_type.csv,severity_type.csv.</p>
+
+<p>My final score is <em>0.44917(72 of 974)</em> in private leaderboard. Here are my <a href="https://github.com/Cherishzhang/kaggle/tree/master/Telstra">code</a>, and I will record my solution.</p>
 </blockquote>
 
 <h2 id="2-feature-engineer:15edd88506075118ee3a8b489dc4ade6"><strong>2. Feature Engineer</strong></h2>
 
 <blockquote>
-<p>Selecting and designing good features is an important area in machine learning, which is called <em>feature engineering</em>.
-At First, I just merge all files on Id. Here are five type of features. they are location, severity_type, resource_type, event_type, log_feature.
+<p>Selecting and designing good features is an important area in machine learning, which is called <em>feature engineering</em>.</p>
+
+<p>At First, I just merge all files on Id. Here are five type of features. they are location, severity_type, resource_type, event_type, log_feature.
  location and severity_type are just one-to-one variables, and others are many_to_one variables.
- There are about 1200 locations, some are only in the test set. The correlation between location variable and target is 0.27, it gave me a hint that neighbouring locations may be similar in the network&rsquo;s fault severity problem. I used one_hot encode to solve the many_to_one features. So there are about 400+ features in the initial stage.
-I read a paper about how to preprocess high-cardinality Categorical attributes in classification and regression problems, but it seemed to bring little help. I will tried it again after the competition.
-On the forum, there are a heated discussion about the magic feature. I spent much of my time to find it.
-  It is the order of the same location in the severity file which follows the order of fault occurrence.It&rsquo;s called <em>Intra-location order</em>.
+ There are about 1200 locations, some are only in the test set. The correlation between location variable and target is 0.27, it gave me a hint that neighbouring locations may be similar in the network&rsquo;s fault severity problem. I used one_hot encode to solve the many_to_one features. So there are about 400+ features in the initial stage.</p>
+
+<p>I read a paper about how to preprocess high-cardinality Categorical attributes in classification and regression problems, but it seemed to bring little help. I will tried it again after the competition.</p>
+
+<p>On the forum, there are a heated discussion about the magic feature. I spent much of my time to find it.
+  It is the order of the same location in the severity file which follows the order of fault occurrence.It&rsquo;s called <em>Intra-location order</em>.<br />
   It really did a big help to the final score which improved almost 0.06. To each record, I compute the target(<em>fault_severity</em>) probabilities from the previous same location records.
   and used the <em>previous-target_probabilities</em> as a feature to build the model.</p>
 </blockquote>
@@ -69,33 +74,36 @@ On the forum, there are a heated discussion about the magic feature. I spent muc
 
 <h3 id="some-useful-tips-on-feature-engineering:15edd88506075118ee3a8b489dc4ade6">Some useful tips on feature engineering</h3>
 
-<p>It&rsquo;s the most important step in machine learning whatever models you used.
-  1. About location
-  <em>Similar location numbers have similar fault severity.(Treat the location as numeric.)</em>
-  <em>Don&rsquo;t one-hot-encode the location, Tree-based classifiers are not good at handling huge sparse feature matrix.</em>
-  <em>Frequency of LogType_203 = 0 &amp; LogType_203 &gt;0 per location</em>
-  <em>The records in log data are arranged in the order of time.(the magic feature)</em> Here are two ways to encode
-  the information, One is for each location, use the row number, which starts from 1 to the total number of rows for that locaiton. The other
-  is to normalize it between 0 and 1.
-  <em>percentile transformation of location counts</em>
-  2. About log feature
-  <em>Pattern of log feature</em>
-  &ldquo;one hot&rdquo; encoding for all log features with volume &gt; 0, for all rows.
-  Each &ldquo;one hot&rdquo; encoded pattern treated as a string.
-  Assigned integer ID to each to each string, used as feature.
-  The log transform for the count of &ldquo;pattern of log feature&rdquo;, the log transform for counts as &ldquo;pattern of event&rdquo;
-  and &ldquo;pattern of resource&rdquo;
-  3. Common categorical variables
-  <em>For high-cardinality categorical variables, frequency works well.(Add the frequency of each location in both train and test set.)</em>
-  <em>Summary statistics to reduce one-to-many relationship to one-to-one, and two-way or more-way interaction among multiple variables.</em>
-  <em>Meta features(using Logistic regression to fit sparse matrix as predictors, then ensemble the model).</em>
-  4. A useful solution
-   a.The order of id on log_feature was frozen.
-   b.Converting location, log_feature into numbers and generating count, mean, sum, etc. features (feature set A)
-   c.Feature B was generated by shifting A forward by 1 row
-   d.Feature C was generated by shifting B backward by 1 row
-   Combining A, B, and C and training xgb, RF, GBM models. My final model is an ensemble model of these models.</p>
+<p>It&rsquo;s the most important step in machine learning whatever models you used.</p>
 </blockquote>
+
+<ol>
+<li>About location<br />
+<em>Similar location numbers have similar fault severity.(Treat the location as numeric.)</em>
+<em>Don&rsquo;t one-hot-encode the location, Tree-based classifiers are not good at handling huge sparse feature matrix.</em>
+<em>Frequency of LogType_203 = 0 &amp; LogType_203 &gt;0 per location</em>
+<em>The records in log data are arranged in the order of time.(the magic feature)</em> Here are two ways to encode
+the information, One is for each location, use the row number, which starts from 1 to the total number of rows for that locaiton. The other
+is to normalize it between 0 and 1.
+<em>percentile transformation of location counts</em></li>
+<li>About log feature<br />
+<em>Pattern of log feature</em>
+&ldquo;one hot&rdquo; encoding for all log features with volume &gt; 0, for all rows.
+Each &ldquo;one hot&rdquo; encoded pattern treated as a string.
+Assigned integer ID to each to each string, used as feature.
+The log transform for the count of &ldquo;pattern of log feature&rdquo;, the log transform for counts as &ldquo;pattern of event&rdquo;
+and &ldquo;pattern of resource&rdquo;</li>
+<li>Common categorical variables<br />
+<em>For high-cardinality categorical variables, frequency works well.(Add the frequency of each location in both train and test set.)</em>
+<em>Summary statistics to reduce one-to-many relationship to one-to-one, and two-way or more-way interaction among multiple variables.</em>
+<em>Meta features(using Logistic regression to fit sparse matrix as predictors, then ensemble the model).</em></li>
+<li>A useful solution<br />
+a.The order of id on log_feature was frozen.
+b.Converting location, log_feature into numbers and generating count, mean, sum, etc. features (feature set A)
+c.Feature B was generated by shifting A forward by 1 row
+d.Feature C was generated by shifting B backward by 1 row
+Combining A, B, and C and training xgb, RF, GBM models. My final model is an ensemble model of these models.</li>
+</ol>
 
 			</section>
 		</article>
