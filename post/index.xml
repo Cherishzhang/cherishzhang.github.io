@@ -6,79 +6,36 @@
     <description>Recent content in Posts on Learn and record</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 02 Mar 2016 21:03:56 +0800</lastBuildDate>
+    <lastBuildDate>Wed, 09 Mar 2016 21:40:58 +0800</lastBuildDate>
     <atom:link href="http://cherishzhang.github.io/post/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
-      <title>Telstra Network Disruptions</title>
-      <link>http://cherishzhang.github.io/post/kaggle%20Telstra/</link>
-      <pubDate>Wed, 02 Mar 2016 21:03:56 +0800</pubDate>
+      <title>Kaggle</title>
+      <link>http://cherishzhang.github.io/post/kagglelist/</link>
+      <pubDate>Wed, 09 Mar 2016 21:40:58 +0800</pubDate>
       
-      <guid>http://cherishzhang.github.io/post/kaggle%20Telstra/</guid>
+      <guid>http://cherishzhang.github.io/post/kagglelist/</guid>
       <description>
 
-&lt;h2 id=&#34;1-overview:15edd88506075118ee3a8b489dc4ade6&#34;&gt;&lt;strong&gt;1. Overview&lt;/strong&gt;&lt;/h2&gt;
+&lt;h3 id=&#34;here-are-some-competition-that-i-participated-in-kaggle:a7071b05a32e10972ac1c923d8403e5b&#34;&gt;Here are some competition that I participated in Kaggle.&lt;/h3&gt;
 
-&lt;p&gt;The goal of the &lt;a href=&#34;https://www.kaggle.com/c/telstra-recruiting-network/&#34;&gt;problem&lt;/a&gt; is to predict Telstr network&amp;rsquo;s fault severity at a time at a particular location based on the &lt;em&gt;log data&lt;/em&gt; available.&lt;/p&gt;
+&lt;h2 id=&#34;1-telstra-network-disruptions-http-cherishzhang-github-io-post-kaggle-telstra:a7071b05a32e10972ac1c923d8403e5b&#34;&gt;1. [Telstra Network Disruptions](&amp;ldquo;&lt;a href=&#34;http://cherishzhang.github.io/post/kaggle/Telstra&amp;quot;&#34;&gt;http://cherishzhang.github.io/post/kaggle/Telstra&amp;quot;&lt;/a&gt;)&lt;/h2&gt;
 
-&lt;p&gt;The target has 3 categories:0,1,2. It&amp;rsquo;s a multiclass classification problems.Different types of features are extracted from log files and other sources: event_type.csv, log_feature.csv, resource_type.csv,severity_type.csv.&lt;/p&gt;
+&lt;h2 id=&#34;2:a7071b05a32e10972ac1c923d8403e5b&#34;&gt;2.&lt;/h2&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>mllist</title>
+      <link>http://cherishzhang.github.io/post/mllist/</link>
+      <pubDate>Tue, 08 Mar 2016 19:52:09 +0800</pubDate>
+      
+      <guid>http://cherishzhang.github.io/post/mllist/</guid>
+      <description>
 
-&lt;p&gt;My final score is &lt;em&gt;0.44917(72 of 974)&lt;/em&gt; in private leaderboard. Here are my &lt;a href=&#34;https://github.com/Cherishzhang/kaggle/tree/master/Telstra&#34;&gt;code&lt;/a&gt;, and I will record my solution.&lt;/p&gt;
+&lt;h3 id=&#34;here-are-some-notes-about-maching-learning-andrew-ng-course:3c5683dd2b32180fa522d0f78e07d81c&#34;&gt;Here are some notes about Maching Learning[Andrew Ng] course&lt;/h3&gt;
 
-&lt;h2 id=&#34;2-feature-engineer:15edd88506075118ee3a8b489dc4ade6&#34;&gt;&lt;strong&gt;2. Feature Engineer&lt;/strong&gt;&lt;/h2&gt;
-
-&lt;p&gt;Selecting and designing good features is an important area in machine learning, which is called &lt;em&gt;feature engineering&lt;/em&gt;.&lt;/p&gt;
-
-&lt;p&gt;At First, I just merge all files on Id. Here are five type of features. they are location, severity_type, resource_type, event_type, log_feature.
-location and severity_type are just one-to-one variables, and others are many_to_one variables.
-There are about 1200 locations, some are only in the test set. The correlation between location variable and target is 0.27, it gave me a hint that neighbouring locations may be similar in the network&amp;rsquo;s fault severity problem. I used one_hot encode to solve the many_to_one features. So there are about 400+ features in the initial stage.&lt;/p&gt;
-
-&lt;p&gt;I read a paper about how to preprocess high-cardinality Categorical attributes in classification and regression problems, but it seemed to bring little help. I will tried it again after the competition.&lt;/p&gt;
-
-&lt;p&gt;On the forum, there are a heated discussion about the magic feature. I spent much of my time to find it.
-It is the order of the same location in the severity file which follows the order of fault occurrence.It&amp;rsquo;s called &lt;em&gt;Intra-location order&lt;/em&gt;.&lt;br /&gt;
-It really did a big help to the final score which improved almost 0.06. To each record, I compute the target(&lt;em&gt;fault_severity&lt;/em&gt;) probabilities from the previous same location records, and used the &lt;em&gt;previous-target_probabilities&lt;/em&gt; as a feature to build the model.&lt;/p&gt;
-
-&lt;h2 id=&#34;3-build-models-and-ensembling:15edd88506075118ee3a8b489dc4ade6&#34;&gt;&lt;strong&gt;3. Build models and Ensembling&lt;/strong&gt;&lt;/h2&gt;
-
-&lt;p&gt;I tried many models, decision tree, random forests, svm and xgboost. The xgboost model is performed well.
-On ensembling, I just average the random forest and xgboost result as the final result.&lt;/p&gt;
-
-&lt;h2 id=&#34;4-what-i-learned-from-other-kagglers:15edd88506075118ee3a8b489dc4ade6&#34;&gt;&lt;strong&gt;4. What I learned from other kagglers&lt;/strong&gt;&lt;/h2&gt;
-
-&lt;p&gt;On the platform, kagglers are willing to share their ideas. Here are some valuable ideas on the &lt;a href=&#34;https://www.kaggle.com/c/telstra-recruiting-network/forums/t/19239/it-s-been-fun-post-your-code-github-links-here-after-the-competition&#34;&gt;Competition Forum&lt;/a&gt;.&lt;/p&gt;
-
-&lt;h3 id=&#34;some-useful-tips-on-feature-engineering:15edd88506075118ee3a8b489dc4ade6&#34;&gt;Some useful tips on feature engineering&lt;/h3&gt;
-
-&lt;p&gt;It&amp;rsquo;s the most important step in machine learning whatever models you used.&lt;/p&gt;
-
-&lt;ol&gt;
-&lt;li&gt;About location&lt;br /&gt;
-&lt;em&gt;Similar location numbers have similar fault severity.(Treat the location as numeric.)&lt;/em&gt;
-&lt;em&gt;Don&amp;rsquo;t one-hot-encode the location, Tree-based classifiers are not good at handling huge sparse feature matrix.&lt;/em&gt;
-&lt;em&gt;Frequency of LogType_203 = 0 &amp;amp; LogType_203 &amp;gt;0 per location&lt;/em&gt;
-&lt;em&gt;The records in log data are arranged in the order of time.(the magic feature)&lt;/em&gt; Here are two ways to encode
-the information, One is for each location, use the row number, which starts from 1 to the total number of rows for that locaiton. The other
-is to normalize it between 0 and 1.
-&lt;em&gt;percentile transformation of location counts&lt;/em&gt;&lt;/li&gt;
-&lt;li&gt;About log feature&lt;br /&gt;
-&lt;em&gt;Pattern of log feature&lt;/em&gt;
-&amp;ldquo;one hot&amp;rdquo; encoding for all log features with volume &amp;gt; 0, for all rows.
-Each &amp;ldquo;one hot&amp;rdquo; encoded pattern treated as a string.
-Assigned integer ID to each to each string, used as feature.
-The log transform for the count of &amp;ldquo;pattern of log feature&amp;rdquo;, the log transform for counts as &amp;ldquo;pattern of event&amp;rdquo;
-and &amp;ldquo;pattern of resource&amp;rdquo;&lt;/li&gt;
-&lt;li&gt;Common categorical variables&lt;br /&gt;
-&lt;em&gt;For high-cardinality categorical variables, frequency works well.(Add the frequency of each location in both train and test set.)&lt;/em&gt;
-&lt;em&gt;Summary statistics to reduce one-to-many relationship to one-to-one, and two-way or more-way interaction among multiple variables.&lt;/em&gt;
-&lt;em&gt;Meta features(using Logistic regression to fit sparse matrix as predictors, then ensemble the model).&lt;/em&gt;&lt;/li&gt;
-&lt;li&gt;A useful solution&lt;br /&gt;
-&amp;gt;a.The order of id on log_feature was frozen.&lt;br /&gt;
-&amp;gt;b.Converting location, log_feature into numbers and generating count, mean, sum, etc. features (feature set A)&lt;br /&gt;
-&amp;gt;c.Feature B was generated by shifting A forward by 1 row&lt;br /&gt;
-&amp;gt;d.Feature C was generated by shifting B backward by 1 row&lt;br /&gt;
-&amp;gt;Combining A, B, and C and training xgb, RF, GBM models. My final model is an ensemble model of these models.&lt;br /&gt;&lt;/li&gt;
-&lt;/ol&gt;
+&lt;h2 id=&#34;1-welcome-http-cherishzhang-github-io-post-machine-learning-intro:3c5683dd2b32180fa522d0f78e07d81c&#34;&gt;1. [welcome](&amp;ldquo;&lt;a href=&#34;http://cherishzhang.github.io/post/machine_learning.Intro&amp;quot;&#34;&gt;http://cherishzhang.github.io/post/machine_learning.Intro&amp;quot;&lt;/a&gt;)&lt;/h2&gt;
 </description>
     </item>
     
