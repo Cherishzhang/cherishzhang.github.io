@@ -70,9 +70,10 @@
 &lt;h4 id=&#34;关于数据的冗余性:c7e7f190dc4ad9c3cea8a960f18951d1&#34;&gt;&lt;strong&gt;关于数据的冗余性&lt;/strong&gt;&lt;/h4&gt;
 
 &lt;ol&gt;
-&lt;li&gt;模型
-数据集可以通过随机采样，建立模型，使得尽可能得与在全部数据上建立模型的结果相似。这对于实际中的大规模数据是有效的。&lt;/li&gt;
+&lt;li&gt;模型&lt;/li&gt;
 &lt;/ol&gt;
+
+&lt;p&gt;数据集可以通过随机采样，建立模型，使得尽可能得与在全部数据上建立模型的结果相似。这对于实际中的大规模数据是有效的。&lt;/p&gt;
 
 &lt;p&gt;模型目标：
    - The aim is to pick the &lt;strong&gt;loweset sampling rate&lt;/strong&gt; that will still result in the recommendation model as close as possible to the model that would have been built using the complete data.&lt;/p&gt;
@@ -90,9 +91,10 @@
 &lt;p&gt;其中V-structure的定义为平均相似度之比，分子中的每对用户至少有一个打分项目相同，分母中的每对用户为全体用户的所有组合可能。&lt;/p&gt;
 
 &lt;ol&gt;
-&lt;li&gt;评价
-采用19个专业数据集，90-10比例分训练集和测试集，10折交叉验证。实验主要验证了模型的合理性。&lt;/li&gt;
+&lt;li&gt;评价&lt;/li&gt;
 &lt;/ol&gt;
+
+&lt;p&gt;采用19个专业数据集，9-1比例分训练集和测试集，10折交叉验证。实验主要验证了模型的合理性。&lt;/p&gt;
 
 &lt;h3 id=&#34;我的思考:c7e7f190dc4ad9c3cea8a960f18951d1&#34;&gt;&lt;strong&gt;我的思考&lt;/strong&gt;&lt;/h3&gt;
 
