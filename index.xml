@@ -178,42 +178,6 @@ and &amp;ldquo;pattern of resource&amp;rdquo;&lt;/li&gt;
     </item>
     
     <item>
-      <title>[ml] Intro</title>
-      <link>http://cherishzhang.github.io/post/ml/Intro/</link>
-      <pubDate>Wed, 02 Mar 2016 20:58:05 +0800</pubDate>
-      
-      <guid>http://cherishzhang.github.io/post/ml/Intro/</guid>
-      <description>
-
-&lt;h2 id=&#34;introduction:ad313508e3b44a067229577553308d3b&#34;&gt;Introduction&lt;/h2&gt;
-
-&lt;h3 id=&#34;machine-learning:ad313508e3b44a067229577553308d3b&#34;&gt;Machine Learning&lt;/h3&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Grew out of work in AI&lt;/li&gt;
-&lt;li&gt;New capability for computers&lt;/li&gt;
-&lt;li&gt;some examples:
-
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;Database mining&lt;/strong&gt;&lt;/li&gt;
-&lt;li&gt;Large datasets from growth of automation/web.
-&lt;strong&gt;Applications can&amp;rsquo;t program by hand&lt;/strong&gt;
-&lt;strong&gt;Self-customizing programs&lt;/strong&gt;
-E.g., product recommendations
-&lt;strong&gt;Understanding human learning&lt;/strong&gt;&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;There are two classes of machine learning, one is Supervised Learning, and other is Unsupervised Learning.&lt;/p&gt;
-
-&lt;p&gt;For Supervised Learning which is given the &lt;strong&gt;right answers&lt;/strong&gt;. It include &lt;em&gt;regression&lt;/em&gt; and &lt;em&gt;classification&lt;/em&gt; problems,
-  there are two examples: Housing price prediction, Breast cancer.&lt;/p&gt;
-
-&lt;p&gt;For Unsupervised Learning&lt;/p&gt;
-</description>
-    </item>
-    
-    <item>
       <title></title>
       <link>http://cherishzhang.github.io/post/paper/ideas/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
