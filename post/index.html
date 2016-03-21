@@ -10,6 +10,34 @@
 <link rel="stylesheet" href="/css/skeleton.css">
 <link rel="stylesheet" href="/css/custom.css">
 <link rel="alternate" href="/index.xml" type="application/rss+xml" title="Learn and record">
+<script type="text/javascript"
+  src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath: [['$','$'], ['\\(','\\)']],
+    displayMath: [['$$','$$'], ['\[','\]']],
+    processEscapes: true,
+    processEnvironments: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+    TeX: { equationNumbers: { autoNumber: "AMS" },
+         extensions: ["AMSmath.js", "AMSsymbols.js"] }
+  }
+});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    
+    
+    
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i = 0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+});
+</script>
+
 <title>Posts - Learn and record</title>
 </head>
 <body>
@@ -28,18 +56,23 @@
 		<h1 class="list-title">Posts</h1>
 
 		<article itemscope itemtype="http://schema.org/Blog">
-			<h2 class="entry-title" itemprop="headline"><a href="/post/kagglelist/">Kaggle Competitons</a></h2>
-			<span class="entry-meta"><time itemprop="datePublished" datetime="2016-03-09">March 09, 2016</time></span>
-		</article>
-
-		<article itemscope itemtype="http://schema.org/Blog">
-			<h2 class="entry-title" itemprop="headline"><a href="/post/mllist/">mllist</a></h2>
-			<span class="entry-meta"><time itemprop="datePublished" datetime="2016-03-08">March 08, 2016</time></span>
+			<h2 class="entry-title" itemprop="headline"><a href="/post/paper/Data%20Quality%20in%20Recommendation/">Data Quality in Recommendation</a></h2>
+			<span class="entry-meta"><time itemprop="datePublished" datetime="2016-03-16">March 16, 2016</time></span>
 		</article>
 
 		<article itemscope itemtype="http://schema.org/Blog">
 			<h2 class="entry-title" itemprop="headline"><a href="/post/kaggle/Telstra/">Telstra Network Disruptions</a></h2>
 			<span class="entry-meta"><time itemprop="datePublished" datetime="2016-03-02">March 02, 2016</time></span>
+		</article>
+
+		<article itemscope itemtype="http://schema.org/Blog">
+			<h2 class="entry-title" itemprop="headline"><a href="/post/ml/Intro/">[ml] Intro</a></h2>
+			<span class="entry-meta"><time itemprop="datePublished" datetime="2016-03-02">March 02, 2016</time></span>
+		</article>
+
+		<article itemscope itemtype="http://schema.org/Blog">
+			<h2 class="entry-title" itemprop="headline"><a href="/post/paper/ideas/"></a></h2>
+			<span class="entry-meta"><time itemprop="datePublished" datetime="0001-01-01">January 01, 0001</time></span>
 		</article>
 
 	</main>

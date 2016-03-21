@@ -74,3 +74,8 @@ main {
   background: -webkit-linear-gradient(left, white, #E1E1E1, white);
   background: linear-gradient(to right, white, #E1E1E1, white);
 }
+code.has-jax {font: inherit;
+              font-size: 130%;
+              background: inherit;
+              border: inherit;
+              color: #515151;}
