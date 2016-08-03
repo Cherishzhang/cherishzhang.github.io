@@ -6,8 +6,115 @@
     <description>Recent content in Posts on Learn and record</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 16 Mar 2016 21:03:56 +0800</lastBuildDate>
+    <lastBuildDate>Fri, 20 May 2016 19:20:56 +0800</lastBuildDate>
     <atom:link href="http://cherishzhang.github.io/post/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Boosting</title>
+      <link>http://cherishzhang.github.io/post/boosting/</link>
+      <pubDate>Fri, 20 May 2016 19:20:56 +0800</pubDate>
+      
+      <guid>http://cherishzhang.github.io/post/boosting/</guid>
+      <description>
+
+&lt;h2 id=&#34;intro:d21755d9d058d9a9b44db3100ac0dea8&#34;&gt;Intro&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://en.wikipedia.org/wiki/Gradient_boosting&#34;&gt;Boosting&lt;/a&gt; can be interpreted as an optimization algorithm on a suitable cost function. The algorithms that optimize a cost function over function space by iteratively choosing a function(week hypothesis) that points in the negative gradient direction.&lt;/p&gt;
+
+&lt;p&gt;在分类问题中，提升(Boosting)思想，通过改变训练数据的概率分布（权重分布），针对不同的训练数据分布，学习多个弱分类器，将这些分类器线性组合，提高分类的性能。&lt;/p&gt;
+
+&lt;p&gt;围绕提升方法，有&lt;strong&gt;&lt;font color=#F08080&gt;两个问题&lt;/font&gt;&lt;/strong&gt;需要考虑：1.每一轮如何改变训练数据的概率或权值分布；2.如何将弱分类器组合成一个强分类器。&lt;/p&gt;
+
+&lt;h2 id=&#34;adaboost-adaptive-boosting:d21755d9d058d9a9b44db3100ac0dea8&#34;&gt;AdaBoost(Adaptive Boosting)&lt;/h2&gt;
+
+&lt;p&gt;AdaBoost提高那些被前几轮弱分类器线性组成的分类器&lt;strong&gt;错误分类&lt;/strong&gt;的样本权值，在下一轮的弱分类器中更加关注没有得到正确分类的数据；采用&lt;strong&gt;加权多数表决&lt;/strong&gt;的方法，误差率小的弱分类器权值大，误差率大的弱
+分类器权值小。&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;&lt;strong&gt;算法流程&lt;/strong&gt;：（二分类问题）&lt;br/&gt;
+&lt;font color=#F08080&gt;输入&lt;/font&gt;：训练数据集$T={(x_1,y_1),(x_2,y_2),&amp;hellip;,(x_N,y_N)}$和弱分类器算法 &lt;br/&gt;
+&lt;font color=#F08080&gt;输出&lt;/font&gt;：最终分类器&lt;code&gt;$G(x)$&lt;/code&gt;&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;初始化训练样本的权值分布(均匀分布)&lt;br/&gt;
+&lt;code&gt;$D_1=(w_{11},...,w_{1i},...,w_{1N}), w_{1i}=\frac{1}{N}, i=1,2,...,N$&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;对于$m=1,2,&amp;hellip;,M$(迭代)
+
+&lt;ul&gt;
+&lt;li&gt;使用具有权值分布$D_m$的训练数据集学习，得到基本分类器$G_m(x)$&lt;/li&gt;
+&lt;li&gt;计算$G_m(x)$在权值分布$D_m$的训练数据集上的&lt;strong&gt;分类误差率&lt;/strong&gt;
+&lt;code&gt;$e_m = P(G_m(x_i) \neq y_i) = \sum_{i=1}^N w_{mi}I(G_m(x_i) \neq y_i)$&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;计算$G_m(x)$的系数，即&lt;font color=#F08080&gt;表决权&lt;/font&gt;
+&lt;code&gt;$\alpha_{m} = \frac{1}{2} \log \frac{1-e_m}{e_m}$&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;更新训练数据集的权值分布
+&lt;code&gt;$D_{m+1} = (w_{m+1,1},...,w_{m+1,i},...,w_{m+1,N})$&lt;/code&gt;
+&lt;code&gt;$w_{m+1,i} = \frac{w_{mi}}{Z_m} \exp (-\alpha_m y_i G_m(x_i))$&lt;/code&gt;&lt;br/&gt;
+其中$Z_m$是规范化因子,&lt;code&gt;$Z_m = \sum_{i=1}^N w_{mi} exp(-\alpha_m y_i G_m(x_i))$&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;构建基本分类器的线性组合
+$$f(x) = \sum_{m=1}^M \alpha_m G_m(x)$$&lt;/li&gt;
+&lt;li&gt;得到最终的分类器
+&lt;code&gt;$G(x) = sign(f(x))$&lt;/code&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;每轮迭代过程中，Adaboost会重点关注错误分类的样本，使得算法受噪声和离群点的影响较大。&lt;code&gt;$\alpha_m$&lt;/code&gt;随着 &lt;code&gt;$e_m$&lt;/code&gt; 的减小而增大，&lt;code&gt;$w_{mi}$&lt;/code&gt; 也随着&lt;code&gt;$\alpha_m$&lt;/code&gt; 而改变，不断增大误分类样本的权值，减小正确分类样本的权值。&lt;/p&gt;
+
+&lt;p&gt;AdaBoost的一个解释是，模型为&lt;strong&gt;加法模型，损失函数为指数函数，学习算法为前向分步算法的二分类学习方法&lt;/strong&gt;。前向分步算法(forward stagewise algorithm)求解优化问题的思路是：从前向后，每一步只学习一个基函数及其系数，逐步逼近优化目标函数式，就可以简化优化的复杂度。&lt;/p&gt;
+
+&lt;h2 id=&#34;boosting-tree-提升树:d21755d9d058d9a9b44db3100ac0dea8&#34;&gt;Boosting Tree(提升树)&lt;/h2&gt;
+
+&lt;p&gt;采用&lt;strong&gt;加法模型(基函数的线性组合)与前向分步算法，以决策树为基函数的提升方法&lt;/strong&gt;称为提升树，分类问题采用二叉分类树，回归问题采用二叉回归树。&lt;/p&gt;
+
+&lt;p&gt;提升树表示为决策树的加法模型:
+&lt;code&gt;$f_{M(x)} = \sum_{m=1}^M T(x; \Theta_m)$&lt;/code&gt;
+其中，&lt;code&gt;$T(x;\Theta_m)$&lt;/code&gt;表示决策树，&lt;code&gt;$\Theta_m$&lt;/code&gt;为决策树的参数，M为树的个数&lt;/p&gt;
+
+&lt;p&gt;不同问题的提升树学习算法，&lt;font color=#F08080&gt;主要区别在于使用的损失函数不同&lt;/font&gt;，包括用平方误差损失函数的回归问题，用指数损失函数的分类问题，以及用一般损失函数的一般决策问题。将Adaboost算法中的基本分类器限制为分类决策树，即为针对二分类问题的提升树算法。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;提升树算法&lt;/strong&gt;(回归问题):&lt;br/&gt;
+&lt;font color=#F08080&gt;输入&lt;/font&gt;:训练数据集\(T={(x_1,y_1),(x_2,y_2),&amp;hellip;,(x_N,y_N)}\)
+&lt;br/&gt;
+&lt;font color=#F08080&gt;输出&lt;/font&gt;:提升树$f_M(x)$&lt;br/&gt;&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;确定初始提升树&lt;code&gt;$f_0(x) = 0$&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;对m = 1,2,&amp;hellip;,M
+
+&lt;ul&gt;
+&lt;li&gt;计算残差： &lt;code&gt;$r_{mi} = y_{i} - f_{m-1}(x_i), i=1,2,...,N$&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;拟合残差，学习一个回归树，得到&lt;code&gt;$T(x;\Theta_m)$&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;更新&lt;code&gt;$f_m(x)=f_{m-1}(x)+T(x;\Theta_m)$&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;得到最终提升树：&lt;code&gt;$f_M(x)=\sum_{m=1}^M T(x;\Theta_m)$&lt;/code&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&#34;gradient-boosting-梯度提升:d21755d9d058d9a9b44db3100ac0dea8&#34;&gt;Gradient Boosting(梯度提升)&lt;/h2&gt;
+
+&lt;p&gt;前向分布算法针对特殊的损失函数(平方和指数)，对于一般的损失函数，Freidman提出了梯度提升算法。它利用最速下降法的近似方法，其&lt;font color=#F08080&gt;&lt;strong&gt;关键&lt;/strong&gt;&lt;/font&gt;是利用损失函数的负梯度在当前模型的值最为回归问题提升树算法中的残差的近似值，拟合一个回归树。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;梯度提升算法&lt;/strong&gt;：&lt;br/&gt;
+&lt;font color=#F08080&gt;输入&lt;/font&gt;:训练数据集\(T={(x_1,y_1),(x_2,y_2),&amp;hellip;,(x_N,y_N)}\)，损失函数$L(y,f(x))$&lt;br/&gt;
+&lt;font color=#F08080&gt;输出&lt;/font&gt;:回归树$\hat{f} (x)$&lt;br\&gt;&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;初始化，估计是损失函数极小化的常数值，即只有一个根节点的树
+&lt;code&gt;$f_0(x) = arg\mathop{min}\limits_{c} \sum_{i=1}^{N} L(y_i,c)$&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;对m=1,2,&amp;hellip;,M
+
+&lt;ul&gt;
+&lt;li&gt;对i=1,2,&amp;hellip;,N,计算
+&lt;code&gt;$r_{mi} = - {\left [\frac{\partial L(y_i,f(x_i))}{\partial f(x_i)} \right]}_{f(x)=f_{m-1}(x)}$&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;对于&lt;code&gt;$r_{mi}$&lt;/code&gt;拟合一个回归树，得到第m棵树的叶节点区域$R_{mj}$, j=1,2,&amp;hellip;,J（对于平方损失函数，就是通常所说的残差，对于一般损失函数，即为残差的近似值）&lt;/li&gt;
+&lt;li&gt;对于j=1,2,&amp;hellip;,J,计算 &lt;code&gt;$c_{mj} = arg\mathop{min}\limits_{c} \sum_{x_i \in R_{mj}} L(y_i,f_{m-1}(x_i)+c)$&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;更新&lt;code&gt;$f_m(x) = f_{m-1}(x)+\sum_{j=1}^J c_{mj}I(x\in R_mj)$&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;得到回归树 &lt;code&gt;$\hat{f}(x) = f_M(x) = \sum_{m=1}^M \sum_{j=1}^J c_{mj} I(x \in R_{mj})$&lt;/code&gt;&lt;/li&gt;
+&lt;/ol&gt;
+</description>
+    </item>
     
     <item>
       <title>Data Quality in Recommendation</title>
@@ -41,7 +148,7 @@
 &lt;li&gt;The aim is to develop a heuristic method that predicts the optimal thresholds for a given user-item rating matrix, without building the model.&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;然后，采用了一些合理的假设，如假设要预测的物品阈值是与&lt;strong&gt;物品向量&lt;/strong&gt;的平均长度&lt;code&gt;$\overline{r}_i$&lt;/code&gt;相关，在打分矩阵中，即为平均每个物品被打分的次数。由于推荐数据集中，只有一小部分的流行商品会被打分多次，大部分商品被打分的次数相对很少，这引入了模型的另外一个特征，即物品向量长度的&lt;strong&gt;power-law&lt;/strong&gt;分布,令H为物品向量长度的分布函数，拟合函数&lt;code&gt;$H=Ax^(-m)$&lt;/code&gt;,其中x是单个物品向量的长度，m是个正数。最终可以得到数据集对应的m参数值。m越大，长尾分布中的尾部越向下，反映到数据集上，就是更加少的物品被多次打分过，也就是说，m越大，数据集本身越稀疏。&lt;/p&gt;
+&lt;p&gt;然后，采用了一些合理的假设，如假设要预测的物品阈值是与&lt;strong&gt;物品向量&lt;/strong&gt;的平均长度&lt;code&gt;$\overline{r}_i$&lt;/code&gt;相关，在打分矩阵中，即为平均每个物品被打分的次数。由于推荐数据集中，只有一小部分的流行商品会被打分多次，大部分商品被打分的次数相对很少，这引入了模型的另外一个特征，即物品向量长度的&lt;strong&gt;power-law&lt;/strong&gt;分布,令H为物品向量长度的分布函数，拟合函数&lt;code&gt;$H={Ax}^{(-m)}$&lt;/code&gt;,其中x是单个物品向量的长度，m是个正数。最终可以得到数据集对应的m参数值。m越大，长尾分布中的尾部越向下，反映到数据集上，就是更加少的物品被多次打分过，也就是说，m越大，数据集本身越稀疏。&lt;/p&gt;
 
 &lt;p&gt;得到以上两个特征因素，接下来就是构建阈值模型，得到公式: &lt;code&gt;${IT}_d = \gamma*\frac{log(\overline{r}_i)}{m^2}$&lt;/code&gt;&lt;/p&gt;
 
