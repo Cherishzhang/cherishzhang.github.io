@@ -42,7 +42,7 @@ MathJax.Hub.Config({
 });
 </script>
 
-<title>Learn and record</title>
+<title>Random Forest - Learn and record</title>
 </head>
 <body>
 
@@ -52,37 +52,45 @@ MathJax.Hub.Config({
 		<div class="header-logo">
 			<a href="/"><img src="/images/logo.jpg" width="60" height="60"></a>
 		</div>
-		<h1 class="site-title">Learn and record</h1>
+		
 	</header>
 
 
 	<main role="main">
-
-		<article itemscope itemtype="http://schema.org/Blog">
-			<h2 class="entry-title" itemprop="headline"><a href="/post/ml/random_forest/">Random Forest</a></h2>
+		<article itemscope itemtype="http://schema.org/BlogPosting">
+			<h1 class="entry-title" itemprop="headline">Random Forest</h1>
 			<span class="entry-meta"><time itemprop="datePublished" datetime="2016-08-03">August 03, 2016</time></span>
-		</article>
+			<section itemprop="entry-text">
+				
 
-		<article itemscope itemtype="http://schema.org/Blog">
-			<h2 class="entry-title" itemprop="headline"><a href="/post/template/">template</a></h2>
-			<span class="entry-meta"><time itemprop="datePublished" datetime="2016-07-15">July 15, 2016</time></span>
-		</article>
+<h2 id="intro:00635f635026fbac82e8a20eddd81309">Intro</h2>
 
-		<article itemscope itemtype="http://schema.org/Blog">
-			<h2 class="entry-title" itemprop="headline"><a href="/post/ml/boosting/">Boosting</a></h2>
-			<span class="entry-meta"><time itemprop="datePublished" datetime="2016-05-20">May 20, 2016</time></span>
-		</article>
+<p>随机森林由一系列决策树构成，构建好的决策树呈树形结构，即if-then规则的集合，主要优点是模型具有可读性，分类速度快。</p>
 
-		<article itemscope itemtype="http://schema.org/Blog">
-			<h2 class="entry-title" itemprop="headline"><a href="/post/paper/Data%20Quality%20in%20Recommendation/">Data Quality in Recommendation</a></h2>
-			<span class="entry-meta"><time itemprop="datePublished" datetime="2016-03-16">March 16, 2016</time></span>
-		</article>
+<p>对于分类问题，输出的类别由各决策树输出类别的众数而定；对于回归问题，输出的结果取各决策树的平均预测值。</p>
 
-		<article itemscope itemtype="http://schema.org/Blog">
-			<h2 class="entry-title" itemprop="headline"><a href="/post/kaggle/Telstra/">Telstra Network Disruptions</a></h2>
-			<span class="entry-meta"><time itemprop="datePublished" datetime="2016-03-02">March 02, 2016</time></span>
-		</article>
+<h2 id="construct:00635f635026fbac82e8a20eddd81309">Construct</h2>
 
+<p>分为两方面:<strong><font color=#F08080>数据</font></strong>的随机性选取，以及<strong><font color=#F08080>待选特征</font></strong>的随机选取。</p>
+
+<ul>
+<li><p>数据</p>
+
+<ol>
+<li>从原始数据集中有放回的抽样，构造子数据集，子数据集的数据量和原始数据集相同。</li>
+<li>利用子数据集构建子决策树</li>
+</ol></li>
+
+<li><p>待选特征</p>
+
+<ol>
+<li>在子树的每一个分裂过程中并未用到所有的待选特征。</li>
+<li>从原始特征中随机选取一定的特征，再从随机选取的特征中选取最优的特征。</li>
+</ol></li>
+</ul>
+
+			</section>
+		</article>
 	</main>
 
 

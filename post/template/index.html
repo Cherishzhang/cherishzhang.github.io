@@ -42,7 +42,7 @@ MathJax.Hub.Config({
 });
 </script>
 
-<title>Learn and record</title>
+<title>template - Learn and record</title>
 </head>
 <body>
 
@@ -52,37 +52,86 @@ MathJax.Hub.Config({
 		<div class="header-logo">
 			<a href="/"><img src="/images/logo.jpg" width="60" height="60"></a>
 		</div>
-		<h1 class="site-title">Learn and record</h1>
+		
 	</header>
 
 
 	<main role="main">
-
-		<article itemscope itemtype="http://schema.org/Blog">
-			<h2 class="entry-title" itemprop="headline"><a href="/post/ml/random_forest/">Random Forest</a></h2>
-			<span class="entry-meta"><time itemprop="datePublished" datetime="2016-08-03">August 03, 2016</time></span>
-		</article>
-
-		<article itemscope itemtype="http://schema.org/Blog">
-			<h2 class="entry-title" itemprop="headline"><a href="/post/template/">template</a></h2>
+		<article itemscope itemtype="http://schema.org/BlogPosting">
+			<h1 class="entry-title" itemprop="headline">template</h1>
 			<span class="entry-meta"><time itemprop="datePublished" datetime="2016-07-15">July 15, 2016</time></span>
-		</article>
+			<section itemprop="entry-text">
+				
 
-		<article itemscope itemtype="http://schema.org/Blog">
-			<h2 class="entry-title" itemprop="headline"><a href="/post/ml/boosting/">Boosting</a></h2>
-			<span class="entry-meta"><time itemprop="datePublished" datetime="2016-05-20">May 20, 2016</time></span>
-		</article>
+<h2 id="template-in-c:3ab6493ba8daa8d68f06e5b15d1c3f23">Template in C++</h2>
 
-		<article itemscope itemtype="http://schema.org/Blog">
-			<h2 class="entry-title" itemprop="headline"><a href="/post/paper/Data%20Quality%20in%20Recommendation/">Data Quality in Recommendation</a></h2>
-			<span class="entry-meta"><time itemprop="datePublished" datetime="2016-03-16">March 16, 2016</time></span>
-		</article>
+<p>对于重载(overloading)函数，c++的检查机制能够通过函数参数的不同及所属类的不同，正确的调用不同的版本。而模板可以解决重载定义不全面而可能带来的调用错误。</p>
 
-		<article itemscope itemtype="http://schema.org/Blog">
-			<h2 class="entry-title" itemprop="headline"><a href="/post/kaggle/Telstra/">Telstra Network Disruptions</a></h2>
-			<span class="entry-meta"><time itemprop="datePublished" datetime="2016-03-02">March 02, 2016</time></span>
-		</article>
+<p>模板是实现代码重用机制的一种工具，可以实现类型参数化，即把类型定义为参数，从而实现真正的代码可重用性。模板分为两类，一是<strong>函数模板</strong>，而是<strong>类模板</strong>。</p>
 
+<ol>
+<li>函数模板</li>
+</ol>
+
+<pre><code>#include&lt;iostream&gt;
+using namespace std;
+//声明一个用来比较两个相同数据类型的参数的大小，class也可以被typename代替
+//T可以被任何字母或数字代替
+template&lt;class T&gt; //or template&lt;typename T&gt;
+T min(T x, T y)
+{
+  return (x &lt; y)?x:y;
+}
+//重载函数
+int min(int x, int y)
+{
+  return (x &lt; y)?x:y;
+}
+int min(char x, char y)
+{
+  return (x &lt; y)?x:y;
+}
+int main()
+{
+  int n1=2,n2=10;
+  double d1=1.5,d2=5.6;
+  cout&lt;&lt;&quot;较小整数:&quot; &lt;&lt; min(n1,n2) &lt;&lt; endl; //调用重载函数
+  cout&lt;&lt;&quot;较小实数:&quot; &lt;&lt; min(d1,d2) &lt;&lt; endl; //无对应的重载函数，则调用模板
+}
+</code></pre>
+
+<p>重载函数和模板一起使用时，先考虑重载函数，后考虑模板类，最后考虑类型转换。</p>
+
+<ol>
+<li>类模板</li>
+</ol>
+
+<pre><code>#include&lt;iostream&gt; 
+using namespace std;
+template&lt;class T&gt;
+class Base{
+public:
+  T a;
+  Base(T b):a(b){} //多个参数时，用逗号连接
+  T getA(){return a;} //类内定义
+  void setA(T c); 
+};
+template &lt;class T&gt; //成员函数在类外定义,需要使用函数模板
+void Base&lt;T&gt;::setA(T c){
+  a = c;
+}
+int main(){
+  Base &lt;int&gt; b(4);
+  cout &lt;&lt; b.getA() &lt;&lt; endl;
+  Base &lt;double&gt; bc(4);
+  bc.setA(4.3);
+  cout &lt;&lt; bc.getA() &lt;&lt; endl;
+  return 0;
+}
+</code></pre>
+
+			</section>
+		</article>
 	</main>
 
 
