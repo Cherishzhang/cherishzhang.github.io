@@ -2,19 +2,36 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Learn and record</title>
-    <link>http://cherishzhang.github.io/</link>
+    <link>http://coderzh.github.io/</link>
     <description>Recent content on Learn and record</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 03 Aug 2016 16:15:24 +0800</lastBuildDate>
-    <atom:link href="http://cherishzhang.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 04 Aug 2016 17:04:03 +0800</lastBuildDate>
+    <atom:link href="http://coderzh.github.io/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>c&#43;&#43;_tips</title>
+      <link>http://coderzh.github.io/post/c&#43;&#43;_tips/</link>
+      <pubDate>Thu, 04 Aug 2016 17:04:03 +0800</pubDate>
+      
+      <guid>http://coderzh.github.io/post/c&#43;&#43;_tips/</guid>
+      <description>
+
+&lt;h2 id=&#34;summary:09633c670eef7b50cb8981f7657aaf97&#34;&gt;Summary&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://cherishzhang.github.io/post/template&#34;&gt;template&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://cherishzhang.github.io/post/friend/&#34;&gt;friend&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
     
     <item>
       <title>Random Forest</title>
-      <link>http://cherishzhang.github.io/post/ml/random_forest/</link>
+      <link>http://coderzh.github.io/post/ml/random_forest/</link>
       <pubDate>Wed, 03 Aug 2016 16:15:24 +0800</pubDate>
       
-      <guid>http://cherishzhang.github.io/post/ml/random_forest/</guid>
+      <guid>http://coderzh.github.io/post/ml/random_forest/</guid>
       <description>
 
 &lt;h2 id=&#34;intro:00635f635026fbac82e8a20eddd81309&#34;&gt;Intro&lt;/h2&gt;
@@ -46,88 +63,11 @@
     </item>
     
     <item>
-      <title>template</title>
-      <link>http://cherishzhang.github.io/post/template/</link>
-      <pubDate>Fri, 15 Jul 2016 14:24:55 +0800</pubDate>
-      
-      <guid>http://cherishzhang.github.io/post/template/</guid>
-      <description>
-
-&lt;h2 id=&#34;template-in-c:3ab6493ba8daa8d68f06e5b15d1c3f23&#34;&gt;Template in C++&lt;/h2&gt;
-
-&lt;p&gt;对于重载(overloading)函数，c++的检查机制能够通过函数参数的不同及所属类的不同，正确的调用不同的版本。而模板可以解决重载定义不全面而可能带来的调用错误。&lt;/p&gt;
-
-&lt;p&gt;模板是实现代码重用机制的一种工具，可以实现类型参数化，即把类型定义为参数，从而实现真正的代码可重用性。模板分为两类，一是&lt;strong&gt;函数模板&lt;/strong&gt;，而是&lt;strong&gt;类模板&lt;/strong&gt;。&lt;/p&gt;
-
-&lt;ol&gt;
-&lt;li&gt;函数模板&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;pre&gt;&lt;code&gt;#include&amp;lt;iostream&amp;gt;
-using namespace std;
-//声明一个用来比较两个相同数据类型的参数的大小，class也可以被typename代替
-//T可以被任何字母或数字代替
-template&amp;lt;class T&amp;gt; //or template&amp;lt;typename T&amp;gt;
-T min(T x, T y)
-{
-  return (x &amp;lt; y)?x:y;
-}
-//重载函数
-int min(int x, int y)
-{
-  return (x &amp;lt; y)?x:y;
-}
-int min(char x, char y)
-{
-  return (x &amp;lt; y)?x:y;
-}
-int main()
-{
-  int n1=2,n2=10;
-  double d1=1.5,d2=5.6;
-  cout&amp;lt;&amp;lt;&amp;quot;较小整数:&amp;quot; &amp;lt;&amp;lt; min(n1,n2) &amp;lt;&amp;lt; endl; //调用重载函数
-  cout&amp;lt;&amp;lt;&amp;quot;较小实数:&amp;quot; &amp;lt;&amp;lt; min(d1,d2) &amp;lt;&amp;lt; endl; //无对应的重载函数，则调用模板
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;重载函数和模板一起使用时，先考虑重载函数，后考虑模板类，最后考虑类型转换。&lt;/p&gt;
-
-&lt;ol&gt;
-&lt;li&gt;类模板&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;pre&gt;&lt;code&gt;#include&amp;lt;iostream&amp;gt; 
-using namespace std;
-template&amp;lt;class T&amp;gt;
-class Base{
-public:
-  T a;
-  Base(T b):a(b){} //多个参数时，用逗号连接
-  T getA(){return a;} //类内定义
-  void setA(T c); 
-};
-template &amp;lt;class T&amp;gt; //成员函数在类外定义,需要使用函数模板
-void Base&amp;lt;T&amp;gt;::setA(T c){
-  a = c;
-}
-int main(){
-  Base &amp;lt;int&amp;gt; b(4);
-  cout &amp;lt;&amp;lt; b.getA() &amp;lt;&amp;lt; endl;
-  Base &amp;lt;double&amp;gt; bc(4);
-  bc.setA(4.3);
-  cout &amp;lt;&amp;lt; bc.getA() &amp;lt;&amp;lt; endl;
-  return 0;
-}
-&lt;/code&gt;&lt;/pre&gt;
-</description>
-    </item>
-    
-    <item>
       <title>Boosting</title>
-      <link>http://cherishzhang.github.io/post/ml/boosting/</link>
+      <link>http://coderzh.github.io/post/ml/boosting/</link>
       <pubDate>Fri, 20 May 2016 19:20:56 +0800</pubDate>
       
-      <guid>http://cherishzhang.github.io/post/ml/boosting/</guid>
+      <guid>http://coderzh.github.io/post/ml/boosting/</guid>
       <description>
 
 &lt;h2 id=&#34;intro:d21755d9d058d9a9b44db3100ac0dea8&#34;&gt;Intro&lt;/h2&gt;
@@ -231,10 +171,10 @@ $$f(x) = \sum_{m=1}^M \alpha_m G_m(x)$$&lt;/li&gt;
     
     <item>
       <title>Data Quality in Recommendation</title>
-      <link>http://cherishzhang.github.io/post/paper/Data%20Quality%20in%20Recommendation/</link>
+      <link>http://coderzh.github.io/post/paper/Data%20Quality%20in%20Recommendation/</link>
       <pubDate>Wed, 16 Mar 2016 21:03:56 +0800</pubDate>
       
-      <guid>http://cherishzhang.github.io/post/paper/Data%20Quality%20in%20Recommendation/</guid>
+      <guid>http://coderzh.github.io/post/paper/Data%20Quality%20in%20Recommendation/</guid>
       <description>
 
 &lt;h2 id=&#34;data-quality-matters-in-recommender-systems:c7e7f190dc4ad9c3cea8a960f18951d1&#34;&gt;Data Quality Matters in Recommender Systems&lt;/h2&gt;
@@ -328,10 +268,10 @@ $$f(x) = \sum_{m=1}^M \alpha_m G_m(x)$$&lt;/li&gt;
     
     <item>
       <title>Telstra Network Disruptions</title>
-      <link>http://cherishzhang.github.io/post/kaggle/Telstra/</link>
+      <link>http://coderzh.github.io/post/kaggle/Telstra/</link>
       <pubDate>Wed, 02 Mar 2016 21:03:56 +0800</pubDate>
       
-      <guid>http://cherishzhang.github.io/post/kaggle/Telstra/</guid>
+      <guid>http://coderzh.github.io/post/kaggle/Telstra/</guid>
       <description>
 
 &lt;h2 id=&#34;1-overview:43e8ca42a888262ca3ed3923385c58f2&#34;&gt;&lt;strong&gt;1. Overview&lt;/strong&gt;&lt;/h2&gt;
