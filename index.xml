@@ -19,9 +19,11 @@
 
 &lt;h2 id=&#34;intro:00635f635026fbac82e8a20eddd81309&#34;&gt;Intro&lt;/h2&gt;
 
-&lt;p&gt;随机森林由一系列决策树构成，构建好的决策树呈树形结构，即if-then规则的集合，主要优点是模型具有可读性，分类速度快。&lt;/p&gt;
+&lt;p&gt;随机森林由一系列决策树CART(classification and regression tree)构成，构建好的决策树呈树形结构，即if-then规则的集合，主要优点是模型具有可读性，分类速度快。&lt;/p&gt;
 
-&lt;p&gt;对于分类问题，输出的类别由各决策树输出类别的众数而定；对于回归问题，输出的结果取各决策树的平均预测值。&lt;/p&gt;
+&lt;h2 id=&#34;cart算法:00635f635026fbac82e8a20eddd81309&#34;&gt;CART算法&lt;/h2&gt;
+
+&lt;p&gt;决策树的生成就是递归地构建二叉决策树的过程，对回归树采用平方误差最小化准则，对分类树采用基尼指数最小化准则。&lt;/p&gt;
 
 &lt;h2 id=&#34;construct:00635f635026fbac82e8a20eddd81309&#34;&gt;Construct&lt;/h2&gt;
 
@@ -31,7 +33,7 @@
 &lt;li&gt;&lt;p&gt;数据&lt;/p&gt;
 
 &lt;ol&gt;
-&lt;li&gt;从原始数据集中有放回的抽样，构造子数据集，子数据集的数据量和原始数据集相同。&lt;/li&gt;
+&lt;li&gt;从原始数据集中*有放回*的抽样，构造子数据集，子数据集的数据量和原始数据集相同。&lt;/li&gt;
 &lt;li&gt;利用子数据集构建子决策树&lt;/li&gt;
 &lt;/ol&gt;&lt;/li&gt;
 
@@ -39,9 +41,43 @@
 
 &lt;ol&gt;
 &lt;li&gt;在子树的每一个分裂过程中并未用到所有的待选特征。&lt;/li&gt;
-&lt;li&gt;从原始特征中随机选取一定的特征，再从随机选取的特征中选取最优的特征。&lt;/li&gt;
+&lt;li&gt;从原始特征无放回随机抽取一定比例的特征，用所抽取的特征集作特征选择。&lt;/li&gt;
+&lt;li&gt;假设总的特征数量是M，则比例可为sqrt(M), 1/2sqrt(M), 2sqrt(M)。&lt;/li&gt;
 &lt;/ol&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;训练过程：&lt;br/&gt;
+input: 给定训练集S，测试集T，特征维数F。确定参数集(CART的数量t，每棵树的深度d，每个节点用到的特征数量f，终止条件：节点上最少的样本数，节点上最少的信息增益m)&lt;/p&gt;&lt;/li&gt;
 &lt;/ul&gt;
+
+&lt;p&gt;对于i = 1,2,&amp;hellip;,t;&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;(1) 从S中有放回的抽样，生成一个大小和S相同的训练集S(i)，作为根节点的样本集，从根节点开始训练。&lt;br/&gt;
+(2) a. 如果当前节点满足终止条件，则设置当前节点为叶子节点。&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;分类问题，该叶子节点的预测输出为当前样本集和中数量最多的那一类C(j),概率p为c(j)占当前样本集的比例；&lt;/li&gt;
+&lt;li&gt;回归问题，预测输出为当前样本集所有样本的平均值。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;(2) b. 如果不满足终止条件，则从F维特征中无放回的随机选取f维特征。利用这f维特征，寻找分类效果最好的那一维特征k及阈值th。当前节点上样本第k维特征小于th的样本被划分到左节点，其余的被划分到右节点。&lt;/p&gt;
+
+&lt;p&gt;(3) 重复(1)(2)直到所有节点都被训练过或标记为叶子节点。 &lt;br/&gt;
+(4) 重复(1)(2)(3)直到所有的决策树被训练过。 &lt;br/&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;ul&gt;
+&lt;li&gt;预测过程：&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;对于i = 1,2,&amp;hellip;,t;&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;(1) 从当前树的根节点开始，根据节点对应阈值th，判断是进入左节点还是右节点，直到到达某个叶子节点，并输出预测值。&lt;br/&gt;
+(2) 重复执行(1)，直到得到所有树的预测值。&lt;strong&gt;分类问题&lt;/strong&gt;，则输出所有树中预测概率总和最大的那一类，即对每个c(j)的p进行累计；&lt;strong&gt;回归问题&lt;/strong&gt;，则输出为所有树的平均预测值。&lt;/p&gt;
+&lt;/blockquote&gt;
 </description>
     </item>
     
@@ -154,10 +190,10 @@ $$f(x) = \sum_{m=1}^M \alpha_m G_m(x)$$&lt;/li&gt;
     
     <item>
       <title>c&#43;&#43;_tips</title>
-      <link>http://cherishzhang.github.io/post/c&#43;&#43;_tips/</link>
+      <link>http://cherishzhang.github.io/post/cplus/c&#43;&#43;_tips/</link>
       <pubDate>Fri, 20 May 2016 17:04:03 +0800</pubDate>
       
-      <guid>http://cherishzhang.github.io/post/c&#43;&#43;_tips/</guid>
+      <guid>http://cherishzhang.github.io/post/cplus/c&#43;&#43;_tips/</guid>
       <description>
 
 &lt;h2 id=&#34;summary-list:09633c670eef7b50cb8981f7657aaf97&#34;&gt;summary list&lt;/h2&gt;
