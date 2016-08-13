@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+<meta charset="utf-8">
+<meta name="generator" content="Hugo 0.15" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link href="http://fonts.googleapis.com/css?family=Roboto:400,700" rel="stylesheet" type="text/css">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/github.min.css">
+<link rel="stylesheet" href="/css/normalize.css">
+<link rel="stylesheet" href="/css/skeleton.css">
+<link rel="stylesheet" href="/css/custom.css">
+<link rel="alternate" href="/index.xml" type="application/rss+xml" title="Learn and record">
+<script type="text/javascript"
+  src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+<link rel="stylesheet" href="/css/solarized-dark.css">
+<script src="/js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath: [['$','$'], ['\\(','\\)']],
+    displayMath: [['$$','$$'], ['\[','\]']],
+    processEscapes: true,
+    processEnvironments: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+    TeX: { equationNumbers: { autoNumber: "AMS" },
+         extensions: ["AMSmath.js", "AMSsymbols.js"] }
+  }
+});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    
+    
+    
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i = 0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+});
+</script>
+
+<title>ccode_tips - Learn and record</title>
+</head>
+<body>
+
+<div class="container">
+
+	<header role="banner">
+		<div class="header-logo">
+			<a href="/"><img src="/images/logo.jpg" width="60" height="60"></a>
+		</div>
+		
+	</header>
+
+
+	<main role="main">
+		<article itemscope itemtype="http://schema.org/BlogPosting">
+			<h1 class="entry-title" itemprop="headline">ccode_tips</h1>
+			<span class="entry-meta"><time itemprop="datePublished" datetime="2016-08-13">August 13, 2016</time></span>
+			<section itemprop="entry-text">
+				
+
+<h2 id="intro:a2914d0b4b70afa7e55222cd273738be">Intro</h2>
+
+<p>下面总结一些算法题中经常会考虑的一些细节技巧。</p>
+
+<h2 id="常用的头文件:a2914d0b4b70afa7e55222cd273738be">常用的头文件</h2>
+
+<pre><code>#include &lt;iostream&gt;
+#include &lt;cstdio&gt;
+#include &lt;cstring&gt;
+#include &lt;string&gt;
+#include &lt;cstdlib&gt;
+#include &lt;algorithm&gt;
+#include &lt;queue&gt;
+#include &lt;set&gt;
+#include &lt;map&gt;
+#include &lt;vector&gt;
+#include &lt;cmath&gt;
+#include &lt;iomanip&gt;
+</code></pre>
+
+<h2 id="宏定义:a2914d0b4b70afa7e55222cd273738be">宏定义</h2>
+
+<ol>
+<li>最大值，最小值(判断是否溢出)</li>
+</ol>
+
+<pre><code>//自行定义宏，或使用&lt;climits&gt;中的INT_MAX,INT_MIN
+#define INT_MAX 0x7fffffff
+#define INT_MIN 0x80000000
+</code></pre>
+
+<ol>
+<li>循环</li>
+</ol>
+
+<pre><code>#define REP(i,n) for((i)=0;(i)&lt;(int)(n);(i)++)
+#define foreach(c,itr)	for(__typeof((c).begin()) itr=(c).begin();itr!=(c).end();itr++)
+</code></pre>
+
+<ol>
+<li>类型简写</li>
+</ol>
+
+<pre><code>#define ll __int64
+typedef long long int LL;
+typedef vector&lt;int&gt; vi;
+typedef pair&lt;int,int&gt; pii;
+</code></pre>
+
+<h2 id="cmath:a2914d0b4b70afa7e55222cd273738be">cmath</h2>
+
+<ul>
+<li>M_PI &ndash; 圆周率</li>
+<li>sin &ndash; 余弦</li>
+<li>asin &ndash; 反余弦</li>
+<li>指数函数 pow(i,j); i的j次方 ##溢出考虑</li>
+</ul>
+
+<h2 id="iomanip:a2914d0b4b70afa7e55222cd273738be">iomanip</h2>
+
+<p>该头文件中，有一些控制输出格式的函数。</p>
+
+<ol>
+<li>控制小数点后位数:</li>
+</ol>
+
+<pre><code>#include&lt;iomanip&gt;
+const double d1 = 1.23456789;
+cout &lt;&lt; fixed&lt;&lt;setprecision(2)&lt;&lt;d1&lt;&lt;endl;
+</code></pre>
+
+<ol>
+<li>整数前补0，固定位数输出</li>
+</ol>
+
+<p><code>cout &lt;&lt; setfill('0') &lt;&lt; setw(4) &lt;&lt; a &lt;&lt; endl;</code></p>
+
+<h2 id="输入输出:a2914d0b4b70afa7e55222cd273738be">输入输出</h2>
+
+<p>一般情况下，是从键盘读入，控制台输出，可以<strong>重定向</strong>，文件输入输出</p>
+
+<pre><code>freopen(&quot;test.in&quot;,&quot;r&quot;,stdin);  
+freopen(&quot;test.out&quot;,&quot;w&quot;,stdout);
+</code></pre>
+
+<p>字符读入读出，getchar()与putchar()</p>
+
+<pre><code>putchar(c); //输出字符变量c的值
+getchar(); //从终端输入一个字符，返回值为字符值
+</code></pre>
+
+<p>输入带空格的string:</p>
+
+<pre><code>char s[100];
+gets(s);
+</code></pre>
+
+<h2 id="整型元素:a2914d0b4b70afa7e55222cd273738be">整型元素</h2>
+
+<ol>
+<li><p>int类型的范围：-2^31 ~ 2^31-1 即\(2*10^9\)左右，long long类型的范围：-2^63 ~ 2^63-1 即\(9*10^{18}\)左右。如果会溢出，考虑long long类型。</p></li>
+
+<li><p>左移右移(c语言特性): &lt;&lt; 左移1位，相当于乘以2，有可能导致符号变化</p></li>
+</ol>
+
+<h2 id="字符与字符串:a2914d0b4b70afa7e55222cd273738be">字符与字符串</h2>
+
+<ol>
+<li><p>const char<em>, char const</em>, char* const的区别：<br/>
+声明从右向左读：<br/>
+char* const cp; //cp is a const pointer to char <br/>
+const char *p 或 char const *p; //p is a pointer to const char <br/></p></li>
+
+<li><p>c++标准规定，const关键字放在类型或变量名之前等价。<br/>
+const int n=5;// int const n=5;</p></li>
+
+<li><p>如何判断字符指针的结束位置：&rsquo;\0&rsquo;</p></li>
+
+<li><p>字符串字典序比较：</p>
+
+<pre><code>strcmp(s1,s2); //s1和s2必须是char数组, 如果是string比较， 直接s1 == s2即可
+</code></pre></li>
+
+<li><p>字符转ascii码：</p>
+
+<pre><code>char c = '1';
+int ascii = c;
+</code></pre></li>
+</ol>
+
+<h2 id="数组:a2914d0b4b70afa7e55222cd273738be">数组</h2>
+
+<pre><code>int arr[105][105];
+memset(arr, 0, sizeof(arr));//初始化
+</code></pre>
+
+<ol>
+<li>数组排序</li>
+</ol>
+
+<h2 id="stl:a2914d0b4b70afa7e55222cd273738be">STL</h2>
+
+<pre><code>//关于vector的操作
+vector&lt;int&gt; array;
+array.push_back(1);
+array.push_back(2);
+array.erase(array.end()); //删除指定位置元素
+array.pop_back();//删除末尾元素
+
+//关于pair的操作
+pair&lt;int, int&gt; mypair[100];
+mypair[0] = make_pair(0,0); //添加元素
+int a = mypair[0].first; //访问元素
+int b = mypair[0].second;
+
+//关于set的操作
+set&lt;int&gt; myset[1000]; //集合数组
+for(int i=0; i&lt;1000; i++) myset[i].clear(); //初始化
+myset[0].insert(100); //添加元素
+myset[0].erase(100);  //删除元素
+
+//遍历输出集合中的所有元素
+set&lt;int&gt;::iterator it; //定义前向迭代器
+for(it=myset.begin(); it!=myset.end(); it++)
+    cout&lt;&lt; *it &lt;&lt;endl;
+
+//关于map的操作
+map&lt;string, int&gt; word_count;
+string w = &quot;test&quot;;
+if(!word_count[w]) word_count[w]++; //初始为0遍历
+map&lt;string,int&gt;::iterator it;
+    for(it=m.begin();it!=m.end();++it)
+        cout&lt;&lt;&quot;key: &quot;&lt;&lt;it-&gt;first &lt;&lt;&quot; value: &quot;&lt;&lt;it-&gt;second&lt;&lt;endl;
+
+//关于queue的操作 - 先进先出 - 广度优先搜索 - #include &lt;queue&gt;
+/*
+ *两个模板参数，元素类型，容器类型，前者必须，后者默认deque
+ */
+queue&lt;int&gt; p;
+p.push(sth); //入队列
+p.pop(); //出队列
+int front = p.front(); //访问头部元素
+int back = p.back(); //访问尾部元素
+p.empty(); //判断队列空
+p.size(); //元素个数
+
+//关于stack的操作 - 先进后出 - 深度优先搜索 - #include &lt;stack&gt;
+/*
+ *该模板类需要两个参数，元素类型，容器类型，前者是必须的。默认容器类型为deque.
+ *
+ */
+stack&lt;int&gt; sta;
+sta.push(5); //入栈
+sta.push(10);
+sta.push(15);
+sta.pop(); //出栈，只删除元素，不返回元素
+int x = sta.top(); //访问栈顶
+bool empty = sta.empty(); //判断栈空
+int size = sta.size(); //元素个数
+
+/*priority_queue&lt;Type, Container, Functional&gt; - 优先队列 - #include&lt;queue&gt;
+ *Type为数据类型，Container为保存数据的容器，Functional为元素比较方式
+ *Container必须是用数组实现的容器，如vector,deque，但不能用list
+ *STL默认容器是vector,比较方式默认用&lt;,如果缺省后面两个参数，该优先队列是大顶堆头元素最大。*/
+//声明大顶堆
+priority_queue&lt;int, vector&lt;int&gt;, less&lt;int&gt; &gt;q;//equals to priority_queue&lt;int&gt; q1;
+for(int i=0; i&lt;10; i++)
+	q.push(i);
+while(!q.empty()){
+	cout &lt;&lt; q.top() &lt;&lt; endl;
+	q.pop();
+}
+//声明小顶堆
+priority_queue&lt;int,vector&lt;int&gt;,greater&lt;int&gt; &gt;q; 
+</code></pre>
+
+			</section>
+		</article>
+	</main>
+
+
+	<footer role="contentinfo">
+		<div class="hr"></div>
+		<div class="footer-link">
+			<a href="mailto:cherishzhang920508@gmail.com" target="_blank">Email</a></span>
+			
+			
+			<a href="https://github.com/Cherishzhang" target="_blank">GitHub</a></span>
+		</div>
+		<div class="copyright">Copyright &copy; </div>
+	</footer>
+
+</div>
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+</body>
+</html>
