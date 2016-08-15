@@ -118,8 +118,17 @@ typedef pair&lt;int,int&gt; pii;
 <li>M_PI &ndash; 圆周率</li>
 <li>sin &ndash; 余弦</li>
 <li>asin &ndash; 反余弦</li>
-<li>指数函数 pow(i,j); i的j次方 ##溢出考虑</li>
+<li>pow(i,j) &ndash; i的j次方,<code>溢出</code>考虑</li>
+<li>精度问题 &ndash; 判断两个浮点数大小关系，直接用<code>=</code>,<code>&lt;</code>,<code>&gt;</code>比较，可能出错。一般常见的解决方法是设定一个极小量<code>epsilon</code>(一般写作<code>eps</code>=1e-6)来辅助比较</li>
 </ul>
+
+<pre><code>abs(a-b) &lt; eps //a==b
+abs(a-b) &gt; eps //a!=b
+a-b &gt; eps // a&gt;b
+a-b &gt; -eps //a&gt;=b
+a-b &lt; -eps //a&lt;b
+a-b &lt; eps //a&lt;=b
+</code></pre>
 
 <h2 id="iomanip:a2914d0b4b70afa7e55222cd273738be">iomanip</h2>
 
@@ -220,14 +229,21 @@ int b = mypair[0].second;
 
 //关于set的操作
 set&lt;int&gt; myset[1000]; //集合数组
-for(int i=0; i&lt;1000; i++) myset[i].clear(); //初始化
+for(int i=0; i&lt;1000; i++) myset[i].clear(); //清空，初始化
 myset[0].insert(100); //添加元素
 myset[0].erase(100);  //删除元素
 
-//遍历输出集合中的所有元素
 set&lt;int&gt;::iterator it; //定义前向迭代器
-for(it=myset.begin(); it!=myset.end(); it++)
+for(it=myset[0].begin(); it!=myset[0].end(); it++)//遍历输出集合中的所有元素
     cout&lt;&lt; *it &lt;&lt;endl;
+set&lt;int&gt;::reverse_iterator rit; //反向迭代器
+for(rit=myset[0].rbegin();rit!=myset[0].rend(); rit++)
+    cout&lt;&lt; *it &lt;&lt;endl;
+it = myset[0].find(5); //查找键值为5的元素
+if(it!=s.end()) //找到
+    cout &lt;&lt; *it &lt;&lt;endl;
+else //未找到
+    cout &lt;&lt; &quot;not find&quot; &lt;&lt;endl;
 
 //关于map的操作
 map&lt;string, int&gt; word_count;
@@ -270,10 +286,10 @@ int size = sta.size(); //元素个数
 //声明大顶堆
 priority_queue&lt;int, vector&lt;int&gt;, less&lt;int&gt; &gt;q;//equals to priority_queue&lt;int&gt; q1;
 for(int i=0; i&lt;10; i++)
-	q.push(i);
+    q.push(i);
 while(!q.empty()){
-	cout &lt;&lt; q.top() &lt;&lt; endl;
-	q.pop();
+    cout &lt;&lt; q.top() &lt;&lt; endl;
+    q.pop();
 }
 //声明小顶堆
 priority_queue&lt;int,vector&lt;int&gt;,greater&lt;int&gt; &gt;q; 
