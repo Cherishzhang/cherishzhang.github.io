@@ -1,178 +1,199 @@
+
 <!DOCTYPE html>
 <html lang="en-us">
 <head>
-<meta charset="utf-8">
-<meta name="generator" content="Hugo 0.15" />
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link href="http://fonts.googleapis.com/css?family=Roboto:400,700" rel="stylesheet" type="text/css">
-<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/github.min.css">
-<link rel="stylesheet" href="/css/normalize.css">
-<link rel="stylesheet" href="/css/skeleton.css">
-<link rel="stylesheet" href="/css/custom.css">
-<link rel="alternate" href="/index.xml" type="application/rss+xml" title="Learn and record">
-<script type="text/javascript"
-  src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
-<link rel="stylesheet" href="/css/solarized-dark.css">
-<script src="/js/highlight.pack.js"></script>
-<script>hljs.initHighlightingOnLoad();</script>
-<script type="text/x-mathjax-config">
-MathJax.Hub.Config({
-  tex2jax: {
-    inlineMath: [['$','$'], ['\\(','\\)']],
-    displayMath: [['$$','$$'], ['\[','\]']],
-    processEscapes: true,
-    processEnvironments: true,
-    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
-    TeX: { equationNumbers: { autoNumber: "AMS" },
-         extensions: ["AMSmath.js", "AMSsymbols.js"] }
-  }
-});
-</script>
+  
+  <meta charset="UTF-8">
+  <title>
+    决策树 | Learn and record
+  </title>
 
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Queue(function() {
-    
-    
-    
-    var all = MathJax.Hub.getAllJax(), i;
-    for(i = 0; i < all.length; i += 1) {
-        all[i].SourceElement().parentNode.className += ' has-jax';
-    }
-});
-</script>
 
-<title>Decision tree - Learn and record</title>
+  
+  <meta name="viewport" content="width=device-width,user-scalable=no,maximum-scale=1,initial-scale=1">
+
+  
+  <link rel="canonical" href="http://cherishzhang.github.io/post/decision_tree/"/>
+
+  
+  <link rel="stylesheet" href="/css/sanitize.css">
+  <link rel="stylesheet" href="/css/responsive.css">
+  <link rel="stylesheet" href="/css/highlight_monokai.css">
+  <link rel="stylesheet" href="/css/theme.css">
+  <link rel="stylesheet" href="/css/custom.css">
+
+  
+  <link href="http://cherishzhang.github.io/index.xml" rel="alternate" type="application/rss+xml" title="Learn and record" />
+  <link href="http://cherishzhang.github.io/index.xml" rel="feed" type="application/rss+xml" title="Learn and record" />
+
+  
+  
+  <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=default"></script>
 </head>
-<body>
 
+
+
+<body>
 <div class="container">
 
-	<header role="banner">
-		<div class="header-logo">
-			<a href="/"><img src="/images/logo.jpg" width="60" height="60"></a>
-		</div>
-		
-	</header>
+  
+  <header role="banner">
+    <div class="row gutters">
+      <div id="site-title" class="col span_6">
+        <h1><a href="http://cherishzhang.github.io/">Learn and record</a></h1>
+        
+      </div>
+      <div id="social" class="col span_6">
+        <ul>
+          <li><a href="http://cherishzhang.github.io/about" target="_blank">About me</a></li>
+          <li><a href="https://github.com/Cherishzhang" target="_blank">GitHub</a></li>
+          <li><a href="cherishzhang920508@gmail.com" target="_blank">Email</a></li>
+        </ul>
+      </div>
+  </header>
 
 
-	<main role="main">
-		<article itemscope itemtype="http://schema.org/BlogPosting">
-			<h1 class="entry-title" itemprop="headline">Decision tree</h1>
-			<span class="entry-meta"><time itemprop="datePublished" datetime="2016-08-08">August 08, 2016</time></span>
-			<section itemprop="entry-text">
-				
+  
+  <main id="single" role="main">
+    <div class="article-header">
+      <h1>决策树</h1>
+      <div class="meta">
+        Aug 8, 2016 &nbsp;
+        
+          #<a href="/tags/machine-learning">machine learning</a>&nbsp;
+        
+          #<a href="/tags/tree">tree</a>&nbsp;
+        
+      </div>
+    </div>
+    <article>
+      
 
 <h2 id="1-intro:998e3d52f8819c2e5f687d19cc26909b">1.Intro</h2>
 
-<p>决策树常用的算法有ID3,C4.5和CART，学习过程包括：特征选择，决策树生成和决策树剪枝。决策树的生成只考虑局部最优（贪心算法），而决策树的剪枝则考虑全局最优。决策树学习的算法是一个递归地选择最优特征，并根据该特征对训练数据进行分割，使对每个子数据集有一个最好的分类过程。</p>
+<p>决策树常用的算法有<r>ID3</r>,<r>C4.5</r>和<r>CART</r>，学习过程分为三部分：<r>特征选择</r>，<r>决策树生成</r>和<r>决策树剪枝</r>。</p>
 
-<h2 id="2-特征选择:998e3d52f8819c2e5f687d19cc26909b">2.特征选择</h2>
+<p>决策树的<r>生成</r>只考虑局部最优（<r>贪心算法</r>），而决策树的<r>剪枝</r>则考虑<r>全局最优</r>。简而言之，这是<strong>一个递归地选择最优特征，并根据该特征对训练数据进行分割，使得对每个子数据集有一个最好的分类过程</strong>。</p>
 
-<p>衡量节点数据集合的有序性，有熵，基尼指数，方差，其中熵和Gini是针对分类的，方差是针对回归的。</p>
+<h2 id="2-准则函数:998e3d52f8819c2e5f687d19cc26909b">2.准则函数</h2>
 
-<p><strong>熵</strong>(entropy)：表示随机变量不确定性的度量。X的概率分布为<code>$P(X=x_i） = p_i$</code>,则X的熵定义为：<code>$H(X) =-\sum_{i=1}^{n} p_ilogp_i$</code></p>
-
-<p><strong>条件熵</strong>(conditional entropy)：随机变量X给定条件下Y的条件概率分布的熵对x的数学期望。定义为：<code>$H(Y|X)=\sum_{i=1}^n p_i H(Y|x=x_i)$</code></p>
-
-<p><strong>互信息</strong>(mutual information)：熵与条件熵之差</p>
-
-<p>分类问题中，假设有K个类，样本点属于第k类的概率为<code>$p_k$</code>,则概率分布的<strong>Gini指数</strong>定义为：
-<code>$Gini(p) = \sum_{k=1}^K p_k*(1-p_k) = 1-\sum_{k=1}^K p_k^2$</code></p>
-
-<p>如果样本集合D根据特征A是否取某一可能值a被分割成<code>$D_1$</code>和<code>$D_2$</code>两部分，则在特征A的条件下，集合D的Gini指数定义为：
-<code>$Gini(D,A)=\frac{|D1|}{|D|} Gini(D1) + \frac{|D2|}{|D|} Gini(D2)$</code></p>
-
-<p>Gini(D)表示集合D的不确定性，Gini(D,A)表示经A分割后集合D的不确定性，基尼指数越大，样本集合的不确定性就越大（与熵类似）。</p>
-
-<p>寻找最好的分割点是通过量化分割后类的纯度来确定的，目前的三种纯度计算方式总结如下：</p>
+<p>主要用来衡量节点数据集合的有序性，有<r>熵</r>，<r>基尼指数(Gini)</r>，<r>方差</r>，其中前两种针对分类问题，而方差针对回归问题。寻找最好的分割点是通过量化<strong>分割后</strong>类的纯度来确定的，计算方式总结如下表：</p>
 
 <table>
 <thead>
 <tr>
 <th>Impurity</th>
 <th>Task</th>
-<th>formula</th>
 <th>Description</th>
+<th>formula</th>
 </tr>
 </thead>
 
 <tbody>
 <tr>
-<td>Entropy</td>
-<td>classification</td>
-<td>$-\sum_{k=1}^{K} p_klogp_k$</td>
-<td>K is the number of unique labels</td>
+<td>熵Entropy</td>
+<td>-</td>
+<td>随机变量X不确定性的度量，X的概率分布为\(P(X=x_i) = p_i\)</td>
+<td>\(H(X) =-\sum_{i=1}^{n} p_ilogp_i\)</td>
 </tr>
 
 <tr>
-<td>Gini</td>
-<td>classification</td>
-<td>$1-\sum_{k=1}^K p_k^2$</td>
-<td></td>
+<td>条件熵</td>
+<td>-</td>
+<td>已知随机变量X的条件下随机变量Y的不确定性</td>
+<td>\(H(Y|X)=\sum_{i=1}^n p_i H(Y|x=x_i)\)</td>
 </tr>
 
 <tr>
-<td>Variance</td>
-<td>regression</td>
-<td>$\frac{1}{N} \sum_{i=1}^N (y_i-\mu)^2$</td>
-<td>\(\mu\)is the mean value, N is the number of instances</td>
+<td>信息增益(互信息)</td>
+<td>分类ID3</td>
+<td>特征A对训练集D的信息增益，<strong>值越大，特征分类能力越强</strong></td>
+<td>\(g(D,A)=H(D)-H(D|A)\)</td>
+</tr>
+
+<tr>
+<td>信息增益比</td>
+<td>分类C4.5</td>
+<td>校正信息增益存在<strong>偏向选择取值较多的特征</strong>的缺点，n是特征A的取值个数</td>
+<td>\(g_R(D,A) = \frac{g(D,A)}{H_A(D)}\), \(H_A(D)= \frac{|D_i|}{|D|}*log_2(\frac{|D_i|}{|D|})\)</td>
+</tr>
+
+<tr>
+<td>基尼</td>
+<td>-</td>
+<td>假设有K类，样本点属于第i类的概率为\(p_i\)，表示集合不确定性</td>
+<td>\(Gini(D) = \sum_{i=1}^{K} p_i*(1-p_i)\)</td>
+</tr>
+
+<tr>
+<td>基尼</td>
+<td>分类</td>
+<td>经过A=a分割后集合D的不确定性</td>
+<td>\(Gini(D,A)=\frac{|D1|}{|D|} Gini(D1) + \frac{|D2|}{|D|} Gini(D2)\)</td>
+</tr>
+
+<tr>
+<td>方差</td>
+<td>回归</td>
+<td>平方误差最小，求解最优输出值</td>
+<td>\(\frac{1}{N} \sum_{i=1}^N (y_i-\mu)^2\)</td>
 </tr>
 </tbody>
 </table>
 
-<h3 id="2-1-信息增益:998e3d52f8819c2e5f687d19cc26909b">2.1 信息增益</h3>
+<h3 id="信息增益:998e3d52f8819c2e5f687d19cc26909b">信息增益</h3>
 
-<p>定义： 得知特征X的信息而使类Y的信息不确定减少的程度。信息增益大的特征有更强的分类能力。<br/>
-计算：<code>$g(D,A) = H(D)-H(D|A)$</code>；方法： 对训练数据集（或子集）D，计算其每个特征的信息增益，比较大小，选择信息增益大的特征。</p>
+<p>定义： 得知特征X的信息而使类Y的信息<r>不确定减少</r>的程度。信息增益大的特征有更强的分类能力。<br/>
+计算：\(g(D,A) = H(D)-H(D|A)\)。<br/>
+方法： 对训练数据集（或子集）D，计算其每个特征的信息增益，比较大小，选择信息增益大的特征。</p>
 
-<pre><code>输入：训练特征集D和特征A
+<pre><code>算法描述：计算特征A的信息增益
+输入：训练数据集D和特征A
 输出：特征A对训练数据集D的信息增益g(D,A)
 1.计算数据集D的经验熵H(D）
 2.计算特征A对数据集D的经验条件熵H(D|A)
-3.计算信息增益
+3.计算信息增益g(D,A)
 </code></pre>
-
-<h3 id="2-2-信息增益比:998e3d52f8819c2e5f687d19cc26909b">2.2 信息增益比</h3>
-
-<p>以信息增益作为划分训练集的特征，<strong>存在偏向选择取值较多的特征</strong>，信息增益比可以校正此问题。</p>
-
-<p>定义：其信息增益g(D,A)与训练数据集D关于特征A的值的熵H(D)之比。<br/>
-计算：<code>$g_R(D,A) = \frac{g(D,A)}{H_A(D)}$</code>. 其中<code>$H_A(D)=-\sum_{i=1}^{n} \frac{|D_i|}{|D|}log_2\frac{|D_i|}{|D|}$</code>,n是特征A的取值个数。</p>
 
 <h2 id="3-生成算法:998e3d52f8819c2e5f687d19cc26909b">3 生成算法</h2>
 
-<h3 id="3-1-id3:998e3d52f8819c2e5f687d19cc26909b">3.1 ID3</h3>
+<p>核心是<strong>在应用准则函数的基础上</strong>选择特征，递归地构建决策树。<r>具体方法</r>：从根节点开始，计算所有可能的特征的准则值，选择最优的特征作为节点的特征，由该特征的不同取值建立子节点；再对子节点递归调用以上方法，构建决策树。<strong>结束条件</strong>：直到所有特征的信息增益均很小或没有特征可选择为止。</p>
 
-<p>核心是在应用<strong>信息增益准则</strong>选择特征，递归地构建决策树。<strong>具体方法</strong>：从根节点开始，计算所有可能的特征的信息增益，选择信息增益最大的特征作为节点的特征，由该特征的不同取值建立子节点；再对子节点递归调用以上方法，构建决策树。<strong>结束条件</strong>：直到所有特征的信息增益均很小或没有特征可选择为止。</p>
+<p>ID3算法应用<r>信息增益</r>选择特征；C4.5对此进行改进，应用<r>信息增益比</r>选择特征。</p>
 
-<p>ID3算法只有树的生成，容易产生过拟合。</p>
+<p>CART(classification and regression tree)，又称分类与回归树。决策树的生成是一个递归地构建<r>二叉树</r>的过程，对回归树应用平方误差最小化准则，对分类树用Gini指数最小化准则，进行特征选择，生成二叉树。预测时，先根据样本特征判断该样本点位于哪块区域，然后用该区域内的训练样本点集的<r>众数</r> (分类) 或<r>均值</r> (回归) 作为该样本点的预测值。</p>
 
-<h3 id="3-2-c4-5:998e3d52f8819c2e5f687d19cc26909b">3.2 C4.5</h3>
-
-<p>C4.5对ID3进行了改进，应用<strong>信息增益比</strong>选择特征。</p>
-
-<h3 id="3-3-cart:998e3d52f8819c2e5f687d19cc26909b">3.3 CART</h3>
-
-<p>分类与回归树(classification and regression tree)由特征选择，树的生成及剪枝组成。决策树的生成是递归地构建二叉树的过程，对回归树用平方误差最小化准则，对分类树用Gini指数最小化准则，进行特征选择，生成二叉树。预测时，先根据样本特征判断该样本点位于哪块区域，然后用该区域内的训练样本点集的众数 (分类) 或均值 (回归) 作为该样本点的预测值。</p>
-
-<p><strong>生成算法</strong>:<br/>
-<font color="F08080">输入</font>: 训练数据集D <br/>
-<font color="F08080">输出</font>: 决策树f(x) <br/>
-(1)在平方误差最小或Gini最小的准则下选择最优切分变量j与切分点s，切分变量从可用特征集中选择，回归树中，单元<code>$R_m$</code>下的最优值是<code>$R_m$</code>上所有输入实例对应的输出<code>$y_i$</code>的均值，即切分点。分类中，切分点是该变量所有可能的取值。<br/>
+<p>算法描述：CART树生成算法<br/>
+输入: 训练数据集D，停止条件<br/>
+输出: 决策树f(x)<br/>
+(1)在平方误差最小或Gini最小的准则下选择<r>最优切分变量j与切分点s</r>，切分变量从可用特征集中选择。
+回归树中，单元\(R_m\)下的最优值是\(R_m\)上所有输入实例对应的输出\(y_i\)的均值，即切分点。分类中，切分点是该变量所有可能的取值。<br/>
 (2)用选定的对(j,s)划分区域并决定相应的输出值<br/>
 (3)继续对子区域调用(1),(2),直至满足停止条件<br/>
-(4)将输入空间划分为M个区域<code>$R_1,R_2,...,R_M$</code>，生成决策树：<code>$f(x)=\sum_{m=1}^{M}c_mI(x \in R_m)$</code></p>
+(4)将输入空间划分为M个区域\(R_1\),\(R_2\),&hellip;,\(R_M\).生成如下决策树：<br/></p>
 
-<p>算法的<strong>停止条件</strong>是节点中的样本个数小于预定阈值，或样本集的基尼指数小于预订阈值（样本基本属于同一类），或没有更多特征。</p>
+<p>$$f(x) = \sum_{m=1}^{M} c_m*I(x \in R_m)$$</p>
+
+<p>算法的<r>停止条件</r>是节点中的样本个数小于预定阈值，或样本集的基尼指数小于预订阈值（样本基本属于同一类），或没有更多特征。</p>
 
 <h2 id="4-剪枝过程-pruning:998e3d52f8819c2e5f687d19cc26909b">4 剪枝过程(pruning)</h2>
 
 <p>将已生成的树进行简化的过程，通过极小化决策树整体的损失函数（loss function）来实现。 分为前向剪枝和后向剪枝。</p>
 
-<h2 id="5-mllib实现:998e3d52f8819c2e5f687d19cc26909b">5.MLlib实现</h2>
+<h2 id="5-单机实现-参考scikit-learn:998e3d52f8819c2e5f687d19cc26909b">5 单机实现(参考scikit-learn)</h2>
 
-<h3 id="5-1-bin和split:998e3d52f8819c2e5f687d19cc26909b">5.1 bin和split</h3>
+<p>实现接口分为DecisionTreeClassifier和DecisionTreeRegressor</p>
+
+<p>关于准则函数：Criterion, ClassificationCriterion(Entropy, Gini), RegressionCriterion(MSE(FriedmanMSE), MAE)</p>
+
+<p>关于树的生成：</p>
+
+<h3 id="使用技巧:998e3d52f8819c2e5f687d19cc26909b">使用技巧</h3>
+
+<h2 id="6-mllib实现:998e3d52f8819c2e5f687d19cc26909b">6.MLlib实现</h2>
+
+<h3 id="6-1-bin和split:998e3d52f8819c2e5f687d19cc26909b">6.1 bin和split</h3>
 
 <p>对于离散的feature,如果有m个值，最多有\(2^{m-1}-1\)个划分，如果是有序的，则有m-1个划分；对于连续的feature，进行范围划分。其中划分的点是split，而划分的区间是bin。训练时，两个重要的参数maxDepth（树的最大高度），maxBins（每个特征分裂时，最大划分桶数量）。</p>
 
@@ -187,7 +208,7 @@ MathJax.Hub.Config({
 (3)minInstancesPerNode，需要保证节点分割出的左右子节点的最少的样本数量达到这个值
 </code></pre>
 
-<h3 id="5-2-关键优化点:998e3d52f8819c2e5f687d19cc26909b">5.2 关键优化点：</h3>
+<h3 id="6-2-关键优化点:998e3d52f8819c2e5f687d19cc26909b">6.2 关键优化点：</h3>
 
 <ol>
 <li><p>查找最优split，是树的level级别的并行，处于同一层次的节点，查找是并行的。查找次数的时间复杂度为O(L）,其中L是树的层数。</p></li>
@@ -197,7 +218,7 @@ MathJax.Hub.Config({
 <li><p>统计信息在bin中计算，节省开销。</p></li>
 </ol>
 
-<h3 id="5-3-源码分析:998e3d52f8819c2e5f687d19cc26909b">5.3 源码分析</h3>
+<h3 id="6-3-源码分析:998e3d52f8819c2e5f687d19cc26909b">6.3 源码分析</h3>
 
 <p>类：CARTPoint(样本点),TreeNode(树结点)</p>
 
@@ -211,30 +232,56 @@ MathJax.Hub.Config({
 
 <p>每个待分裂节点，都根据其父节点而初始化，全部特征，每个特征对应的分箱下的n个状态，初始化为0.0</p>
 
-<h3 id="6-scikit-learn:998e3d52f8819c2e5f687d19cc26909b">6.Scikit-learn</h3>
 
-			</section>
-		</article>
-	</main>
+      
+      
+    </article>
+    
+ <aside><div id="disqus_thread"></div></aside>
+
+<script type="text/javascript">
+     
+    var disqus_shortname = 'http-cherishzhang-github-io';
+
+     
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
 
 
-	<footer role="contentinfo">
-		<div class="hr"></div>
-		<div class="footer-link">
-			<a href="mailto:cherishzhang920508@gmail.com" target="_blank">Email</a></span>
-			
-			
-			<a href="https://github.com/Cherishzhang" target="_blank">GitHub</a></span>
-		</div>
-		<div class="copyright">Copyright &copy; </div>
-	</footer>
+
+  </main>
+
+  <nav class="pagination-single">
+    
+      <span class="previous">&larr; <a href="http://cherishzhang.github.io/post/word2vec/" rel="prev">word2vec模型和源码解析</a></span>
+    
+    
+      <span class="next"><a href="http://cherishzhang.github.io/post/spark/" rel="next">Spark开发学习</a> &rarr;</span>
+    
+  </nav>
+
+
+  
+  <footer role="contentinfo">
+    <div style="text-align:center;">
+      <img src="/images/avatar.jpg" width="64" height="64"><br>
+      
+    </div>
+  </footer>
+
 
 </div>
 
-
-
-<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/highlight.min.js"></script>
+<script src="/js/highlight.pack.js"></script>
 <script>hljs.initHighlightingOnLoad();</script>
+
+
 
 </body>
 </html>
+

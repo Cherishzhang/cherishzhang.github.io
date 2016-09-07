@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Rdd on Learn and record</title>
+    <link>http://cherishzhang.github.io/tags/rdd/</link>
+    <description>Recent content in Rdd on Learn and record</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sat, 20 Aug 2016 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://cherishzhang.github.io/tags/rdd/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Spark开发学习</title>
+      <link>http://cherishzhang.github.io/post/spark/</link>
+      <pubDate>Sat, 20 Aug 2016 00:00:00 +0000</pubDate>
+      
+      <guid>http://cherishzhang.github.io/post/spark/</guid>
+      <description>
+
+&lt;h3 id=&#34;rdd:912d68735e1dc303baa4d59608c12d96&#34;&gt;RDD&lt;/h3&gt;
+
+&lt;p&gt;RDD，全称为Resilient Distributed Datasets（弹性分布式数据集）。它是一个&lt;r&gt;容错&lt;/r&gt;且&lt;r&gt;并行&lt;/r&gt;的数据结构，可以让用户&lt;r&gt;显式&lt;/r&gt;地将数据存储到磁盘和内存中，并能控制数据的&lt;r&gt;分区&lt;/r&gt;。它只能基于在稳定物理存储中的数据集和其他已有的RDD上执行确定性操作(transformation)来创建。&lt;/p&gt;
+
+&lt;p&gt;举个例子：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;//用普通数组[1,2,...,9]创建RDD，数据分别在3个分区中
+val rdd1 = sc.parallelize(1 to 9, 3)
+//读取文件创建RDD，每一行就是RDD的一个元素
+val rdd2 = sc.textFile(&amp;quot;README.md&amp;quot;)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;由此可见，RDD&lt;r&gt;本质&lt;/r&gt;是一个&lt;r&gt;只读的分区记录集合&lt;/r&gt;。一个RDD包含多个分区，每个分区是一个dataset片段。&lt;/p&gt;
+
+&lt;p&gt;相关操作函数如下表：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;val rdd1 = sc.parallelize(1 to 9, 3)
+val rdd2 = sc.parallelize(list(&amp;quot;dog&amp;quot;,&amp;quot;tiger&amp;quot;,&amp;quot;lion&amp;quot;,&amp;quot;cat&amp;quot;,&amp;quot;parther&amp;quot;,&amp;quot;eagle&amp;quot;),2)
+val rdd3 = sc.parallelize(List(1,2),(3,4),(3,6)))
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;函数名&lt;/th&gt;
+&lt;th&gt;描述&lt;/th&gt;
+&lt;th align=&#34;center&#34;&gt;输入与输出&lt;/th&gt;
+&lt;th&gt;Code&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;map&lt;/td&gt;
+&lt;td&gt;对RDD中的每个元素执行一个指定的函数来产生一个新的RDD&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;一对一&lt;/td&gt;
+&lt;td&gt;val a = rdd1.map(x =&amp;gt; x*2)&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;mapValues&lt;/td&gt;
+&lt;td&gt;对象是元素为kv对的RDD，key保持不变，对value进行映射&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;一对一&lt;/td&gt;
+&lt;td&gt;val b = rdd2.map(x =&amp;gt; (x.length, x)) &lt;br\&gt; b.mapValues(&amp;ldquo;x&amp;rdquo; + _ + &amp;ldquo;x&amp;rdquo;).collect&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;flatMap&lt;/td&gt;
+&lt;td&gt;扁平化map后的结果&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;一对一&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;reduce&lt;/td&gt;
+&lt;td&gt;将RDD中元素两两传递给输入函数，产生一个新值，新产生的值与RDD中的下一个元素再被传递给输入函数，&lt;strong&gt;直到最后只有一个值为止&lt;/strong&gt;。&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;多对一&lt;/td&gt;
+&lt;td&gt;rdd1.reduce((x,y) =&amp;gt; x+y) //结果为45&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;reduceByKey&lt;/td&gt;
+&lt;td&gt;将key相同的元素的value进行reduce，组成一个新的KV对&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;多对一&lt;/td&gt;
+&lt;td&gt;rdd3.reduceByKey((x,y) =&amp;gt; x+y).collect //结果为Array((1,2),(3,10))&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;filter&lt;/td&gt;
+&lt;td&gt;对每个元素应用f函数，只保留返回值为true的元素&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;子集型&lt;/td&gt;
+&lt;td&gt;val d = rdd3.filter{ case(x,y) =&amp;gt; equal(x,y) }.count() //结果为0&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;sample&lt;/td&gt;
+&lt;td&gt;对元素采样，获取子集&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;子集型&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;cache&lt;/td&gt;
+&lt;td&gt;将元素从磁盘缓存到内存&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;cache型&lt;/td&gt;
+&lt;td&gt;rdd1.cache()&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;unpersist&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;通常来讲，针对数据处理有几种常见模型，包括：&lt;r&gt;Iterative Algorithms&lt;/r&gt;,&lt;r&gt;Relational Queries&lt;/r&gt;,&lt;r&gt;MapReduce&lt;/r&gt;,&lt;r&gt;Stream Processing&lt;/r&gt;。例如Hadoop MapReduce采用了MapReduces模型，Storm则采用了Stream Processing模型。RDD混合了这四种模型，使得Spark可以应用于各种大数据处理场景。&lt;/p&gt;
+
+&lt;p&gt;Spark将依赖分为narrow与wide。如果RDD的每个分区最多只能被一个Child RDD的一个分区使用，则称之为narrow dependency；若多个Child RDD分区都可以依赖，则称之为wide dependency。不同的操作依据其特性，可能会产生不同的依赖。例如map操作会产生narrow dependency，而join操作则产生wide dependency。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://ocwpxekrq.bkt.clouddn.com/rdd.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;上图说明了narrow和wide之间的区别。 narrow dependencies可以支持在同一个cluster node上以管道形式执行多条命令，而且它的失败恢复更有效，只需要重新计算丢失的parent partition即可；wide dependencies需要所有的父分区都是可用的，牵涉到RDD各级的多个Parent Partitions。&lt;/p&gt;
+
+&lt;h3 id=&#34;共享变量:912d68735e1dc303baa4d59608c12d96&#34;&gt;共享变量&lt;/h3&gt;
+
+&lt;p&gt;&lt;r&gt;broadcast&lt;/r&gt;变量：只读的共享变量 每个节点上都有一个拷贝。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;val broadcastVar = sc.broadcast(&amp;quot;string test&amp;quot;) //broadcast variable is readonly
+val v = broadcastVar.value
+println(v)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;r&gt;accumulator&lt;/r&gt;变量：做累加器用&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;val accum = sc.accumulator(0, &amp;quot;My Accumulator&amp;quot;) //value and name
+sc.parallelize(1 to 1000000).foreach(x =&amp;gt; accum+= 1)
+println(accum.name + &amp;quot;:&amp;quot; + accum.value)
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

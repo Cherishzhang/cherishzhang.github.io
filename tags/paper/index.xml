@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Paper on Learn and record</title>
+    <link>http://cherishzhang.github.io/tags/paper/</link>
+    <description>Recent content in Paper on Learn and record</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 16 Mar 2016 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://cherishzhang.github.io/tags/paper/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Data Quality in Recommendation</title>
+      <link>http://cherishzhang.github.io/post/paper/Data%20Quality%20in%20Recommendation/</link>
+      <pubDate>Wed, 16 Mar 2016 00:00:00 +0000</pubDate>
+      
+      <guid>http://cherishzhang.github.io/post/paper/Data%20Quality%20in%20Recommendation/</guid>
+      <description>
+
+&lt;p&gt;论文名称：&lt;a href=&#34;http://dl.acm.org/citation.cfm?id=2799670&amp;amp;preflayout=tabs&#34;&gt;Data Quality Matters in Recommender Systems, RecSys &amp;lsquo;15&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;摘要:c7e7f190dc4ad9c3cea8a960f18951d1&#34;&gt;摘要&lt;/h2&gt;
+
+&lt;p&gt;&lt;r&gt;数据质量好坏&lt;/r&gt;在信息系统中是一个很重要的因素，但在推荐系统中考虑得却不是很多。比较常用的方法是ad-hoc式的清洗，如，去除数据集中的噪声和不可靠的记录。显露出的缺点是,没有结合数据集本身的特性。&lt;/p&gt;
+
+&lt;p&gt;论文中的主要贡献是考虑推荐系统中两个核心的数据质量问题：&lt;strong&gt;&lt;r&gt;sparsity&lt;/r&gt;&lt;/strong&gt; 和 &lt;strong&gt;&lt;r&gt;redundancy&lt;/r&gt;&lt;/strong&gt;，并设计了数据集相关的&lt;r&gt;阈值模型&lt;/r&gt;和&lt;r&gt;采样等级模型&lt;/r&gt;，然后在一系列的公开数据集上做了验证试验。&lt;/p&gt;
+
+&lt;h2 id=&#34;具体方法:c7e7f190dc4ad9c3cea8a960f18951d1&#34;&gt;具体方法&lt;/h2&gt;
+
+&lt;h3 id=&#34;关于数据的稀疏性:c7e7f190dc4ad9c3cea8a960f18951d1&#34;&gt;关于数据的稀疏性&lt;/h3&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;阈值模型(Threshold model)&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;很多基于分数的推荐系统数据集中包含一部分&lt;strong&gt;冷启动&lt;/strong&gt;的用户和物品。一般的数据清洗操会去除这些用户和物品的打分信息。现实中的问题是，怎样得到最优的清洗阈值。最简单的暴力方法(brute-force)是评估所有可能的组合，但时间空间复杂度高，在实际中不可行。&lt;/p&gt;
+
+&lt;p&gt;首先，明确目标:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;The aim is to develop a heuristic method that predicts the optimal thresholds for a given user-item rating matrix, without building the model.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;然后，采用了一些合理的假设，如假设要预测的物品阈值是与&lt;strong&gt;物品向量&lt;/strong&gt;的平均长度&lt;code&gt;$\overline{r}_i$&lt;/code&gt;相关，在打分矩阵中，即为平均每个物品被打分的次数。由于推荐数据集中，只有一小部分的流行商品会被打分多次，大部分商品被打分的次数相对很少，这引入了模型的另外一个特征，即物品向量长度的&lt;strong&gt;power-law&lt;/strong&gt;分布,令H为物品向量长度的分布函数，拟合函数\(H={Ax}^{(-m)}\),其中x是单个物品向量的长度，m是个正数。最终可以得到数据集对应的m参数值。m越大，长尾分布中的尾部越向下，反映到数据集上，就是更加少的物品被多次打分过，也就是说，m越大，数据集本身越稀疏。&lt;/p&gt;
+
+&lt;p&gt;得到以上两个特征因素，接下来就是构建阈值模型，得到公式: \({IT}_d = \gamma*\frac{log(\overline{r}_i)}{m^2}\)&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;评价方法&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;总共24个数据集，包括10个开放数据集，如Movielens, Million Songs, Flixster, Moviepilot, Filmtipset, Yelp, Yahoo! Music(broken down into albums, artists, and tracks), and BookCrossing。以及14个从公司或站点获取的专业数据集(proprietary)。&lt;/p&gt;
+
+&lt;p&gt;每个数据集9-1划分成训练集和测试集，使用*Precision@K*作为衡量测试集的标准(K为测试集的总记录数)，10折交叉验证，平均准确率作为最后的得分。&lt;/p&gt;
+
+&lt;p&gt;实验过程：
+- 首先，寻找每个数据集d的最优IT值。具体对于某个IT值，过滤掉低于IT的item，对剩余数据进行矩阵分解(Matrix Factorization),建立推荐模型，并通过测试集评测模型的准确率。不断迭代，增长IT，寻找使得测试集准确率最高的IT作为最优阈值\({IT}^{opt}_d\)，对应的准确率为\({P}^{opt}_d\)。
+- 接下来，对24个数据集采用leave-one-out交叉验证。在23个数据集上训练阈值模型，然后预测剩余数据集d的阈值\({IT}^{pred}_d\),并在过滤后的数据上训练推荐模型，计算准确率\(P^{pred}_d\)。&lt;/p&gt;
+
+&lt;p&gt;两个评测指标：&lt;/p&gt;
+
+&lt;p&gt;$$ NTE_d = |{IT}^{opt}_d - {IT}^{pred}_d|/{IT}^{opt}_d $$&lt;/p&gt;
+
+&lt;p&gt;$$ AR_d = P^{pred}_d/P^{opt}_d $$&lt;/p&gt;
+
+&lt;p&gt;注：&lt;strong&gt;IT&lt;/strong&gt;(item threshold), &lt;strong&gt;AR&lt;/strong&gt;(accuracy ratio), &lt;strong&gt;NTE&lt;/strong&gt;(normalized threshold error)&lt;/p&gt;
+
+&lt;p&gt;通过计算，\({NTE}_d\)和\({AR}_d\)之间的相关度为-0.54。这表明IT的误差越小，推荐模型的准确率越高。&lt;/p&gt;
+
+&lt;h4 id=&#34;关于数据的冗余性:c7e7f190dc4ad9c3cea8a960f18951d1&#34;&gt;&lt;strong&gt;关于数据的冗余性&lt;/strong&gt;&lt;/h4&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;模型&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;数据集可以通过随机采样，建立模型，使得尽可能得与在全部数据上建立模型的结果相似。这对于实际中的大规模数据是有效的。&lt;/p&gt;
+
+&lt;p&gt;模型目标：
+   - The aim is to pick the &lt;strong&gt;loweset sampling rate&lt;/strong&gt; that will still result in the recommendation model as close as possible to the model that would have been built using the complete data.&lt;/p&gt;
+
+&lt;p&gt;与阈值模型不同的是，在采样率的取值上没有最优。因为在全体数据上构建推荐模型总是最优的。&lt;/p&gt;
+
+&lt;p&gt;定义\(SR\)为采样数据的推荐结果与全体数据的推荐结果相似度不低于\(\Delta\)时的最低采样率。&lt;/p&gt;
+
+&lt;p&gt;定义\(U_d, I_d, R_d\)为数据集d中的用户数量，商品数量，和打分项个数，给定采样率\(SR\),从所有用户中随机选取\(SR*U_d\)个用户，在采样的数据集上建立推荐模型，对一个固定的测试集产生预测结果。比较与全部数据预测的结果差异。&lt;/p&gt;
+
+&lt;p&gt;以对用户采样举例，假设数据的冗余性与三个因素相关a.用户数 b.打分矩阵的稀疏性 c.V-structure，得到公式：&lt;/p&gt;
+
+&lt;p&gt;$${SR}_d = tanh(\frac{1}{{V-structure}_d * \sqrt{U_d} * \frac{R_d}{I_d * U_d}})$$&lt;/p&gt;
+
+&lt;p&gt;其中V-structure的定义为平均相似度之比，分子中的每对用户至少有一个打分项目相同，分母中的每对用户为全体用户的所有组合可能。&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;评价&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;采用19个专业数据集，9-1比例分训练集和测试集，10折交叉验证。实验主要验证了模型的合理性。&lt;/p&gt;
+
+&lt;h3 id=&#34;我的思考:c7e7f190dc4ad9c3cea8a960f18951d1&#34;&gt;&lt;strong&gt;我的思考&lt;/strong&gt;&lt;/h3&gt;
+
+&lt;ol&gt;
+&lt;li&gt;这篇论文提出了两个模型公式，并完成了实验验证。优点是模型公式与数据集本身的特性相关，不干涉推荐系统的建模过程。&lt;/li&gt;
+&lt;li&gt;遗留下的问题：数据的稀疏性和冗余性只针对MF推荐模型，还可以扩展到与其他推荐模型相结合。&lt;/li&gt;
+&lt;li&gt;考虑其他的评测指标，如覆盖率和多样性；同时，模型中还可以结合物品的内容属性和用户的位置属性。&lt;/li&gt;
+&lt;/ol&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

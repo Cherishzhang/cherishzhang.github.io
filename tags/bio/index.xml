@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Bio on Learn and record</title>
+    <link>http://cherishzhang.github.io/tags/bio/</link>
+    <description>Recent content in Bio on Learn and record</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 18 Aug 2015 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://cherishzhang.github.io/tags/bio/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>About Me</title>
+      <link>http://cherishzhang.github.io/about/</link>
+      <pubDate>Tue, 18 Aug 2015 00:00:00 +0000</pubDate>
+      
+      <guid>http://cherishzhang.github.io/about/</guid>
+      <description>
+
+&lt;h4 id=&#34;here-is-my-blog-site-a-record-and-learning-place:6083a88ee3411b0d17ce02d738f69d47&#34;&gt;Here is my blog site, a record and learning place.&lt;/h4&gt;
+
+&lt;h4 id=&#34;education:6083a88ee3411b0d17ce02d738f69d47&#34;&gt;Education&lt;/h4&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;2014 - Master of Computer Science, Institute of Computing Technology, Chinese Academy of Sciences&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;2010 - Bachelor of Network Engineering , South China University of Technology&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&#34;publications:6083a88ee3411b0d17ce02d738f69d47&#34;&gt;Publications&lt;/h4&gt;
+
+&lt;ul&gt;
+&lt;li&gt;An ensemble method of job recommender systems&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

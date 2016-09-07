@@ -1,0 +1,519 @@
+
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+
+  
+  <meta charset="UTF-8">
+  <title>
+    word2vec模型和源码解析 | Learn and record
+  </title>
+
+
+  
+  <meta name="viewport" content="width=device-width,user-scalable=no,maximum-scale=1,initial-scale=1">
+
+  
+  <link rel="canonical" href="http://cherishzhang.github.io/post/word2vec/"/>
+
+  
+  <link rel="stylesheet" href="/css/sanitize.css">
+  <link rel="stylesheet" href="/css/responsive.css">
+  <link rel="stylesheet" href="/css/highlight_monokai.css">
+  <link rel="stylesheet" href="/css/theme.css">
+  <link rel="stylesheet" href="/css/custom.css">
+
+  
+  <link href="http://cherishzhang.github.io/index.xml" rel="alternate" type="application/rss+xml" title="Learn and record" />
+  <link href="http://cherishzhang.github.io/index.xml" rel="feed" type="application/rss+xml" title="Learn and record" />
+
+  
+  
+  <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=default"></script>
+</head>
+
+
+
+<body>
+<div class="container">
+
+  
+  <header role="banner">
+    <div class="row gutters">
+      <div id="site-title" class="col span_6">
+        <h1><a href="http://cherishzhang.github.io/">Learn and record</a></h1>
+        
+      </div>
+      <div id="social" class="col span_6">
+        <ul>
+          <li><a href="http://cherishzhang.github.io/about" target="_blank">About me</a></li>
+          <li><a href="https://github.com/Cherishzhang" target="_blank">GitHub</a></li>
+          <li><a href="cherishzhang920508@gmail.com" target="_blank">Email</a></li>
+        </ul>
+      </div>
+  </header>
+
+
+  
+  <main id="single" role="main">
+    <div class="article-header">
+      <h1>word2vec模型和源码解析</h1>
+      <div class="meta">
+        Aug 5, 2016 &nbsp;
+        
+          #<a href="/tags/nlp">nlp</a>&nbsp;
+        
+          #<a href="/tags/network">network</a>&nbsp;
+        
+      </div>
+    </div>
+    <article>
+      
+
+<h2 id="词向量:d45865320239d7818255e82b856775aa">词向量</h2>
+
+<p>一种简单直观的词表示方法是<r>One-hot</r>编码，用N位对N个词编码，每个词对应的N维向量中，只有一维为0。这种方式的缺陷是<r>词汇鸿沟</r>，即词与词之间相互孤立，忽略了它们之间的联系。而word2vec中的词向量是一种distributed representation，它的特点是利用距离刻画词之间的相似性。</p>
+
+<h2 id="统计语言模型:d45865320239d7818255e82b856775aa">统计语言模型</h2>
+
+<p>统计语言模型是用来计算一个句子的概率的<r>概率模型</r>，经典的有HAL,LSA,COALS等。通常它基于一个语料库来构建。</p>
+
+<h3 id="句子的概率:d45865320239d7818255e82b856775aa">句子的概率</h3>
+
+<p>给定一个由T个词\(w_1,w_2,&hellip;,w_T\)按顺序构成的句子，根据Bayes，计算该句子的概率p(W)</p>
+
+<p>$$p(W) = p(w_1^T) = p(w_1,w_2,&hellip;,w_T) = p(w_1)*p(w_2|w_1)*p(w_3|(w_1^2))&hellip;p(w_T|(w_1^{T-1}))$$</p>
+
+<p>其中等式中的各个因子（条件概率）就是语言模型的<strong>参数</strong>，常用的语言模型都是在近似求p(W)。如果给定一个词典大小为N的语料库，考虑长度为T的任意句子，理论上有\(N^T\)种可能组合，而每个句子需要计算T个参数，总共需要计算\(T*N^T\)个参数。无论是计算或保存，都需要很大开销。</p>
+
+<h3 id="n-gram模型:d45865320239d7818255e82b856775aa">n-gram模型</h3>
+
+<p>做了一个简化的假定，即一个词出现的概率<strong>只与</strong>它前面的n-1个词相关。实际中最多采用n=3的三元模型。</p>
+
+<p>$$(p(w_k|w^{k-1}_1) = p(w_k|w^{k-1}_{k-n+1}) = \frac{count(w_{k-n+1}^k)}{count(w_{k-n+1}^{k-1})}$$</p>
+
+<p>如果\(count(w_{k-n+1}^k)\) = \(count(w_{k-n+1}^{k-1})\) 或者 \(count(w_{k-n+1}^{k-1}) = 0\)，则需要做平滑处理。</p>
+
+<h3 id="最大似然:d45865320239d7818255e82b856775aa">最大似然</h3>
+
+<p>对句子模型的另一种转化是利用最大似然，构造一个目标函数，优化目标求得最优参数，利用最优参数预测句子概率。目标函数为: $$\prod_{w \in C} p(w|Context(w))$$</p>
+
+<p>其中C表示语料集，Context(w)表示词w的上下文，即w周边词的集合。实际中采用最大对数似然，即\(\sum_{w \in C} log p(w|Context(w))\)最大化。增加log是为了将乘法运算转换为加法运算(便于求导的常用方法)。问题关键转化为F函数的构造。</p>
+
+<p>$$p(w|Context(w)) = F(w,Context(w),\theta)$$</p>
+
+<h2 id="神经概率语言模型:d45865320239d7818255e82b856775aa">神经概率语言模型</h2>
+
+<p>Bengio(03) - 《A Neural Probabilistic Language Model》</p>
+
+<p>神经网络包含四层：<r>输入层</r>，<r>投影层</r>，<r>隐藏层</r>和<r>输出层</r>。W,U为权值矩阵，p,q为偏置向量。</p>
+
+<p><img src="http://ocwpxekrq.bkt.clouddn.com/word2vec-neural.png" alt="" /></p>
+
+<p>取二元对(Context(w),w)作为一个训练样本，其中Context(w)取前面n-1个词，每个词\(v_i\)用一个m维向量表示。投影层是一个(n-1)*m长度的向量，输出层的规模为词库中词表的长度D。</p>
+
+<p>选用双曲正切函数作为隐藏层的激活函数，计算过程为：</p>
+
+<p>$$z_w = tanh(Wx_w + p), y_w = Uz_w + q$$</p>
+
+<p>输出为一个长度为D的向量\(y_w = (y_{w,1}, y_{w,2},&hellip;,y_{w,D})^T\)，通过softmax归一化，每个分量表示上下文为Context(w)时下一词为词典第i个词的概率。</p>
+
+<p>待确定的参数\(\theta\)包括：词向量和填充向量，神经网络参数W,U,p,q。其中大部分<strong>计算集中</strong>在隐藏层和输出层之间的矩阵向量运算和softmax归一化上。</p>
+
+<h2 id="word2vec核心:d45865320239d7818255e82b856775aa">Word2vec核心</h2>
+
+<p>word2vec中用到了两个重要模型: <r>CBOW</r>和<r>Skip-gram</r>，对于这两个模型，分别都给出了基于<r>Hierarchical Softmax</r>和<r>Negative Sampling</r>两套框架的实现。</p>
+
+<p>CBOW和Skip-gram包括三层：<r>输入层</r>，<r>投影层</r>，<r>输出层</r>。前者是已知词的上下文预测当前词，后者是通过当前词预测上下文。</p>
+
+<h3 id="1-cbow:d45865320239d7818255e82b856775aa">1. CBOW</h3>
+
+<p>CBOW = Continuous Bag-of-Words, 目标函数为：</p>
+
+<p>$$\sum_{w \in c} log p(w|Context(w)) = \sum_{t=1}^T log p(w_t|\tau(w_{t-k},w_{t-k-1},&hellip;,w_{t+k-1},w_{t+k}))$$</p>
+
+<p>其中T表示整个词典的大小，模型的目标是<r>最大化</r>这个目标函数值。\(w_t\)表示词典中的一个词，即通过和\(w_t\)相邻的窗口大小为k的词来预测\(w_t\)出现的概率。其中\(\tau(w_1,w_2,&hellip;,w_k)\)函数表示以\(w_i(i&lt;=i&lt;=k)\)为参数进行某种运算。在Word2vec里，这种运算是向量加和运算。即<r>把窗口相邻的所有词的向量加和</r>。</p>
+
+<h4 id="hierarchical-softmax:d45865320239d7818255e82b856775aa">Hierarchical Softmax</h4>
+
+<p><img src="http://ocwpxekrq.bkt.clouddn.com/word2vec-hs-cbow.png" alt="" /></p>
+
+<p>相比于之前的神经概率语言模型，主要有<r>三处改动</r>：<strong>去掉隐藏层；首尾拼接改为累加求和；输出为树结构。</strong></p>
+
+<p>================================================================</p>
+
+<p>关于模型的<r>推导</r>:</p>
+
+<p><strong>结点的带权路径长度</strong>: 从根结点到该结点的路径长度乘以该结点的权值</p>
+
+<p><strong>树的带权路径长度</strong>: 所有叶结点的带权路径长度之和</p>
+
+<p>Huffman树是在给定n个叶子结点和其对应权值的前提下，构造一棵二叉树，使该树的带权路径长度最小。已知语料库中各词的词频，可以构建一棵二叉树，每个词作为树的叶子节点，并保证词频越大的词离根节点越近。每个叶子对应的<r>huffman编码</r>就是该词的编码。约定左子结点编码为0，右子结点编码为1。</p>
+
+<p>此外为每个非叶子结点设置一个<r>辅助向量</r>\(\theta\)。</p>
+
+<p>对于词w，从根结点到该叶结点的路径中，假设有\(l^w\)层，经历了\(l^w-1\)次二分类，则条件概率\( p(w|Context(w)) = \prod\limits_{j=2}^{l^w} p(d_j^w|X_w,\theta_{j-1}^w) \), \(d_j^w\)表示第j个结点对应的编码，\(\theta_j^w\)表示第j个结点对应的辅助向量。</p>
+
+<p>第一步，<strong>目标函数对数化</strong>:
+$$F = \sum_{w \in C} log p(w|Context(w)) = \sum_{w \in C} log \prod\limits_{j=2}^{l^w} \sigma(\theta_{j-1}^w X_w)^{1-{d_j^w}} (1-\sigma(\theta_{j-1}^w X_w))^{d_j^w} $$</p>
+
+<p>第二步，<strong>取内部项F(w,u)</strong>:</p>
+
+<p>$$ F(w,u) =  (1-{d_j^w}) log(\sigma(\theta_{j-1}^w)) + {d_j^w} log(1-\sigma(\theta_{j-1}^w X_w))$$</p>
+
+<p>第三步，<strong>随机梯度上升</strong>:</p>
+
+<p>\(\theta_{j-1}^w\)的更新公式为：</p>
+
+<p>$$ \frac{\partial F(w,u)}{\partial \theta_{j-1}^w} = (1 - d_j^w - \sigma(X_w^T*\theta_{j-1}^w)) X_w$$</p>
+
+<p>$$ \theta_{j-1}^w := \theta_{j-1}^w + \eta (1 - d_j^w - \sigma(X_w^T*\theta_{j-1}^w)) X_w $$</p>
+
+<p>\(X_w\)和\(\theta_{j-1}^w\)具有对称性，更新公式类似，这里注意更新的\(v(\tilde{w})\)而非加和后的\(X_w\)：</p>
+
+<p>$$v(\tilde{w}) := v(\tilde{w}) +  \eta \sum\limits_{j=2}^{l^w}(1 - d_j^w - \sigma(X_w^T*\theta_{j-1}^w)) \theta_{j-1}^w, \tilde{w} \in Context(w)$$</p>
+
+<p>================================================================</p>
+
+<h4 id="negative-sampling:d45865320239d7818255e82b856775aa">Negative Sampling</h4>
+
+<p>huffman树中从根节点到叶子节点路径上的各个中间结点，分为正负两类，构造好huffman树后，每个词w对应的采样样本（中间结点）也就确定。训练的目标是最大化似然函数值。由此衍生出，用简单的<r>随机负采样</r>代替复杂的huffman树。已知词w的上下文，预测词w，可将w看作正样本，负样本的抽样策略为<r>带权采样</r>，即被选中的概率与词频成正比。模型训练的<r>目标</r>是<strong>最大化正样本的概率同时最小化负样本的概率</strong>。</p>
+
+<p>设NEG(w)是关于词w的一个负样本集，对已一个给定的<r>二元对</r>(Context(w),w),<r>优化目标</r>是</p>
+
+<p>$$ g(w) = \prod\limits_{u \in w \cup NEG(w)} p(u|Context(w))$$</p>
+
+<p>=================================================================</p>
+
+<p>关于模型的<r>推导</r>:</p>
+
+<p>为每个词设置一个<r>辅助向量\(\theta^u\)</r>，\(X_w^T\)表示为Context(w)中的k个词进行加和后的向量，\(L^w(u)\)表示词u的样本标签，正样本取1，反之取0。</p>
+
+<p>第一步，<strong>转换目标函数</strong>:</p>
+
+<p>$$g(w) = \prod\limits_{u \in w \cup NEG(w)} [\sigma(\theta^u X_w^T)]^{L^w(u)} [1 - \sigma(\theta^u X_w^T)] ^ {(1-L^w(u))}$$</p>
+
+<p>因为正样本只有一个，故可简化为\(g(w) =\sigma(\theta^u X_w^T) \prod\limits_{u \cup NEG(w)} [1 - \sigma(\theta^u X_w^T)] ^ {1-L^w(u)}\)</p>
+
+<p>第二步，<strong>考虑整个语料库</strong>:</p>
+
+<p>$$F = log G = log \prod\limits_{w \in C} g(w)$$
+$$ = \sum\limits_{w \in C} \sum\limits_{u \in w \cup NEG(w)} {L^w(u)}log[\sigma(\theta^u X_w^T)] + (1-L^w(u))log[1 - \sigma(\theta^u X_w^T)]$$
+$$ = \sum\limits_{w \in C} \bigg (log(\sigma(\theta^u X_w^T)) + \sum\limits_{u \in NEG(w)} log(\sigma(-\theta^u X_w^T))\bigg)$$</p>
+
+<p>第三步，<strong>随机梯度上升</strong>:</p>
+
+<p>$$ F(w,u) = L^w(u) log[\sigma(\theta^u X_w^T)] + (1-L^w(u)) log[1 - \sigma(\theta^u X_w^T)] $$</p>
+
+<p>\(\theta^u\)的<r>更新公式</r>：</p>
+
+<p>$$\frac{\partial F(w,u)}{\partial \theta^u}  = L^w(u) (1 -\sigma(\theta^u X_w^T)) X_w - (1-L^w(u)) \sigma(\theta^u X_w^T) X_w $$
+$$  =  L^w(u) X_w - \sigma(\theta^u X_w^T) X_w $$</p>
+
+<p>$$\theta^u := \theta^u + \eta (L^w(u) - \sigma(\theta^u X_w^T)) X_w$$</p>
+
+<p>根据\(\theta^u\)和\(X_w\)的<r>对称性</r>，w上下文中的每个词向量的<r>更新公式</r>为：</p>
+
+<h1 id="v-tilde-w-v-tilde-w-sum-limits-u-in-w-cup-neg-w-eta-l-w-u-sigma-theta-u-x-w-t-theta-u-tilde-w-in-context-w:d45865320239d7818255e82b856775aa">$$v(\tilde{w}) := v(\tilde{w}) + \sum\limits_{u \in w \cup NEG(w)} \eta (L^w(u) - \sigma(\theta^u X_w^T))\theta^u, \tilde{w} \in Context(w)$$</h1>
+
+<h3 id="2-skip-gram:d45865320239d7818255e82b856775aa">2. SKIP-GRAM</h3>
+
+<h4 id="hierarchical-softmax-1:d45865320239d7818255e82b856775aa">Hierarchical Softmax</h4>
+
+<p>与CBOW不同是，输入层只有一个词向量w。</p>
+
+<p><img src="http://ocwpxekrq.bkt.clouddn.com/word2vec-hs-sg.png" alt="" /></p>
+
+<p>关键在于\(p(Context(w)|w)\)的定义：</p>
+
+<p>$$ p(Context(w)|w) = \prod\limits_{u \in Context(w)} p(u|w) $$，其他推导类似CBOW。</p>
+
+<h4 id="negative-sampling-1:d45865320239d7818255e82b856775aa">Negative Sampling</h4>
+
+<p>已知词w，预测词w的上下文，则针对上下文中的每个词，将该词看作正样本，选取一定数量的负样本。目标函数为：</p>
+
+<p>$$F = log G = log \prod\limits_{w \in C} g(w)$$
+$$ = \sum\limits_{w \in C} \sum\limits_{u \in Context(w)} \sum\limits_{z \in u \cup NEG(u)} {L^u(z)}log[\sigma(\theta^z X_w^T)] + (1-L^u(z))log[1 - \sigma(\theta^z X_w^T)]$$</p>
+
+<p>公式中对于一个样本(w, Context(w)), 对Context(w)中的每个词，都做了一次负采样。而word2vec源码对此作了改动，只对词w进行了|Context(w)|次负采样。</p>
+
+<h2 id="c-源码阅读:d45865320239d7818255e82b856775aa">c++源码阅读</h2>
+
+<h3 id="命令行参数:d45865320239d7818255e82b856775aa">命令行参数</h3>
+
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>说明</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>size</td>
+<td>Projection Layer的长度，即词向量的长度</td>
+</tr>
+
+<tr>
+<td>train</td>
+<td>语料库地址，即训练集</td>
+</tr>
+
+<tr>
+<td>save-vocab</td>
+<td>词典保存地址</td>
+</tr>
+
+<tr>
+<td>read-vocab</td>
+<td>词典读取地址，如果没指定，从语料库中学习词典</td>
+</tr>
+
+<tr>
+<td>debug</td>
+<td>debug_mode，debug信息打印控制</td>
+</tr>
+
+<tr>
+<td>binary</td>
+<td>是否保存为二进制</td>
+</tr>
+
+<tr>
+<td>cbow</td>
+<td>确定是cbow，还是skip-gram模型</td>
+</tr>
+
+<tr>
+<td>alpha</td>
+<td>学习率</td>
+</tr>
+
+<tr>
+<td>output</td>
+<td>模型保存地址</td>
+</tr>
+
+<tr>
+<td>window</td>
+<td>窗口大小，默认值5</td>
+</tr>
+
+<tr>
+<td>sample</td>
+<td>采样百分比</td>
+</tr>
+
+<tr>
+<td>hs</td>
+<td>是否进行Hierarchical Softmax</td>
+</tr>
+
+<tr>
+<td>negative</td>
+<td>是否进行负采样</td>
+</tr>
+
+<tr>
+<td>threads</td>
+<td>线程数</td>
+</tr>
+
+<tr>
+<td>min-count</td>
+<td>有效词频的最小值，默认值5</td>
+</tr>
+
+<tr>
+<td>classes</td>
+<td>聚类个数</td>
+</tr>
+</tbody>
+</table>
+
+<h3 id="数据结构:d45865320239d7818255e82b856775aa">数据结构</h3>
+
+<p>每个词用结构体<r>vocab_word</r>保存信息:</p>
+
+<pre><code>struct vocab_word{
+    char *word; //词本身
+    long long cn; //语料集中的词频
+    int *point; //huffman树中，从根节点到该词所在叶节点的中间结点列表
+    char *code, codelen; //该词对应的huffman编码和编码长度
+};
+</code></pre>
+
+<p>整个词表用一个数组vocab表示，为了<strong>快速查找</strong>给定词的信息，建立了一个<r>hash表</r>，存放的元素是该词在vocab中的下标。</p>
+
+<p>哈希的策略是<strong>线性探测的开放定址法</strong>，计算词w的哈希值hv(w)作为下标索引，若该位置被占用，则顺序往下找，直到找到一个未被占用的位置。</p>
+
+<pre><code>vocab = (struct vocab_word *)calloc(vocab_max_size, sizeof(struct vocab_word));
+vocab_hash = (int *)calloc(vocab_hash_size, sizeof(int));
+</code></pre>
+
+<h3 id="模型实现:d45865320239d7818255e82b856775aa">模型实现</h3>
+
+<h4 id="1-关于net:d45865320239d7818255e82b856775aa">1. 关于Net</h4>
+
+<p>定义了<r>syn0</r>,<r>syn1</r>,<r>syn1neg</r>三个浮点数组，大小都为vocab_size*layer1_size。其中vocab_size为词表的长度，layer1_size为词向量的长度。</p>
+
+<p>syn0表示输入层需要的每个词的词向量\(v\), syn1表示huffman树中每个中间结点的辅助向量\(\theta\), syn1neg表示negative sampling中为每个词设置的辅助向量\(theta\)。代码中Hierarchical Softmax和Negative Sampling可以同时训练。neu1代表\(X_w\),即输入词向量加和后的向量；neu1e代表\(e\)，即huffman树每一条路径（从根到叶子节点）梯度更新的求和，用来更新相应的词向量。</p>
+
+<h4 id="2-sigmoid函数值计算:d45865320239d7818255e82b856775aa">2. sigmoid函数值计算</h4>
+
+<p>建模过程中用到<r>逻辑回归</r>做二分类问题，程序中采用表格的方式，存储\(x \in [-6,6]\区间（等分成1000份）的sigmoid函数值，小于-6，默认为0；大于6，默认为1。每次计算时，查表即可。</p>
+
+<h4 id="3-创建huffman树:d45865320239d7818255e82b856775aa">3. 创建huffman树</h4>
+
+<p>简单来说，用一个vocab_size*2+1大小的数组存储树的<r>全部节点</r>，其中前vocab_size个元素为全部的<r>叶子节点</r>且按词频降序排列；后面的元素表示<r>中间结点</r>，且初始化词频为1e15。用两个变量<r>pos1</r>,<r>pos2</r>记录构造树的情况，其中pos1指向vocab_size-1，pos2指向vocab_size。每次从pos1,pos2选取词频较小的那个结点，并相应的向前或向后移动，更新pos。选择两次，合并两个选中的结点为一棵新树。在构建树的过程中，还需要记录各个节点的编码。</p>
+
+<p>详见<r>CreateBinaryTree</r>函数。</p>
+
+<h4 id="4-负采样:d45865320239d7818255e82b856775aa">4. 负采样</h4>
+
+<p>假设词典中的每个词w对应一个线段l(w),其长度为：</p>
+
+<p>$$len(w) = \frac{[counter(w)]^{0.75}}{\sum\limits_{u \in D} [counter(u)]^{0.75}} $$</p>
+
+<p>将这些线段首尾相接拼接在一起，形成一个长度为1的线段。随机往这个线段上打点，则高频词被打中的概率大。将这个单位线段等距离分割成M份(M&gt;&gt;N)，每次生成一个[0,M-1]的随机数r，r对应的词即为采样。</p>
+
+<p>详见<r>InitUnigramTable</r>函数。</p>
+
+<h4 id="5-学习率:d45865320239d7818255e82b856775aa">5. 学习率</h4>
+
+<p>自适应</p>
+
+<h4 id="6-多线程:d45865320239d7818255e82b856775aa">6. 多线程</h4>
+
+<p>整个工作流程是：首先读取语料库中词表和词频信息，做一些模型初始化工作，然后多线程训练word2vec，判断classes，如果为0，则保存词向量；反之，对得到的词向量进行K-means聚类，聚类个数为classes，并保存聚类结果。</p>
+
+<p>其中多线程的部分是模型训练的核心，它根据<r>线程数划分文件</r>，每个线程负责语料库的一部分。首先根据文件指针读取一个句子，用一个数组保存下句子中的每个词；然后根据命令行参数，选择训练CBOW或Skip-gram，其中每个模型都可以采用hs或negative的框架训练。</p>
+
+<h2 id="spark-mllib-1-6-实现:d45865320239d7818255e82b856775aa">Spark MLlib 1.6 实现</h2>
+
+<h3 id="可调参数:d45865320239d7818255e82b856775aa">可调参数</h3>
+
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>说明</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>vectorSize</td>
+<td>词向量的长度</td>
+</tr>
+
+<tr>
+<td>learningRate</td>
+<td>学习率</td>
+</tr>
+
+<tr>
+<td>numPartitions</td>
+<td>分区数，默认为1，越小准确率越高</td>
+</tr>
+
+<tr>
+<td>numIterations</td>
+<td>迭代次数，默认为1，不大于numPartitions</td>
+</tr>
+
+<tr>
+<td>seed</td>
+<td>随机数种子</td>
+</tr>
+
+<tr>
+<td>minCount</td>
+<td>有效词频的最小值，默认值5</td>
+</tr>
+
+<tr>
+<td>window</td>
+<td>上下文的窗口大小，默认值5</td>
+</tr>
+</tbody>
+</table>
+
+<p>主要实现了基于hierarchical softmax框架下的skip-gram模型。</p>
+
+<h3 id="广播:d45865320239d7818255e82b856775aa">广播</h3>
+
+<p>对于sigmod函数值表格，词信息数组，词的hash表三个变量，通过广播机制，变成全局变量。</p>
+
+<pre><code>val sc = dataset.context //dataset: RDD[Iterable[String]]
+val expTable = sc.broadcast(createExpTable)
+val bcVocab = sc.broadcast(vocab)
+val bcVocabHash = sc.broadcast(vocabHash)
+</code></pre>
+
+<h3 id="分布式:d45865320239d7818255e82b856775aa">分布式</h3>
+
+<p>根据语料集文件，读取文件中的全部句子，将句子按分区数分发。</p>
+
+<h2 id="参考链接:d45865320239d7818255e82b856775aa">参考链接</h2>
+
+<p><a href="http://www.cnblogs.com/peghoty/p/3857839.html">http://www.cnblogs.com/peghoty/p/3857839.html</a></p>
+
+<p>Efficient Estimation of Word Representations in Vector Space</p>
+
+<p>Distributed Representations of Words and Phrases and their Compositionality</p>
+
+
+      
+      
+    </article>
+    
+ <aside><div id="disqus_thread"></div></aside>
+
+<script type="text/javascript">
+     
+    var disqus_shortname = 'http-cherishzhang-github-io';
+
+     
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+
+
+
+  </main>
+
+  <nav class="pagination-single">
+    
+      <span class="previous">&larr; <a href="http://cherishzhang.github.io/post/ml/random_forest/" rel="prev">Random Forest</a></span>
+    
+    
+      <span class="next"><a href="http://cherishzhang.github.io/post/decision_tree/" rel="next">决策树</a> &rarr;</span>
+    
+  </nav>
+
+
+  
+  <footer role="contentinfo">
+    <div style="text-align:center;">
+      <img src="/images/avatar.jpg" width="64" height="64"><br>
+      
+    </div>
+  </footer>
+
+
+</div>
+
+<script src="/js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+
+</body>
+</html>
+
