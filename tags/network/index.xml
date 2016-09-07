@@ -19,7 +19,7 @@
 
 &lt;h2 id=&#34;词向量:d45865320239d7818255e82b856775aa&#34;&gt;词向量&lt;/h2&gt;
 
-&lt;p&gt;一种简单直观的词表示方法是&lt;r&gt;One-hot&lt;/r&gt;编码，用N位对N个词编码，每个词对应的N维向量中，只有一维为0。这种方式的缺陷是&lt;r&gt;词汇鸿沟&lt;/r&gt;，即词与词之间相互孤立，忽略了它们之间的联系。而word2vec中的词向量是一种distributed representation，它的特点是利用距离刻画词之间的相似性。&lt;/p&gt;
+&lt;p&gt;一种简单直观的词表示方法是&lt;r&gt;One-hot&lt;/r&gt;编码，用N位对N个词编码，每个词对应的N维向量中，只有一维为0。这种方式的缺陷是&lt;r&gt;词汇鸿沟&lt;/r&gt;，即词与词之间相互孤立，忽略了它们之间的联系。而word2vec中的词向量是一种distributed representation，它的&lt;r&gt;特点&lt;/r&gt;是&lt;strong&gt;利用距离刻画词之间的相似性&lt;/strong&gt;。&lt;/p&gt;
 
 &lt;h2 id=&#34;统计语言模型:d45865320239d7818255e82b856775aa&#34;&gt;统计语言模型&lt;/h2&gt;
 
@@ -31,21 +31,21 @@
 
 &lt;p&gt;$$p(W) = p(w_1^T) = p(w_1,w_2,&amp;hellip;,w_T) = p(w_1)*p(w_2|w_1)*p(w_3|(w_1^2))&amp;hellip;p(w_T|(w_1^{T-1}))$$&lt;/p&gt;
 
-&lt;p&gt;其中等式中的各个因子（条件概率）就是语言模型的&lt;strong&gt;参数&lt;/strong&gt;，常用的语言模型都是在近似求p(W)。如果给定一个词典大小为N的语料库，考虑长度为T的任意句子，理论上有\(N^T\)种可能组合，而每个句子需要计算T个参数，总共需要计算\(T*N^T\)个参数。无论是计算或保存，都需要很大开销。&lt;/p&gt;
+&lt;p&gt;其中等式中的各个因子（条件概率）就是语言模型的&lt;strong&gt;参数&lt;/strong&gt;，常用的语言模型都是在近似求p(W)。如果给定一个词典大小为N的语料库，考虑长度为T的任意句子，理论上有\(N^T\)种可能组合，而每个句子需要计算T个参数，总共需要计算&lt;r&gt;\(T*N^T\)&lt;/r&gt;个参数。无论是计算或保存，都需要很大开销。&lt;/p&gt;
 
 &lt;h3 id=&#34;n-gram模型:d45865320239d7818255e82b856775aa&#34;&gt;n-gram模型&lt;/h3&gt;
 
-&lt;p&gt;做了一个简化的假定，即一个词出现的概率&lt;strong&gt;只与&lt;/strong&gt;它前面的n-1个词相关。实际中最多采用n=3的三元模型。&lt;/p&gt;
+&lt;p&gt;针对参数繁多，该模型做了一个简化的假定，即一个词出现的概率&lt;strong&gt;只与&lt;/strong&gt;它前面的n-1个词相关。实际中最多采用&lt;r&gt;n=3&lt;/r&gt;的三元模型。&lt;/p&gt;
 
 &lt;p&gt;$$(p(w_k|w^{k-1}_1) = p(w_k|w^{k-1}_{k-n+1}) = \frac{count(w_{k-n+1}^k)}{count(w_{k-n+1}^{k-1})}$$&lt;/p&gt;
 
-&lt;p&gt;如果\(count(w_{k-n+1}^k)\) = \(count(w_{k-n+1}^{k-1})\) 或者 \(count(w_{k-n+1}^{k-1}) = 0\)，则需要做平滑处理。&lt;/p&gt;
+&lt;p&gt;如果过程中出现\(count(w_{k-n+1}^k)\) = \(count(w_{k-n+1}^{k-1})\) 或者 \(count(w_{k-n+1}^{k-1}) = 0\)，则需要做&lt;r&gt;平滑处理&lt;/r&gt;。&lt;/p&gt;
 
 &lt;h3 id=&#34;最大似然:d45865320239d7818255e82b856775aa&#34;&gt;最大似然&lt;/h3&gt;
 
-&lt;p&gt;对句子模型的另一种转化是利用最大似然，构造一个目标函数，优化目标求得最优参数，利用最优参数预测句子概率。目标函数为: $$\prod_{w \in C} p(w|Context(w))$$&lt;/p&gt;
+&lt;p&gt;对句子模型的另一种转化是利用机器学习，构造一个目标函数，并最大似然该函数。优化目标求得最优参数，利用最优参数预测未知句子的概率。&lt;strong&gt;&lt;r&gt;目标函数&lt;/r&gt;&lt;/strong&gt;一般为: $$\prod_{w \in C} p(w|Context(w))$$&lt;/p&gt;
 
-&lt;p&gt;其中C表示语料集，Context(w)表示词w的上下文，即w周边词的集合。实际中采用最大对数似然，即\(\sum_{w \in C} log p(w|Context(w))\)最大化。增加log是为了将乘法运算转换为加法运算(便于求导的常用方法)。问题关键转化为F函数的构造。&lt;/p&gt;
+&lt;p&gt;其中C表示&lt;r&gt;语料集&lt;/r&gt;，Context(w)表示词w的&lt;r&gt;上下文&lt;/r&gt;，即w周边词的集合。实际中采用最大对数似然，即\(\sum\limits_{w \in C} log p(w|Context(w))\)最大化。&lt;strong&gt;增加log是为了将乘法运算转换为加法运算(便于求导的常用方法)&lt;/strong&gt;。问题关键在于如何构造F函数。&lt;/p&gt;
 
 &lt;p&gt;$$p(w|Context(w)) = F(w,Context(w),\theta)$$&lt;/p&gt;
 
@@ -57,7 +57,7 @@
 
 &lt;p&gt;&lt;img src=&#34;http://ocwpxekrq.bkt.clouddn.com/word2vec-neural.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
 
-&lt;p&gt;取二元对(Context(w),w)作为一个训练样本，其中Context(w)取前面n-1个词，每个词\(v_i\)用一个m维向量表示。投影层是一个(n-1)*m长度的向量，输出层的规模为词库中词表的长度D。&lt;/p&gt;
+&lt;p&gt;取&lt;r&gt;二元对(Context(w),w)&lt;/r&gt;作为一个训练样本，其中Context(w)取前面n-1个词，每个词\(v_i\)用一个m维向量表示。投影层是一个(n-1)*m长度的向量，输出层的规模为词库中词表的长度D。&lt;/p&gt;
 
 &lt;p&gt;选用双曲正切函数作为隐藏层的激活函数，计算过程为：&lt;/p&gt;
 
@@ -65,7 +65,13 @@
 
 &lt;p&gt;输出为一个长度为D的向量\(y_w = (y_{w,1}, y_{w,2},&amp;hellip;,y_{w,D})^T\)，通过softmax归一化，每个分量表示上下文为Context(w)时下一词为词典第i个词的概率。&lt;/p&gt;
 
-&lt;p&gt;待确定的参数\(\theta\)包括：词向量和填充向量，神经网络参数W,U,p,q。其中大部分&lt;strong&gt;计算集中&lt;/strong&gt;在隐藏层和输出层之间的矩阵向量运算和softmax归一化上。&lt;/p&gt;
+&lt;p&gt;&lt;r&gt;待确定的参数集\(\Theta\)&lt;/r&gt;包括：&lt;strong&gt;词向量和填充向量，神经网络参数W,U,p,q&lt;/strong&gt;。其中大部分&lt;strong&gt;计算集中&lt;/strong&gt;在&lt;r&gt;隐藏层和输出层之间的矩阵向量运算&lt;/r&gt;和&lt;r&gt;softmax归一化&lt;/r&gt;上。&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;关于softmax归一化：
+形式为：$$ P(y=i) = \frac{exp(\sum_d w_{id}x_{d})}{\sum_j exp(\sum_d w_{jd} x_{d})} $$
+主要是针对多分类问题，归一化输出概率值。&lt;/p&gt;
+&lt;/blockquote&gt;
 
 &lt;h2 id=&#34;word2vec核心:d45865320239d7818255e82b856775aa&#34;&gt;Word2vec核心&lt;/h2&gt;
 
@@ -405,11 +411,11 @@ val bcVocabHash = sc.broadcast(vocabHash)
 
 &lt;h2 id=&#34;参考链接:d45865320239d7818255e82b856775aa&#34;&gt;参考链接&lt;/h2&gt;
 
-&lt;p&gt;&lt;a href=&#34;http://www.cnblogs.com/peghoty/p/3857839.html&#34;&gt;http://www.cnblogs.com/peghoty/p/3857839.html&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;http://www.cnblogs.com/peghoty/p/3857839.html&#34;&gt;word2vec 中的数学原理详解&lt;/a&gt;&lt;/p&gt;
 
-&lt;p&gt;Efficient Estimation of Word Representations in Vector Space&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://arxiv.org/pdf/1301.3781.pdf&#34;&gt;论文：Efficient Estimation of Word Representations in Vector Space&lt;/a&gt;&lt;/p&gt;
 
-&lt;p&gt;Distributed Representations of Words and Phrases and their Compositionality&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://papers.nips.cc/paper/5021-distributed-representations-of-words-and-phrases-and-their-compositionality.pdf&#34;&gt;论文：Distributed Representations of Words and Phrases and their Compositionality&lt;/a&gt;&lt;/p&gt;
 </description>
     </item>
     

@@ -3,8 +3,13 @@
   
   <url>
     <loc>http://cherishzhang.github.io/</loc>
-    <lastmod>2016-08-20T00:00:00+00:00</lastmod>
+    <lastmod>2016-08-24T00:00:00+00:00</lastmod>
     <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://cherishzhang.github.io/post/cplus/memory/</loc>
+    <lastmod>2016-08-24T00:00:00+00:00</lastmod>
   </url>
   
   <url>

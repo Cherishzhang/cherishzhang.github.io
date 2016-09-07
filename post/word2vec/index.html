@@ -72,7 +72,7 @@
 
 <h2 id="词向量:d45865320239d7818255e82b856775aa">词向量</h2>
 
-<p>一种简单直观的词表示方法是<r>One-hot</r>编码，用N位对N个词编码，每个词对应的N维向量中，只有一维为0。这种方式的缺陷是<r>词汇鸿沟</r>，即词与词之间相互孤立，忽略了它们之间的联系。而word2vec中的词向量是一种distributed representation，它的特点是利用距离刻画词之间的相似性。</p>
+<p>一种简单直观的词表示方法是<r>One-hot</r>编码，用N位对N个词编码，每个词对应的N维向量中，只有一维为0。这种方式的缺陷是<r>词汇鸿沟</r>，即词与词之间相互孤立，忽略了它们之间的联系。而word2vec中的词向量是一种distributed representation，它的<r>特点</r>是<strong>利用距离刻画词之间的相似性</strong>。</p>
 
 <h2 id="统计语言模型:d45865320239d7818255e82b856775aa">统计语言模型</h2>
 
@@ -84,21 +84,21 @@
 
 <p>$$p(W) = p(w_1^T) = p(w_1,w_2,&hellip;,w_T) = p(w_1)*p(w_2|w_1)*p(w_3|(w_1^2))&hellip;p(w_T|(w_1^{T-1}))$$</p>
 
-<p>其中等式中的各个因子（条件概率）就是语言模型的<strong>参数</strong>，常用的语言模型都是在近似求p(W)。如果给定一个词典大小为N的语料库，考虑长度为T的任意句子，理论上有\(N^T\)种可能组合，而每个句子需要计算T个参数，总共需要计算\(T*N^T\)个参数。无论是计算或保存，都需要很大开销。</p>
+<p>其中等式中的各个因子（条件概率）就是语言模型的<strong>参数</strong>，常用的语言模型都是在近似求p(W)。如果给定一个词典大小为N的语料库，考虑长度为T的任意句子，理论上有\(N^T\)种可能组合，而每个句子需要计算T个参数，总共需要计算<r>\(T*N^T\)</r>个参数。无论是计算或保存，都需要很大开销。</p>
 
 <h3 id="n-gram模型:d45865320239d7818255e82b856775aa">n-gram模型</h3>
 
-<p>做了一个简化的假定，即一个词出现的概率<strong>只与</strong>它前面的n-1个词相关。实际中最多采用n=3的三元模型。</p>
+<p>针对参数繁多，该模型做了一个简化的假定，即一个词出现的概率<strong>只与</strong>它前面的n-1个词相关。实际中最多采用<r>n=3</r>的三元模型。</p>
 
 <p>$$(p(w_k|w^{k-1}_1) = p(w_k|w^{k-1}_{k-n+1}) = \frac{count(w_{k-n+1}^k)}{count(w_{k-n+1}^{k-1})}$$</p>
 
-<p>如果\(count(w_{k-n+1}^k)\) = \(count(w_{k-n+1}^{k-1})\) 或者 \(count(w_{k-n+1}^{k-1}) = 0\)，则需要做平滑处理。</p>
+<p>如果过程中出现\(count(w_{k-n+1}^k)\) = \(count(w_{k-n+1}^{k-1})\) 或者 \(count(w_{k-n+1}^{k-1}) = 0\)，则需要做<r>平滑处理</r>。</p>
 
 <h3 id="最大似然:d45865320239d7818255e82b856775aa">最大似然</h3>
 
-<p>对句子模型的另一种转化是利用最大似然，构造一个目标函数，优化目标求得最优参数，利用最优参数预测句子概率。目标函数为: $$\prod_{w \in C} p(w|Context(w))$$</p>
+<p>对句子模型的另一种转化是利用机器学习，构造一个目标函数，并最大似然该函数。优化目标求得最优参数，利用最优参数预测未知句子的概率。<strong><r>目标函数</r></strong>一般为: $$\prod_{w \in C} p(w|Context(w))$$</p>
 
-<p>其中C表示语料集，Context(w)表示词w的上下文，即w周边词的集合。实际中采用最大对数似然，即\(\sum_{w \in C} log p(w|Context(w))\)最大化。增加log是为了将乘法运算转换为加法运算(便于求导的常用方法)。问题关键转化为F函数的构造。</p>
+<p>其中C表示<r>语料集</r>，Context(w)表示词w的<r>上下文</r>，即w周边词的集合。实际中采用最大对数似然，即\(\sum\limits_{w \in C} log p(w|Context(w))\)最大化。<strong>增加log是为了将乘法运算转换为加法运算(便于求导的常用方法)</strong>。问题关键在于如何构造F函数。</p>
 
 <p>$$p(w|Context(w)) = F(w,Context(w),\theta)$$</p>
 
@@ -110,7 +110,7 @@
 
 <p><img src="http://ocwpxekrq.bkt.clouddn.com/word2vec-neural.png" alt="" /></p>
 
-<p>取二元对(Context(w),w)作为一个训练样本，其中Context(w)取前面n-1个词，每个词\(v_i\)用一个m维向量表示。投影层是一个(n-1)*m长度的向量，输出层的规模为词库中词表的长度D。</p>
+<p>取<r>二元对(Context(w),w)</r>作为一个训练样本，其中Context(w)取前面n-1个词，每个词\(v_i\)用一个m维向量表示。投影层是一个(n-1)*m长度的向量，输出层的规模为词库中词表的长度D。</p>
 
 <p>选用双曲正切函数作为隐藏层的激活函数，计算过程为：</p>
 
@@ -118,7 +118,13 @@
 
 <p>输出为一个长度为D的向量\(y_w = (y_{w,1}, y_{w,2},&hellip;,y_{w,D})^T\)，通过softmax归一化，每个分量表示上下文为Context(w)时下一词为词典第i个词的概率。</p>
 
-<p>待确定的参数\(\theta\)包括：词向量和填充向量，神经网络参数W,U,p,q。其中大部分<strong>计算集中</strong>在隐藏层和输出层之间的矩阵向量运算和softmax归一化上。</p>
+<p><r>待确定的参数集\(\Theta\)</r>包括：<strong>词向量和填充向量，神经网络参数W,U,p,q</strong>。其中大部分<strong>计算集中</strong>在<r>隐藏层和输出层之间的矩阵向量运算</r>和<r>softmax归一化</r>上。</p>
+
+<blockquote>
+<p>关于softmax归一化：
+形式为：$$ P(y=i) = \frac{exp(\sum_d w_{id}x_{d})}{\sum_j exp(\sum_d w_{jd} x_{d})} $$
+主要是针对多分类问题，归一化输出概率值。</p>
+</blockquote>
 
 <h2 id="word2vec核心:d45865320239d7818255e82b856775aa">Word2vec核心</h2>
 
@@ -458,11 +464,11 @@ val bcVocabHash = sc.broadcast(vocabHash)
 
 <h2 id="参考链接:d45865320239d7818255e82b856775aa">参考链接</h2>
 
-<p><a href="http://www.cnblogs.com/peghoty/p/3857839.html">http://www.cnblogs.com/peghoty/p/3857839.html</a></p>
+<p><a href="http://www.cnblogs.com/peghoty/p/3857839.html">word2vec 中的数学原理详解</a></p>
 
-<p>Efficient Estimation of Word Representations in Vector Space</p>
+<p><a href="https://arxiv.org/pdf/1301.3781.pdf">论文：Efficient Estimation of Word Representations in Vector Space</a></p>
 
-<p>Distributed Representations of Words and Phrases and their Compositionality</p>
+<p><a href="https://papers.nips.cc/paper/5021-distributed-representations-of-words-and-phrases-and-their-compositionality.pdf">论文：Distributed Representations of Words and Phrases and their Compositionality</a></p>
 
 
       
