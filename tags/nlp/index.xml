@@ -89,9 +89,17 @@
 
 &lt;h4 id=&#34;hierarchical-softmax:d45865320239d7818255e82b856775aa&#34;&gt;Hierarchical Softmax&lt;/h4&gt;
 
-&lt;p&gt;&lt;img src=&#34;http://ocwpxekrq.bkt.clouddn.com/word2vec-hs-cbow.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;http://ocwpxekrq.bkt.clouddn.com/word2vec-hs-cbow.png.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
 
 &lt;p&gt;相比于之前的神经概率语言模型，主要有&lt;r&gt;三处改动&lt;/r&gt;：&lt;strong&gt;去掉隐藏层；首尾拼接改为累加求和；输出为树结构。&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;问题1&lt;/strong&gt;：huffman树的应用原理，及hierarchical softmax到底指什么？&lt;/p&gt;
+
+&lt;p&gt;hs可以保证叶节点输出的概率值是归一化的。将二叉树中的每个中间结点看作一个隐含的二分类器，一个词的huffman编码就是多个隐含二分类器作用的结果。最后输出层得到的是在当前上下文（输入层）的前提下，各个词的概率，softmax是指这些概率之和为1，即归一化。证明如下：当树的高度为2，即根节点连接两个叶子节点，设左叶子节点的概率为p，则右叶子节点概率为1-p。它们的概率和为1；当树的高度为k时，从根到叶子节点的一个路径可以看成k个独立事件的一种发生可能，所有的叶子节点刚好包括了全部可能情况，概率总和为1。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;问题2&lt;/strong&gt;：简单描述一下模型流程？&lt;/p&gt;
+
+&lt;p&gt;根据上图，首先从训练集中选取一个sentence，对于其中的一个词w，计算其上下文词向量的加和，得到\(X_w\)向量(长度为词向量的维度)，即投影层。对于huffman树中的每个非叶子节点，添加一个辅助向量\(\theta\)，\(X_w\)和\(\theta\)层层作用后，可以得到每个叶子节点的概率。计算输出概率与真实值的残差，然后用随机梯度优化参数，使残差尽可能小。在模型训练过程中，可以得到最优参数下的词向量集合。这些词向量就是word2vec。&lt;/p&gt;
 
 &lt;p&gt;================================================================&lt;/p&gt;
 
@@ -337,11 +345,11 @@ vocab_hash = (int *)calloc(vocab_hash_size, sizeof(int));
 
 &lt;p&gt;自适应&lt;/p&gt;
 
-&lt;h4 id=&#34;6-多线程:d45865320239d7818255e82b856775aa&#34;&gt;6. 多线程&lt;/h4&gt;
+&lt;h4 id=&#34;6-多线程并行:d45865320239d7818255e82b856775aa&#34;&gt;6. 多线程并行&lt;/h4&gt;
 
-&lt;p&gt;整个工作流程是：首先读取语料库中词表和词频信息，做一些模型初始化工作，然后多线程训练word2vec，判断classes，如果为0，则保存词向量；反之，对得到的词向量进行K-means聚类，聚类个数为classes，并保存聚类结果。&lt;/p&gt;
+&lt;p&gt;整个工作流程是：首先读取语料库中词表并统计词频，做一些模型初始化工作，然后多线程训练word2vec，判断classes，如果为0，则保存词向量；反之，对得到的词向量进行K-means聚类，聚类个数为classes，并保存聚类结果。&lt;/p&gt;
 
-&lt;p&gt;其中多线程的部分是模型训练的核心，它根据&lt;r&gt;线程数划分文件&lt;/r&gt;，每个线程负责语料库的一部分。首先根据文件指针读取一个句子，用一个数组保存下句子中的每个词；然后根据命令行参数，选择训练CBOW或Skip-gram，其中每个模型都可以采用hs或negative的框架训练。&lt;/p&gt;
+&lt;p&gt;并行的&lt;r&gt;关键&lt;/r&gt;在于&lt;strong&gt;如何分割好并行的任务和如何达成任务之间的良好通信&lt;/strong&gt;。word2vec根据&lt;r&gt;线程数将语料划分成若干份&lt;/r&gt;，每个线程负责语料库的一部分，但训练的神经网络、词向量和哈夫曼树是共享的。首先根据文件指针读取一个句子，用一个数组保存下句子中的每个词；然后根据命令行参数，选择训练CBOW或Skip-gram，其中每个模型都可以采用hs或negative的框架训练。&lt;/p&gt;
 
 &lt;h2 id=&#34;spark-mllib-1-6-实现:d45865320239d7818255e82b856775aa&#34;&gt;Spark MLlib 1.6 实现&lt;/h2&gt;
 

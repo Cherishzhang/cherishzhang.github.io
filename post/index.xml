@@ -78,45 +78,43 @@ void main()
 
 &lt;h2 id=&#34;几个函数:3f22e6e4723e5cb8755f0a1430a9a54d&#34;&gt;几个函数&lt;/h2&gt;
 
-&lt;h3 id=&#34;malloc-memory-allocation:3f22e6e4723e5cb8755f0a1430a9a54d&#34;&gt;malloc(memory allocation)&lt;/h3&gt;
+&lt;h3 id=&#34;xxoc:3f22e6e4723e5cb8755f0a1430a9a54d&#34;&gt;xxoc&lt;/h3&gt;
 
-&lt;p&gt;函数原型：void *malloc(size_t num_bytes); &lt;r&gt;动态分配内存&lt;/r&gt;，头文件stdlib.h。&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;函数名&lt;/th&gt;
+&lt;th&gt;原型&lt;/th&gt;
+&lt;th&gt;作用&lt;/th&gt;
+&lt;th&gt;头文件&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
 
-&lt;p&gt;功能：分配长度为num_bytes字节的内存块，返回值是一个指向内存起始地址的指针。&lt;/p&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;malloc&lt;/td&gt;
+&lt;td&gt;void *malloc(size_t num_bytes);&lt;/td&gt;
+&lt;td&gt;动态分配内存&lt;/td&gt;
+&lt;td&gt;stdlib.h&lt;/td&gt;
+&lt;/tr&gt;
 
-&lt;p&gt;工作机制：它有一个将可用的内存块连接为一个长长的列表的所谓空闲链表。调用malloc函数时，它沿连接表寻找一个大到足以满足用户请求所需要的内存块。然后，将该内存块一分为二（一块的大小与用户请求的大小相等，另一块的大小就是剩下的字节）。接下来，将分配给用户的那块内存传给用户，并将剩下的那块（如果有的话）返回到连接表上。调用free函数时，它将用户释放的内存块连接到空闲链上。到最后，空闲链会被切成很多的小内存片段，如果这时用户申请一个大的内存片段，那么空闲链上可能没有可以满足用户要求的片段了。于是，malloc函数请求延时，并开始在空闲链上翻箱倒柜地检查各内存片段，对它们进行整理，将相邻的小空闲块合并成较大的内存块。如果无法获得符合要求的内存块，malloc函数会返回NULL指针，因此在调用malloc动态申请内存块时，一定要进行返回值的判断。&lt;/p&gt;
+&lt;tr&gt;
+&lt;td&gt;calloc&lt;/td&gt;
+&lt;td&gt;void *calloc(size_t n, size_t size);&lt;/td&gt;
+&lt;td&gt;动态分配内存并初始化为0&lt;/td&gt;
+&lt;td&gt;stdlib.h或malloc.h&lt;/td&gt;
+&lt;/tr&gt;
 
-&lt;p&gt;Linux Libc6采用的机制是在free的时候试图整合相邻的碎片，使其合并成为一个较大的free空间。&lt;/p&gt;
+&lt;tr&gt;
+&lt;td&gt;realloc&lt;/td&gt;
+&lt;td&gt;void *realloc(void *mem_address, unsigned int newsize);&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;stdlib.h或malloc.h&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
 
-&lt;h3 id=&#34;calloc-clear-allocation:3f22e6e4723e5cb8755f0a1430a9a54d&#34;&gt;calloc(clear allocation)&lt;/h3&gt;
-
-&lt;p&gt;函数原型： void *calloc(size_t n, size_t size); &lt;r&gt;动态内存分配并清零&lt;/r&gt;，头文件stdlib.h或malloc.h。 使用后用&lt;r&gt;free(起始地址的指针)&lt;/r&gt;对内存进行释放。&lt;/p&gt;
-
-&lt;p&gt;功能： 在内存的&lt;r&gt;动态存储区&lt;/r&gt;中分配n个长度为size的连续空间，函数返回一个指向分配&lt;r&gt;起始地址&lt;/r&gt;的指针；如果分配不成功，返回&lt;r&gt;NULL&lt;/r&gt;。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;#include&amp;lt;stdio.h&amp;gt;
-#include&amp;lt;stdlib.h&amp;gt;
-#include&amp;lt;string.h&amp;gt;
-
-int main(){
-	char *str = NULL;
-	str = (char*)calloc(10, sizeof(char)); //分配内存空间
-	strcpy(str,&amp;quot;hello&amp;quot;);
-	printf(&amp;quot;String is %s\n&amp;quot;, str);
-	free(str); //释放空间
-	return 0;
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h3 id=&#34;realloc:3f22e6e4723e5cb8755f0a1430a9a54d&#34;&gt;realloc&lt;/h3&gt;
-
-&lt;p&gt;函数原型： extern void *realloc(void *mem_address, unsigned int newsize);&lt;/p&gt;
-
-&lt;p&gt;语法：指针名 = (数据类型*) realloc(要改变内存大小的指针名，新的大小)&lt;/p&gt;
-
-&lt;p&gt;头文件：stdlib.h(malloc.h)&lt;/p&gt;
-
-&lt;p&gt;先判断当前的指针是否有足够的连续空间，如果有，扩大mem_address指向的地址，并且将mem_address返回，如果空间不够，先按照newsize指定的大小分配空间，将原有数据从头到尾拷贝到新分配的内存区域，而后释放原来mem_address所指内存区域（注意：原来指针是自动释放，不需要使用free），同时返回新分配的内存区域的首地址。即重新分配存储器块的地址。&lt;/p&gt;
+&lt;p&gt;使用完毕，需要用free函数释放空间。&lt;/p&gt;
 
 &lt;h3 id=&#34;posix-memalign:3f22e6e4723e5cb8755f0a1430a9a54d&#34;&gt;posix_memalign&lt;/h3&gt;
 
@@ -529,9 +527,17 @@ println(accum.name + &amp;quot;:&amp;quot; + accum.value)
 
 &lt;h4 id=&#34;hierarchical-softmax:d45865320239d7818255e82b856775aa&#34;&gt;Hierarchical Softmax&lt;/h4&gt;
 
-&lt;p&gt;&lt;img src=&#34;http://ocwpxekrq.bkt.clouddn.com/word2vec-hs-cbow.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;http://ocwpxekrq.bkt.clouddn.com/word2vec-hs-cbow.png.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
 
 &lt;p&gt;相比于之前的神经概率语言模型，主要有&lt;r&gt;三处改动&lt;/r&gt;：&lt;strong&gt;去掉隐藏层；首尾拼接改为累加求和；输出为树结构。&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;问题1&lt;/strong&gt;：huffman树的应用原理，及hierarchical softmax到底指什么？&lt;/p&gt;
+
+&lt;p&gt;hs可以保证叶节点输出的概率值是归一化的。将二叉树中的每个中间结点看作一个隐含的二分类器，一个词的huffman编码就是多个隐含二分类器作用的结果。最后输出层得到的是在当前上下文（输入层）的前提下，各个词的概率，softmax是指这些概率之和为1，即归一化。证明如下：当树的高度为2，即根节点连接两个叶子节点，设左叶子节点的概率为p，则右叶子节点概率为1-p。它们的概率和为1；当树的高度为k时，从根到叶子节点的一个路径可以看成k个独立事件的一种发生可能，所有的叶子节点刚好包括了全部可能情况，概率总和为1。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;问题2&lt;/strong&gt;：简单描述一下模型流程？&lt;/p&gt;
+
+&lt;p&gt;根据上图，首先从训练集中选取一个sentence，对于其中的一个词w，计算其上下文词向量的加和，得到\(X_w\)向量(长度为词向量的维度)，即投影层。对于huffman树中的每个非叶子节点，添加一个辅助向量\(\theta\)，\(X_w\)和\(\theta\)层层作用后，可以得到每个叶子节点的概率。计算输出概率与真实值的残差，然后用随机梯度优化参数，使残差尽可能小。在模型训练过程中，可以得到最优参数下的词向量集合。这些词向量就是word2vec。&lt;/p&gt;
 
 &lt;p&gt;================================================================&lt;/p&gt;
 
@@ -777,11 +783,11 @@ vocab_hash = (int *)calloc(vocab_hash_size, sizeof(int));
 
 &lt;p&gt;自适应&lt;/p&gt;
 
-&lt;h4 id=&#34;6-多线程:d45865320239d7818255e82b856775aa&#34;&gt;6. 多线程&lt;/h4&gt;
+&lt;h4 id=&#34;6-多线程并行:d45865320239d7818255e82b856775aa&#34;&gt;6. 多线程并行&lt;/h4&gt;
 
-&lt;p&gt;整个工作流程是：首先读取语料库中词表和词频信息，做一些模型初始化工作，然后多线程训练word2vec，判断classes，如果为0，则保存词向量；反之，对得到的词向量进行K-means聚类，聚类个数为classes，并保存聚类结果。&lt;/p&gt;
+&lt;p&gt;整个工作流程是：首先读取语料库中词表并统计词频，做一些模型初始化工作，然后多线程训练word2vec，判断classes，如果为0，则保存词向量；反之，对得到的词向量进行K-means聚类，聚类个数为classes，并保存聚类结果。&lt;/p&gt;
 
-&lt;p&gt;其中多线程的部分是模型训练的核心，它根据&lt;r&gt;线程数划分文件&lt;/r&gt;，每个线程负责语料库的一部分。首先根据文件指针读取一个句子，用一个数组保存下句子中的每个词；然后根据命令行参数，选择训练CBOW或Skip-gram，其中每个模型都可以采用hs或negative的框架训练。&lt;/p&gt;
+&lt;p&gt;并行的&lt;r&gt;关键&lt;/r&gt;在于&lt;strong&gt;如何分割好并行的任务和如何达成任务之间的良好通信&lt;/strong&gt;。word2vec根据&lt;r&gt;线程数将语料划分成若干份&lt;/r&gt;，每个线程负责语料库的一部分，但训练的神经网络、词向量和哈夫曼树是共享的。首先根据文件指针读取一个句子，用一个数组保存下句子中的每个词；然后根据命令行参数，选择训练CBOW或Skip-gram，其中每个模型都可以采用hs或negative的框架训练。&lt;/p&gt;
 
 &lt;h2 id=&#34;spark-mllib-1-6-实现:d45865320239d7818255e82b856775aa&#34;&gt;Spark MLlib 1.6 实现&lt;/h2&gt;
 

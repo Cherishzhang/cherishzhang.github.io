@@ -127,45 +127,43 @@ void main()
 
 <h2 id="几个函数:3f22e6e4723e5cb8755f0a1430a9a54d">几个函数</h2>
 
-<h3 id="malloc-memory-allocation:3f22e6e4723e5cb8755f0a1430a9a54d">malloc(memory allocation)</h3>
+<h3 id="xxoc:3f22e6e4723e5cb8755f0a1430a9a54d">xxoc</h3>
 
-<p>函数原型：void *malloc(size_t num_bytes); <r>动态分配内存</r>，头文件stdlib.h。</p>
+<table>
+<thead>
+<tr>
+<th>函数名</th>
+<th>原型</th>
+<th>作用</th>
+<th>头文件</th>
+</tr>
+</thead>
 
-<p>功能：分配长度为num_bytes字节的内存块，返回值是一个指向内存起始地址的指针。</p>
+<tbody>
+<tr>
+<td>malloc</td>
+<td>void *malloc(size_t num_bytes);</td>
+<td>动态分配内存</td>
+<td>stdlib.h</td>
+</tr>
 
-<p>工作机制：它有一个将可用的内存块连接为一个长长的列表的所谓空闲链表。调用malloc函数时，它沿连接表寻找一个大到足以满足用户请求所需要的内存块。然后，将该内存块一分为二（一块的大小与用户请求的大小相等，另一块的大小就是剩下的字节）。接下来，将分配给用户的那块内存传给用户，并将剩下的那块（如果有的话）返回到连接表上。调用free函数时，它将用户释放的内存块连接到空闲链上。到最后，空闲链会被切成很多的小内存片段，如果这时用户申请一个大的内存片段，那么空闲链上可能没有可以满足用户要求的片段了。于是，malloc函数请求延时，并开始在空闲链上翻箱倒柜地检查各内存片段，对它们进行整理，将相邻的小空闲块合并成较大的内存块。如果无法获得符合要求的内存块，malloc函数会返回NULL指针，因此在调用malloc动态申请内存块时，一定要进行返回值的判断。</p>
+<tr>
+<td>calloc</td>
+<td>void *calloc(size_t n, size_t size);</td>
+<td>动态分配内存并初始化为0</td>
+<td>stdlib.h或malloc.h</td>
+</tr>
 
-<p>Linux Libc6采用的机制是在free的时候试图整合相邻的碎片，使其合并成为一个较大的free空间。</p>
+<tr>
+<td>realloc</td>
+<td>void *realloc(void *mem_address, unsigned int newsize);</td>
+<td></td>
+<td>stdlib.h或malloc.h</td>
+</tr>
+</tbody>
+</table>
 
-<h3 id="calloc-clear-allocation:3f22e6e4723e5cb8755f0a1430a9a54d">calloc(clear allocation)</h3>
-
-<p>函数原型： void *calloc(size_t n, size_t size); <r>动态内存分配并清零</r>，头文件stdlib.h或malloc.h。 使用后用<r>free(起始地址的指针)</r>对内存进行释放。</p>
-
-<p>功能： 在内存的<r>动态存储区</r>中分配n个长度为size的连续空间，函数返回一个指向分配<r>起始地址</r>的指针；如果分配不成功，返回<r>NULL</r>。</p>
-
-<pre><code>#include&lt;stdio.h&gt;
-#include&lt;stdlib.h&gt;
-#include&lt;string.h&gt;
-
-int main(){
-	char *str = NULL;
-	str = (char*)calloc(10, sizeof(char)); //分配内存空间
-	strcpy(str,&quot;hello&quot;);
-	printf(&quot;String is %s\n&quot;, str);
-	free(str); //释放空间
-	return 0;
-}
-</code></pre>
-
-<h3 id="realloc:3f22e6e4723e5cb8755f0a1430a9a54d">realloc</h3>
-
-<p>函数原型： extern void *realloc(void *mem_address, unsigned int newsize);</p>
-
-<p>语法：指针名 = (数据类型*) realloc(要改变内存大小的指针名，新的大小)</p>
-
-<p>头文件：stdlib.h(malloc.h)</p>
-
-<p>先判断当前的指针是否有足够的连续空间，如果有，扩大mem_address指向的地址，并且将mem_address返回，如果空间不够，先按照newsize指定的大小分配空间，将原有数据从头到尾拷贝到新分配的内存区域，而后释放原来mem_address所指内存区域（注意：原来指针是自动释放，不需要使用free），同时返回新分配的内存区域的首地址。即重新分配存储器块的地址。</p>
+<p>使用完毕，需要用free函数释放空间。</p>
 
 <h3 id="posix-memalign:3f22e6e4723e5cb8755f0a1430a9a54d">posix_memalign</h3>
 
