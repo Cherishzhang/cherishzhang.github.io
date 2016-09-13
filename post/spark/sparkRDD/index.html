@@ -6,7 +6,7 @@
   
   <meta charset="UTF-8">
   <title>
-    Spark开发学习 | Learn and record
+    Spark之RDD | Learn and record
   </title>
 
 
@@ -14,7 +14,7 @@
   <meta name="viewport" content="width=device-width,user-scalable=no,maximum-scale=1,initial-scale=1">
 
   
-  <link rel="canonical" href="https://cherishzhang.github.io/post/spark/"/>
+  <link rel="canonical" href="http://cherishzhang.github.io/post/spark/sparkRDD/"/>
 
   
   <link rel="stylesheet" href="/css/sanitize.css">
@@ -24,8 +24,8 @@
   <link rel="stylesheet" href="/css/custom.css">
 
   
-  <link href="https://cherishzhang.github.io/index.xml" rel="alternate" type="application/rss+xml" title="Learn and record" />
-  <link href="https://cherishzhang.github.io/index.xml" rel="feed" type="application/rss+xml" title="Learn and record" />
+  <link href="http://cherishzhang.github.io/index.xml" rel="alternate" type="application/rss+xml" title="Learn and record" />
+  <link href="http://cherishzhang.github.io/index.xml" rel="feed" type="application/rss+xml" title="Learn and record" />
 
   
   
@@ -41,7 +41,7 @@
   <header role="banner">
     <div class="row gutters">
       <div id="site-title" class="col span_6">
-        <h1><a href="https://cherishzhang.github.io/">Learn and record</a></h1>
+        <h1><a href="http://cherishzhang.github.io/">Learn and record</a></h1>
         
       </div>
       
@@ -49,7 +49,7 @@
       
       <div id="social" class="col span_4">
         <ul>
-          <li><a href="https://cherishzhang.github.io/about" target="_blank">About me</a></li>
+          <li><a href="http://cherishzhang.github.io/about" target="_blank">About me</a></li>
           <li><a href="https://github.com/Cherishzhang" target="_blank">GitHub</a></li>
           <li><a href="cherishzhang920508@gmail.com" target="_blank">Email</a></li>
         </ul>
@@ -60,8 +60,8 @@
   
   <main id="single" role="main">
     <div class="article-header">
-      <h1>Spark开发学习</h1>
-      <div class="meta">
+      <h1>Spark之RDD</h1>
+      <div class="meta" >
         Aug 20, 2016 &nbsp;
         
           #<a href="/tags/spark">spark</a>&nbsp;
@@ -70,10 +70,10 @@
         
       </div>
     </div>
-    <article>
+    <article style="padding:30px; border: 2px solid;border-radius: 4px; border-color: #ddd;">
       
 
-<h3 id="rdd:912d68735e1dc303baa4d59608c12d96">RDD</h3>
+<h3 id="rdd:1676227db8a33b6ba8c0a321eafd5577">RDD</h3>
 
 <p>RDD，全称为Resilient Distributed Datasets（弹性分布式数据集）。它是一个<r>容错</r>且<r>并行</r>的数据结构，可以让用户<r>显式</r>地将数据存储到磁盘和内存中，并能控制数据的<r>分区</r>。它只能基于在稳定物理存储中的数据集和其他已有的RDD上执行确定性操作(transformation)来创建。</p>
 
@@ -107,7 +107,7 @@ val rdd3 = sc.parallelize(List(1,2),(3,4),(3,6)))
 <tbody>
 <tr>
 <td>map</td>
-<td>对RDD中的每个元素执行一个指定的函数来产生一个新的RDD</td>
+<td>对RDD中的每个元素执行一个指定的函数来产生一个新的RDD，映射函数的参数为RDD中的每一个元素</td>
 <td align="center">一对一</td>
 <td>val a = rdd1.map(x =&gt; x*2)</td>
 </tr>
@@ -121,9 +121,16 @@ val rdd3 = sc.parallelize(List(1,2),(3,4),(3,6)))
 
 <tr>
 <td>flatMap</td>
-<td>扁平化map后的结果</td>
+<td>扁平化map后的结果，多个集合合并为一个集合</td>
 <td align="center">一对一</td>
 <td></td>
+</tr>
+
+<tr>
+<td>mapPartitions</td>
+<td>映射函数的参数为RDD中<strong>每一个分区</strong>的迭代器</td>
+<td align="center">一对一</td>
+<td>可用于为RDD中数据按分区创建连接</td>
 </tr>
 
 <tr>
@@ -162,9 +169,9 @@ val rdd3 = sc.parallelize(List(1,2),(3,4),(3,6)))
 </tr>
 
 <tr>
-<td>unpersist</td>
-<td></td>
-<td align="center"></td>
+<td>persist</td>
+<td>对RDD缓存，位置可指定</td>
+<td align="center">cache型</td>
 <td></td>
 </tr>
 </tbody>
@@ -178,7 +185,7 @@ val rdd3 = sc.parallelize(List(1,2),(3,4),(3,6)))
 
 <p>上图说明了narrow和wide之间的区别。 narrow dependencies可以支持在同一个cluster node上以管道形式执行多条命令，而且它的失败恢复更有效，只需要重新计算丢失的parent partition即可；wide dependencies需要所有的父分区都是可用的，牵涉到RDD各级的多个Parent Partitions。</p>
 
-<h3 id="共享变量:912d68735e1dc303baa4d59608c12d96">共享变量</h3>
+<h3 id="共享变量:1676227db8a33b6ba8c0a321eafd5577">共享变量</h3>
 
 <p><r>broadcast</r>变量：只读的共享变量 每个节点上都有一个拷贝。</p>
 
@@ -196,9 +203,18 @@ println(accum.name + &quot;:&quot; + accum.value)
 
 
       
-      
     </article>
+  </main>
+
+  <nav class="pagination-single">
     
+      <span class="previous">&larr; <a href="http://cherishzhang.github.io/post/word2vec/" rel="prev">word2vec模型和源码解析</a></span>
+    
+    
+      <span class="next"><a href="http://cherishzhang.github.io/post/kaggle/recommender/" rel="next">推荐系统总结</a> &rarr;</span>
+    
+  </nav>
+  
  <aside><div id="disqus_thread"></div></aside>
 
 <script type="text/javascript">
@@ -215,17 +231,6 @@ println(accum.name + &quot;:&quot; + accum.value)
 <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
 
 
-
-  </main>
-
-  <nav class="pagination-single">
-    
-      <span class="previous">&larr; <a href="https://cherishzhang.github.io/post/decision_tree/" rel="prev">决策树</a></span>
-    
-    
-      <span class="next"><a href="https://cherishzhang.github.io/post/cplus/memory/" rel="next">memory</a> &rarr;</span>
-    
-  </nav>
 
 
   

@@ -45,7 +45,7 @@
         
       </div>
       
-      <img src="/images/avatar.jpg" width="64" height="64">
+      <img src="/images/avatar.jpg" width="64" height="64" style="margin-left:30px;">
       
       <div id="social" class="col span_4">
         <ul>
@@ -61,7 +61,7 @@
   <main id="single" role="main">
     <div class="article-header">
       <h1>word2vec模型和源码解析</h1>
-      <div class="meta">
+      <div class="meta" >
         Aug 5, 2016 &nbsp;
         
           #<a href="/tags/nlp">nlp</a>&nbsp;
@@ -70,7 +70,7 @@
         
       </div>
     </div>
-    <article>
+    <article style="padding:30px; border: 2px solid;border-radius: 4px; border-color: #ddd;">
       
 
 <h2 id="词向量:d45865320239d7818255e82b856775aa">词向量</h2>
@@ -96,6 +96,8 @@
 <p>$$(p(w_k|w^{k-1}_1) = p(w_k|w^{k-1}_{k-n+1}) = \frac{count(w_{k-n+1}^k)}{count(w_{k-n+1}^{k-1})}$$</p>
 
 <p>如果过程中出现\(count(w_{k-n+1}^k)\) = \(count(w_{k-n+1}^{k-1})\) 或者 \(count(w_{k-n+1}^{k-1}) = 0\)，则需要做<r>平滑处理</r>。</p>
+
+<p>n-gram模型的缺陷是无法建模更远的关系，语料的不足使得无法训练更高阶的语言模型；而且无法建模出词之间的相似度。</p>
 
 <h3 id="最大似然:d45865320239d7818255e82b856775aa">最大似然</h3>
 
@@ -131,7 +133,7 @@
 
 <h2 id="word2vec核心:d45865320239d7818255e82b856775aa">Word2vec核心</h2>
 
-<p>word2vec中用到了两个重要模型: <r>CBOW</r>和<r>Skip-gram</r>，对于这两个模型，分别都给出了基于<r>Hierarchical Softmax</r>和<r>Negative Sampling</r>两套框架的实现。</p>
+<p>word2vec中用到了两个重要模型: <r>CBOW</r>和<r>Skip-gram</r>，对于这两个模型，分别都给出了基于<r>Hierarchical Softmax</r>和<r>Negative Sampling</r>两套框架的实现。而word2vec的高效具体体现在这两个策略上。</p>
 
 <p>CBOW和Skip-gram包括三层：<r>输入层</r>，<r>投影层</r>，<r>输出层</r>。前者是已知词的上下文预测当前词，后者是通过当前词预测上下文。</p>
 
@@ -145,7 +147,7 @@
 
 <h4 id="hierarchical-softmax:d45865320239d7818255e82b856775aa">Hierarchical Softmax</h4>
 
-<p><img src="http://ocwpxekrq.bkt.clouddn.com/word2vec-hs-cbow.png.png" alt="" /></p>
+<p><img src="http://ocwpxekrq.bkt.clouddn.com/word2vec-hs-cbow.png" alt="" /></p>
 
 <p>相比于之前的神经概率语言模型，主要有<r>三处改动</r>：<strong>去掉隐藏层；首尾拼接改为累加求和；输出为树结构。</strong></p>
 
@@ -254,7 +256,7 @@ $$ = \sum\limits_{w \in C} \sum\limits_{u \in Context(w)} \sum\limits_{z \in u \
 
 <p>公式中对于一个样本(w, Context(w)), 对Context(w)中的每个词，都做了一次负采样。而word2vec源码对此作了改动，只对词w进行了|Context(w)|次负采样。</p>
 
-<h2 id="c-源码阅读:d45865320239d7818255e82b856775aa">c++源码阅读</h2>
+<h2 id="c源码阅读:d45865320239d7818255e82b856775aa">c源码阅读</h2>
 
 <h3 id="命令行参数:d45865320239d7818255e82b856775aa">命令行参数</h3>
 
@@ -373,37 +375,64 @@ vocab_hash = (int *)calloc(vocab_hash_size, sizeof(int));
 
 <h4 id="1-关于net:d45865320239d7818255e82b856775aa">1. 关于Net</h4>
 
-<p>定义了<r>syn0</r>,<r>syn1</r>,<r>syn1neg</r>三个浮点数组，大小都为vocab_size*layer1_size。其中vocab_size为词表的长度，layer1_size为词向量的长度。</p>
+<p>对于hs来说，参数主要有<r>词向量</r>(syn0)，<r>huffman树中间结点的辅助向量</r>(syn1)；对于skip-gram来说，参数主要有<r>词向量</r>(syn0),<r>负采样中每个词的辅助向量</r>(syn1neg)。</p>
 
-<p>syn0表示输入层需要的每个词的词向量\(v\), syn1表示huffman树中每个中间结点的辅助向量\(\theta\), syn1neg表示negative sampling中为每个词设置的辅助向量\(theta\)。代码中Hierarchical Softmax和Negative Sampling可以同时训练。neu1代表\(X_w\),即输入词向量加和后的向量；neu1e代表\(e\)，即huffman树每一条路径（从根到叶子节点）梯度更新的求和，用来更新相应的词向量。</p>
+<p>关于初始化，syn0采用<strong>零初始化</strong>，syn1,syn1neg采用<strong>随机初始化</strong>([\(-\frac{-0.5}{size}, \frac{0.5}{size}\)])，其中size为词向量的长度。</p>
+
+<p>代码中Hierarchical Softmax和Negative Sampling可以同时训练。neu1代表\(X_w\),即输入词向量加和后的向量；neu1e代表\(e\)，即huffman树每一条路径（从根到叶子节点）梯度更新的求和，用来更新相应的词向量。</p>
 
 <h4 id="2-sigmoid函数值计算:d45865320239d7818255e82b856775aa">2. sigmoid函数值计算</h4>
 
-<p>建模过程中用到<r>逻辑回归</r>做二分类问题，程序中采用表格的方式，存储\(x \in [-6,6]\区间（等分成1000份）的sigmoid函数值，小于-6，默认为0；大于6，默认为1。每次计算时，查表即可。</p>
+<p>建模过程中用到<r>逻辑回归</r>做二分类问题，需要计算sigmod函数值。程序中采用的<r>近似计算</r>的方法，将区间<r>(-6,-6)</r>等分成若干份(1000)，事先将每个结点处的函数值保存起来，对于某个x，判断x的范围，如果小于-6，返回0；如果大于6；返回1；否则对x取整查表，返回对应值。</p>
 
-<h4 id="3-创建huffman树:d45865320239d7818255e82b856775aa">3. 创建huffman树</h4>
+<p><em>sigmoid函数中涉及指数运算，指数运算利用幂级数展开式实现，如果展开项数过多，则计算比较耗时。</em></p>
 
-<p>简单来说，用一个vocab_size*2+1大小的数组存储树的<r>全部节点</r>，其中前vocab_size个元素为全部的<r>叶子节点</r>且按词频降序排列；后面的元素表示<r>中间结点</r>，且初始化词频为1e15。用两个变量<r>pos1</r>,<r>pos2</r>记录构造树的情况，其中pos1指向vocab_size-1，pos2指向vocab_size。每次从pos1,pos2选取词频较小的那个结点，并相应的向前或向后移动，更新pos。选择两次，合并两个选中的结点为一棵新树。在构建树的过程中，还需要记录各个节点的编码。</p>
+<h4 id="3-词频和窗口:d45865320239d7818255e82b856775aa">3. 词频和窗口</h4>
+
+<p>删除小于阈值(min_count)的低频词，对高频词采用<r>subsampling</r>，可以提高训练速度和词向量精度。具体做法：给定一个阈值t，对于词w，以\(prob(w) = 1-(\sqrt{(\frac{t}{f(w)})} + \frac{t}{f(w)})\)的概率舍弃。</p>
+
+<p>模型训练以行为单位进行，对于一个给定行，包含T个词，每个词为一个训练样本，对于某个词w，定义context(w)为：设置一个窗口阈值参数window(5)，每次构造context(w)时，生成一个随机数\(c \in [1, window]\)，w前后各取c个词构成context。</p>
+
+<h4 id="4-创建huffman树:d45865320239d7818255e82b856775aa">4. 创建huffman树</h4>
+
+<p><img src="http://ocwpxekrq.bkt.clouddn.com/huffman.png" alt="" /></p>
+
+<p>简单来说，用一个vocab_size*2+1大小的数组存储树的<r>全部节点</r>，其中前vocab_size个元素为全部的<r>叶子节点</r>且按词频降序排列；后面的元素表示<r>中间结点</r>，且初始化词频为1e15。用两个变量<r>pos1</r>,<r>pos2</r>记录构造树的情况，其中pos1指向vocab_size-1，pos2指向vocab_size。每次从pos1,pos2选取词频较小的那个结点，并相应的向前或向后移动，更新pos。选择两次，合并两个选中的结点为一棵新树。</p>
+
+<p>在构建树的过程中，不断更新中间结点的词频，并保存各个节点的编码(0/1)，各个节点的父节点(层次信息)。从叶子节点(词)回溯，得出该词在树中的<r>路径</r>和<r>huffman编码</r>。</p>
 
 <p>详见<r>CreateBinaryTree</r>函数。</p>
 
-<h4 id="4-负采样:d45865320239d7818255e82b856775aa">4. 负采样</h4>
+<h4 id="5-负采样:d45865320239d7818255e82b856775aa">5. 负采样</h4>
 
 <p>假设词典中的每个词w对应一个线段l(w),其长度为：</p>
 
 <p>$$len(w) = \frac{[counter(w)]^{0.75}}{\sum\limits_{u \in D} [counter(u)]^{0.75}} $$</p>
 
-<p>将这些线段首尾相接拼接在一起，形成一个长度为1的线段。随机往这个线段上打点，则高频词被打中的概率大。将这个单位线段等距离分割成M份(M&gt;&gt;N)，每次生成一个[0,M-1]的随机数r，r对应的词即为采样。</p>
+<p>将这些线段首尾相接拼接在一起，形成一个长度为1的线段。随机往这个线段上打点，则高频词被打中的概率大。将这个单位线段等距离分割成M份(M远大于N,\(M=10^8\))，每次生成一个[0,M-1]的随机数r，r对应的词即为采样。有点类似k-means++的做法。</p>
 
 <p>详见<r>InitUnigramTable</r>函数。</p>
 
-<h4 id="5-学习率:d45865320239d7818255e82b856775aa">5. 学习率</h4>
+<h4 id="6-学习率-eta:d45865320239d7818255e82b856775aa">6. 学习率\(\eta\)</h4>
 
-<p>自适应</p>
+<p>学习率采用<r>自适应</r>的方法，具体为：预先设置一个初始学习率(0.025)，每处理完固定数目(10000)个词，对学习率进行一次调整。</p>
 
-<h4 id="6-多线程并行:d45865320239d7818255e82b856775aa">6. 多线程并行</h4>
+<p>$$\eta = \eta_{0}(1-\frac{word\_count\_actual}{train\_words+1})$$</p>
+
+<p>随着训练的进行\(\eta\)会逐渐变小，当小于阈值\(\eta_{min}\)时，\(\eta = \eta_{min}\)</p>
+
+<h4 id="7-多线程并行:d45865320239d7818255e82b856775aa">7. 多线程并行</h4>
 
 <p>整个工作流程是：首先读取语料库中词表并统计词频，做一些模型初始化工作，然后多线程训练word2vec，判断classes，如果为0，则保存词向量；反之，对得到的词向量进行K-means聚类，聚类个数为classes，并保存聚类结果。</p>
+
+<pre><code>pthread_t *pt = (pthread_t *)malloc(num_threads * sizeof(pthread_t));
+for (a = 0; a &lt; num_threads; a++)
+    pthread_create(&amp;pt[a], NULL, TrainModelThread, (void *)a);
+for (a = 0; a &lt; num_threads; a++)
+    pthread_join(pt[a], NULL);
+//平衡划分语料文件
+fseek(fi, file_size / (long long)num_threads * (long long)id, SEEK_SET);
+</code></pre>
 
 <p>并行的<r>关键</r>在于<strong>如何分割好并行的任务和如何达成任务之间的良好通信</strong>。word2vec根据<r>线程数将语料划分成若干份</r>，每个线程负责语料库的一部分，但训练的神经网络、词向量和哈夫曼树是共享的。首先根据文件指针读取一个句子，用一个数组保存下句子中的每个词；然后根据命令行参数，选择训练CBOW或Skip-gram，其中每个模型都可以采用hs或negative的框架训练。</p>
 
@@ -483,9 +512,18 @@ val bcVocabHash = sc.broadcast(vocabHash)
 
 
       
-      
     </article>
+  </main>
+
+  <nav class="pagination-single">
     
+      <span class="previous">&larr; <a href="http://cherishzhang.github.io/post/ml/random_forest/" rel="prev">Random Forest</a></span>
+    
+    
+      <span class="next"><a href="http://cherishzhang.github.io/post/spark/sparkRDD/" rel="next">Spark之RDD</a> &rarr;</span>
+    
+  </nav>
+  
  <aside><div id="disqus_thread"></div></aside>
 
 <script type="text/javascript">
@@ -502,17 +540,6 @@ val bcVocabHash = sc.broadcast(vocabHash)
 <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
 
 
-
-  </main>
-
-  <nav class="pagination-single">
-    
-      <span class="previous">&larr; <a href="http://cherishzhang.github.io/post/ml/random_forest/" rel="prev">Random Forest</a></span>
-    
-    
-      <span class="next"><a href="http://cherishzhang.github.io/post/decision_tree/" rel="next">决策树</a> &rarr;</span>
-    
-  </nav>
 
 
   

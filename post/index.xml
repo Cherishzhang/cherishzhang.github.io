@@ -6,153 +6,359 @@
     <description>Recent content in Posts on Learn and record</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 24 Aug 2016 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 08 Sep 2016 00:00:00 +0000</lastBuildDate>
     <atom:link href="http://cherishzhang.github.io/post/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
-      <title>memory</title>
-      <link>http://cherishzhang.github.io/post/cplus/memory/</link>
-      <pubDate>Wed, 24 Aug 2016 00:00:00 +0000</pubDate>
+      <title>推荐系统总结</title>
+      <link>http://cherishzhang.github.io/post/kaggle/recommender/</link>
+      <pubDate>Thu, 08 Sep 2016 00:00:00 +0000</pubDate>
       
-      <guid>http://cherishzhang.github.io/post/cplus/memory/</guid>
+      <guid>http://cherishzhang.github.io/post/kaggle/recommender/</guid>
       <description>
 
-&lt;h2 id=&#34;内存分类:3f22e6e4723e5cb8755f0a1430a9a54d&#34;&gt;内存分类&lt;/h2&gt;
+&lt;p&gt;本文是对推荐系统相关知识的一个梳理和总结。主要是参考阿里的一篇技术分享ppt。&lt;/p&gt;
 
-&lt;p&gt;程序占用的内存分为以下几类：&lt;/p&gt;
+&lt;p&gt;推荐系统的核心问题是&lt;strong&gt;&lt;r&gt;如何评估一个用户(user)对一个物品(item)的评分(喜欢程度)&lt;/r&gt;&lt;/strong&gt;。&lt;/p&gt;
 
-&lt;table&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th&gt;方式&lt;/th&gt;
-&lt;th&gt;说明&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
+&lt;h2 id=&#34;场景和指标:0ddb80b7e0dcbf864c099ae18a623ad9&#34;&gt;场景和指标&lt;/h2&gt;
 
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td&gt;静态存储区域&lt;/td&gt;
-&lt;td&gt;编译时已分配好，如全局变量，static变量，程序运行期间都存在，其中初始化的全局/静态变量在一块区域，未初始化的在相邻的另一块区域&lt;/td&gt;
-&lt;/tr&gt;
+&lt;p&gt;推荐系统主要用来解决信息过量负载(&lt;r&gt;information overload&lt;/r&gt;)的问题，可以应用&lt;strong&gt;&lt;r&gt;多种场景&lt;/r&gt;&lt;/strong&gt;中。如:&lt;/p&gt;
 
-&lt;tr&gt;
-&lt;td&gt;栈(stack)&lt;/td&gt;
-&lt;td&gt;大小在编译后确定，后进先出，自动释放。效率高但容量有限。&lt;/td&gt;
-&lt;/tr&gt;
+&lt;blockquote&gt;
+&lt;p&gt;音乐，电影&lt;/p&gt;
 
-&lt;tr&gt;
-&lt;td&gt;堆(heap)&lt;/td&gt;
-&lt;td&gt;动态分配，手动释放&lt;/td&gt;
-&lt;/tr&gt;
+&lt;p&gt;电子商务中商品推荐&lt;/p&gt;
 
-&lt;tr&gt;
-&lt;td&gt;文字常量区&lt;/td&gt;
-&lt;td&gt;存放常量字符串&lt;/td&gt;
-&lt;/tr&gt;
+&lt;p&gt;个性化阅读&lt;/p&gt;
 
-&lt;tr&gt;
-&lt;td&gt;程序代码区&lt;/td&gt;
-&lt;td&gt;存放函数体的二进制代码&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
+&lt;p&gt;社交好友推荐、朋友圈推荐&lt;/p&gt;
 
-&lt;p&gt;&lt;strong&gt;&lt;r&gt;堆栈的区别&lt;/r&gt;&lt;/strong&gt;:栈是静态，而堆是动态的；栈内存系统自动回收，而堆分配的内存，需手动显式回收。&lt;r&gt;malloc&lt;/r&gt;,&lt;r&gt;new&lt;/r&gt;分配的内存是在&lt;r&gt;堆&lt;/r&gt;上，程序结束前需用free,delete回收。&lt;/p&gt;
+&lt;p&gt;基于位置的服务推荐&lt;/p&gt;
+&lt;/blockquote&gt;
 
-&lt;pre&gt;&lt;code&gt;int a = 0; //全局初始化区
-char *p1; //全局未初始区
-void main()
-{
-  int b; //栈
-  char s[] = &amp;quot;abc&amp;quot;; //栈，运行时赋值
-  char *p2; // 栈
-  char *p3 = &amp;quot;123456&amp;quot;; //123456\0在常量区，p3在栈上，编译时确定
-  static int c = 0; //全局(静态)初始化区
-  p1 = (char *)malloc(10); //p1指向堆区
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;strong&gt;虚拟内存/交换空间&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;一种内存管理的技术，将实际上多个被分隔的&lt;r&gt;物理内存碎片&lt;/r&gt;和磁盘存储器上的部分空间虚拟成&lt;r&gt;一段连续完整的地址空间&lt;/r&gt;。编制程序时使用的地址称为&lt;r&gt;虚地址&lt;/r&gt;或逻辑地址，而计算机物理内存的访问地址则称为&lt;r&gt;实地址&lt;/r&gt;或物理地址。这里面涉及到调度算法，替换策略，更新策略等。&lt;/p&gt;
-
-&lt;h2 id=&#34;几个函数:3f22e6e4723e5cb8755f0a1430a9a54d&#34;&gt;几个函数&lt;/h2&gt;
-
-&lt;h3 id=&#34;xxoc:3f22e6e4723e5cb8755f0a1430a9a54d&#34;&gt;xxoc&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;&lt;r&gt;评价标准&lt;/r&gt;&lt;/strong&gt;：&lt;/p&gt;
 
 &lt;table&gt;
 &lt;thead&gt;
 &lt;tr&gt;
-&lt;th&gt;函数名&lt;/th&gt;
-&lt;th&gt;原型&lt;/th&gt;
+&lt;th&gt;名称&lt;/th&gt;
 &lt;th&gt;作用&lt;/th&gt;
-&lt;th&gt;头文件&lt;/th&gt;
 &lt;/tr&gt;
 &lt;/thead&gt;
 
 &lt;tbody&gt;
 &lt;tr&gt;
-&lt;td&gt;malloc&lt;/td&gt;
-&lt;td&gt;void *malloc(size_t num_bytes);&lt;/td&gt;
-&lt;td&gt;动态分配内存&lt;/td&gt;
-&lt;td&gt;stdlib.h&lt;/td&gt;
+&lt;td&gt;用户满意度(&lt;r&gt;user satisfaction&lt;/r&gt;)&lt;/td&gt;
+&lt;td&gt;调研或用户反馈；点击率、转化率等&lt;/td&gt;
 &lt;/tr&gt;
 
 &lt;tr&gt;
-&lt;td&gt;calloc&lt;/td&gt;
-&lt;td&gt;void *calloc(size_t n, size_t size);&lt;/td&gt;
-&lt;td&gt;动态分配内存并初始化为0&lt;/td&gt;
-&lt;td&gt;stdlib.h或malloc.h&lt;/td&gt;
+&lt;td&gt;准确率(&lt;r&gt;Accuracy&lt;/r&gt;)&lt;/td&gt;
+&lt;td&gt;precision/recall/F-score&lt;/td&gt;
 &lt;/tr&gt;
 
 &lt;tr&gt;
-&lt;td&gt;realloc&lt;/td&gt;
-&lt;td&gt;void *realloc(void *mem_address, unsigned int newsize);&lt;/td&gt;
-&lt;td&gt;&lt;/td&gt;
-&lt;td&gt;stdlib.h或malloc.h&lt;/td&gt;
+&lt;td&gt;覆盖率(&lt;r&gt;Coverage&lt;/r&gt;)&lt;/td&gt;
+&lt;td&gt;长尾分布，尾部物品和用户&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;多样性(&lt;r&gt;Diversity&lt;/r&gt;)&lt;/td&gt;
+&lt;td&gt;两两之间不相似&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;新颖性(&lt;r&gt;Novelty&lt;/r&gt;)&lt;/td&gt;
+&lt;td&gt;没听过的物品&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;惊喜性(&lt;r&gt;Serendipity&lt;/r&gt;)&lt;/td&gt;
+&lt;td&gt;？&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;用户信任度(&lt;r&gt;Trust&lt;/r&gt;)/可解释性(&lt;r&gt;explanation&lt;/r&gt;)&lt;/td&gt;
+&lt;td&gt;推荐理由&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;鲁棒性/健壮性(&lt;r&gt;Robustness&lt;/r&gt;)&lt;/td&gt;
+&lt;td&gt;哈利波特现象；抗攻击、反作弊&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;实时性(&lt;r&gt;Real-time/online&lt;/r&gt;)&lt;/td&gt;
+&lt;td&gt;新加入的物品；新的用户行为(实时意图)&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;商业目标(&lt;r&gt;business target&lt;/r&gt;)&lt;/td&gt;
+&lt;td&gt;一个用户带来多少盈利&lt;/td&gt;
 &lt;/tr&gt;
 &lt;/tbody&gt;
 &lt;/table&gt;
 
-&lt;p&gt;使用完毕，需要用free函数释放空间。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;&lt;r&gt;影响推荐效果的因素&lt;/r&gt;&lt;/strong&gt;：&lt;/p&gt;
 
-&lt;h3 id=&#34;posix-memalign:3f22e6e4723e5cb8755f0a1430a9a54d&#34;&gt;posix_memalign&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;用户交互界面(User Interface)（用户感知）&lt;/p&gt;&lt;/li&gt;
 
-&lt;p&gt;数据的对齐是指&lt;strong&gt;数据的地址和由硬件决定的内存块大小之间的关系&lt;/strong&gt;，一个变量的地址是变量本身大小的倍数时，称为&lt;r&gt;自然对齐&lt;/r&gt;。比如一个32bit的变量，大小是4个字节，自然对齐的情况下，地址应该是4的倍数(一个地址对应一个字节)。不对齐的数据载入可能会引起&lt;r&gt;性能的下降&lt;/r&gt;或&lt;r&gt;进程的陷入&lt;/r&gt;。&lt;/p&gt;
+&lt;li&gt;&lt;p&gt;数据（收集and处理）&lt;/p&gt;&lt;/li&gt;
 
-&lt;p&gt;malloc,calloc,realloc返回的地址对于任何的C类型都是对齐的，在32位系统以8字节为边界对齐，在64位系统以16字节为边界对齐。但对于更大的边界，如&lt;r&gt;页面&lt;/r&gt;，需要动态对齐。&lt;/p&gt;
+&lt;li&gt;&lt;p&gt;领域知识（产品定位）&lt;/p&gt;&lt;/li&gt;
 
-&lt;p&gt;函数原型：int posix_memalign(void **memptr, size_t alignment, size_t size);&lt;/p&gt;
+&lt;li&gt;&lt;p&gt;算法迭代&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
 
-&lt;p&gt;分配长度为size的连续空间，地址以alignment为边界对齐，memptr保存返回的内存块地址。 成功时返回0，失败时，memptr没有被定义，错误码：&lt;r&gt;EINVAL&lt;/r&gt;(alignment不是2的幂，或不是void指针的倍数),&lt;r&gt;ENOMEM&lt;/r&gt;(没有足够内存),&lt;/p&gt;
+&lt;h2 id=&#34;非个性化-推荐-热度排行-popularity:0ddb80b7e0dcbf864c099ae18a623ad9&#34;&gt;&lt;strong&gt;非个性化&lt;/strong&gt;推荐：热度排行(Popularity)&lt;/h2&gt;
 
-&lt;pre&gt;&lt;code&gt;char *buf;
-int ret;
-ret = posix_memalign(&amp;amp;buf, 256, 1024);
-if(ret){
-	fprintf(stderr, &amp;quot;posix_memalign:%s\n&amp;quot;,strerror(ret));
-	return -1;
-}
-free(buf); //释放内存
-&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;排行榜算法&lt;r&gt;主要分为&lt;/r&gt;：&lt;/p&gt;
 
-&lt;h2 id=&#34;参考链接:3f22e6e4723e5cb8755f0a1430a9a54d&#34;&gt;参考链接&lt;/h2&gt;
+&lt;p&gt;单一维度的投票；多个维度的综合打分；考虑时间因素(引入衰减权重，如半衰期、冷却定律)；考虑反馈信息(Reddit)；考虑置信度(威尔逊区间)；防止马太效应(MBA)。&lt;/p&gt;
 
-&lt;p&gt;&lt;a href=&#34;http://baike.baidu.com/link?url=ji8HkIlHG_7AgV_CVHw4Y3NJfzpaTlOICcfMOdI3R8fGKnCE5RzgL9YBCqSyUP3TF652tW-wVvNHFad1lp7LNq&#34;&gt;虚拟内存&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;这个方法容易实现，可以解决&lt;r&gt;新用户的冷启动&lt;/r&gt;问题。但无法对用户做出个性化推荐。通常情况下，可以先对新用户做热度排行推荐，然后根据用户的互动历史，做个性化推荐。&lt;/p&gt;
 
-&lt;p&gt;&lt;a href=&#34;http://blog.jobbole.com/75656/&#34;&gt;如何实现一个malloc&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&#34;协同过滤-collaborative-filtering:0ddb80b7e0dcbf864c099ae18a623ad9&#34;&gt;&lt;strong&gt;协同过滤&lt;/strong&gt;(Collaborative Filtering)&lt;/h2&gt;
+
+&lt;p&gt;它的来源很简单，即朋友之间会互相推荐自己喜爱的产品。基本组成元素有：&lt;r&gt;评分矩阵&lt;/r&gt;和&lt;r&gt;相似度度量&lt;/r&gt;。&lt;/p&gt;
+
+&lt;p&gt;主要分为两大类：&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;Memory-based(neighborhood-based)方法：Item-based/User-based CF&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;Model-based方法：频繁项挖掘/聚类/分类/回归/矩阵分解/RBM/图模型&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;blockquote&gt;
+&lt;h4 id=&#34;user-based:0ddb80b7e0dcbf864c099ae18a623ad9&#34;&gt;User-based&lt;/h4&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;计算目标用户的(前k个)相似用户(相似度度量：Pearson,Jaccard,cosine)&lt;/p&gt;
+
+&lt;p&gt;找出相似用户喜欢的物品，并预测目标用户对这些物品的评分(knn, regression)&lt;/p&gt;
+
+&lt;p&gt;过滤掉目标用户已经消费过的物品&lt;/p&gt;
+
+&lt;p&gt;将剩余物品按照预测评分排序，返回top-N物品&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h4 id=&#34;item-based:0ddb80b7e0dcbf864c099ae18a623ad9&#34;&gt;Item-based&lt;/h4&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;计算item之间的两两相似性&lt;/p&gt;
+
+&lt;p&gt;假设预测用户对item的评分，首先找出用户评分过的物品，根据它们与item的相似度预测用户的的评分&lt;/p&gt;
+
+&lt;p&gt;选取用户评分最高的前N个商品进行推荐。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;&lt;strong&gt;问题1&lt;/strong&gt;： 比较user-based和item-based？&lt;/p&gt;
+
+&lt;p&gt;Item之间的相似性是静态稳定的；而user之间的相似性是动态复杂的。&lt;/br&gt;
+user-based: 可以帮助用户&lt;r&gt;发现新商品&lt;/r&gt;，带来惊喜性。但需要复杂的在线计算，而且无法处理新用户问题。&lt;/br&gt;
+item-based: &lt;r&gt;准确性&lt;/r&gt;好，便于离线计算；但推荐缺乏多样性。&lt;/br&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;问题2&lt;/strong&gt;：协同过滤的优缺点？&lt;/p&gt;
+
+&lt;p&gt;优点：模型通用性好，实现简单。&lt;/br&gt;
+缺点：&lt;r&gt;冷启动&lt;/r&gt;问题，&lt;r&gt;数据稀疏性&lt;/r&gt;；假定“过去的行为决定现在”，没有考虑&lt;r&gt;具体情景&lt;/r&gt;的差异；&lt;r&gt;热门倾向性&lt;/r&gt;(Popularity Bias)，很难推荐出小众偏好。&lt;/p&gt;
+
+&lt;h4 id=&#34;关联规则:0ddb80b7e0dcbf864c099ae18a623ad9&#34;&gt;关联规则&lt;/h4&gt;
+
+&lt;p&gt;基于物品之间的&lt;r&gt;共现性&lt;/r&gt;挖掘频繁项，应用场景为：买了又买，看了又看。主要有A-priori和FP-growth两种算法。&lt;/p&gt;
+
+&lt;p&gt;支持度：\(s(X,Y) = \frac{包含X,Y的记录数}{总记录数}\)&lt;/p&gt;
+
+&lt;p&gt;置信度：\(c(X,Y) = \frac{包含X,Y的记录数}{包含X的记录数}\)&lt;/p&gt;
+
+&lt;p&gt;关联规则实现简单，通用性较强，适合&lt;strong&gt;商品搭配场景&lt;/strong&gt;；
+在相似商品上的推荐效果往往不如协同过滤好；
+注意在&lt;strong&gt;变量间关联&lt;/strong&gt;的解释上，由于一些隐含因素的影响，可能得出完全相反的结论(&lt;r&gt;辛普森悖论&lt;/r&gt;)。&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;ps: 辛普森悖论，两组数据分别讨论时满足某种性质，一旦合并考虑，却可能导致相反的结论。&lt;r&gt;主要原因&lt;/r&gt;是数据的不同分组之间基数差异很大（通常一个组相对于其他组来说数量占绝对优势）。一个&lt;r&gt;结论&lt;/r&gt;：分析数据时合理地将数据分组很重要。&lt;/em&gt;&lt;/p&gt;
+
+&lt;h4 id=&#34;聚类-clustering:0ddb80b7e0dcbf864c099ae18a623ad9&#34;&gt;聚类(Clustering)&lt;/h4&gt;
+
+&lt;p&gt;可以对用户按爱好分群，商品按相似度聚类。常用的算法有：&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;k-means, 层次聚类&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;Louvain, 基于密度的聚类方法&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;聚类可以一定程度上解决&lt;strong&gt;数据稀疏性问题&lt;/strong&gt;，但精准度往往不如协同过滤好。&lt;/p&gt;
+
+&lt;h4 id=&#34;分类-回归:0ddb80b7e0dcbf864c099ae18a623ad9&#34;&gt;分类/回归&lt;/h4&gt;
+
+&lt;p&gt;它的基本思想是把&lt;r&gt;评分预测&lt;/r&gt;看作一个多分类(回归)问题。常用的分类器有LR,Navie Bayes，把item的特征向量作为模型的输入。&lt;/p&gt;
+
+&lt;p&gt;比较通用，可以和其他方法组合，提高预测的准确性；需要大量训练数据，防止过拟合现象。&lt;/p&gt;
+
+&lt;h4 id=&#34;svd:0ddb80b7e0dcbf864c099ae18a623ad9&#34;&gt;SVD&lt;/h4&gt;
+
+&lt;p&gt;它的原理是将(用户,物品)的评分矩阵R，分解成三个矩阵U,S,V。SVD本身要求矩阵必须是稠密矩阵，而评分矩阵非常稀疏；此外，SVD的计算复杂度很高。&lt;/p&gt;
+
+&lt;p&gt;于是，就出现了关于SVD的一系列变形，如FunkSVD,BiasSVD,SVD++。具体可参见开源算法包&lt;r&gt;svdfeture&lt;/r&gt;。&lt;/p&gt;
+
+&lt;h4 id=&#34;item的向量化:0ddb80b7e0dcbf864c099ae18a623ad9&#34;&gt;Item的向量化&lt;/h4&gt;
+
+&lt;p&gt;向量化的目的是将Item进行知识、概念层次上的表达。常用方法有pLSA,LDA,&lt;a href=&#34;http://cherishzhang.github.io/post/word2vec/&#34;&gt;Word2Vec&lt;/a&gt;。&lt;/p&gt;
+
+&lt;p&gt;向量化时大多基于行为数据，&lt;r&gt;行为少的item向量化效果不好&lt;/r&gt;。&lt;/p&gt;
+
+&lt;h4 id=&#34;玻尔兹曼机:0ddb80b7e0dcbf864c099ae18a623ad9&#34;&gt;玻尔兹曼机&lt;/h4&gt;
+
+&lt;p&gt;Boltzmann机：两层神经网络(无输出层)；对称、全连接；每个神经元有0/1(激活/未激活)两种状态，某个时刻的状态是随机的，由一定概率确定。&lt;/p&gt;
+
+&lt;p&gt;受限Boltzmann机：受限，层内无连接。&lt;/p&gt;
+
+&lt;p&gt;如何对(user,item)进行建模？一个用户一个RBM，共享隐层，权重W和偏置b。&lt;/p&gt;
+
+&lt;h4 id=&#34;图模型:0ddb80b7e0dcbf864c099ae18a623ad9&#34;&gt;图模型&lt;/h4&gt;
+
+&lt;p&gt;多用于社交网络中人与人的关系挖掘。方法有SimRank,SimRank++,Markov模型。&lt;/p&gt;
+
+&lt;p&gt;借助图的结构的传导性，可以发现协同过滤发现不了的弱相似性，给推荐带来一定的惊喜性。但该模型仍面临数据稀疏性和冷启动问题。&lt;/p&gt;
+
+&lt;h2 id=&#34;基于-内容-content-based:0ddb80b7e0dcbf864c099ae18a623ad9&#34;&gt;基于&lt;strong&gt;内容&lt;/strong&gt;(Content-based)&lt;/h2&gt;
+
+&lt;p&gt;内容包括：&lt;r&gt;文本描述&lt;/r&gt;（通常用NLP技术挖掘关键词）、&lt;r&gt;Item属性&lt;/r&gt;(如电影的主题，职位的行业)、&lt;r&gt;Item特征&lt;/r&gt;(如语音信号表示、图像向量表示)&lt;/p&gt;
+
+&lt;p&gt;基本组成：&lt;r&gt;item特征向量&lt;/r&gt;(如文本的TF-IDF向量)，&lt;r&gt;用户profile向量&lt;/r&gt;(根据用户偏好的items来提取)、&lt;r&gt;匹配分&lt;/r&gt;(cosine,分类/回归模型)&lt;/p&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;方面&lt;/th&gt;
+&lt;th&gt;描述&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;优点&lt;/td&gt;
+&lt;td&gt;能够推荐出用户独有的&lt;r&gt;小众偏好&lt;/r&gt;&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;可以一定程度解决&lt;r&gt;数据稀疏&lt;/r&gt;问题和&lt;r&gt;item冷启动&lt;/r&gt;问题&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;具有很好的&lt;r&gt;解释性&lt;/r&gt;&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;缺点&lt;/td&gt;
+&lt;td&gt;如何提取出有意义的特征&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;很难将不同item的特征组合在一起(邻域思想)&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;惊喜性&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;依赖用户profile的准确性&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;h2 id=&#34;混合-方法-hybrid-approaches:0ddb80b7e0dcbf864c099ae18a623ad9&#34;&gt;&lt;strong&gt;混合&lt;/strong&gt;方法(Hybrid Approaches)&lt;/h2&gt;
+
+&lt;p&gt;通常比单个算法好，需要在不同算法之间、理论效果和实际可行性之间权衡。&lt;/p&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;方法&lt;/th&gt;
+&lt;th&gt;描述&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;weighted&lt;/td&gt;
+&lt;td&gt;加权&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;switching&lt;/td&gt;
+&lt;td&gt;切换，确定一个合理的跳进&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;Mixed&lt;/td&gt;
+&lt;td&gt;混合&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;feature combination&lt;/td&gt;
+&lt;td&gt;特征组合，不同特征组合在一起&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;feature augmentation&lt;/td&gt;
+&lt;td&gt;特征扩展，一个模型的输出作为另一个的特征&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;cascade&lt;/td&gt;
+&lt;td&gt;级联，粗排 -&amp;gt; 精排&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;h2 id=&#34;一些新进展:0ddb80b7e0dcbf864c099ae18a623ad9&#34;&gt;一些新进展&lt;/h2&gt;
+
+&lt;h3 id=&#34;learning-to-rank:0ddb80b7e0dcbf864c099ae18a623ad9&#34;&gt;Learning to rank&lt;/h3&gt;
+
+&lt;p&gt;将排序看做一个ML问题，评价准则为NDCG(normalized discounted cumulative gain)或MRR(mean reciprocal rank)。算法分为三类：Pointwise, Pairwise, Listwise。&lt;/p&gt;
+
+&lt;h3 id=&#34;页面整体优化-page-optimization:0ddb80b7e0dcbf864c099ae18a623ad9&#34;&gt;页面整体优化(Page Optimization)&lt;/h3&gt;
+
+&lt;p&gt;关于用户注意力建模的一篇文章Modeling User Attention and Interaction on the Web。&lt;/p&gt;
+
+&lt;h3 id=&#34;情景推荐-context-aware:0ddb80b7e0dcbf864c099ae18a623ad9&#34;&gt;情景推荐(Context-aware)&lt;/h3&gt;
+
+&lt;p&gt;针对不同推荐场景，情景也有所不同。看电影，是周末还是工作日？订餐，餐厅距离？网购，用户心情？母婴：孩子年龄？&lt;/p&gt;
+
+&lt;p&gt;算法主要有&lt;r&gt;张量分解(Tensor Factorization)&lt;/r&gt;，&lt;r&gt;分解机(Factorization Machine)&lt;/r&gt;。其中后者的效果更好。&lt;/p&gt;
+
+&lt;h3 id=&#34;深度学习:0ddb80b7e0dcbf864c099ae18a623ad9&#34;&gt;深度学习&lt;/h3&gt;
+
+&lt;p&gt;主要用到的有卷积神经网络(CNN)和循环神经网络(RNN)。&lt;/p&gt;
+
+&lt;h2 id=&#34;参考链接:0ddb80b7e0dcbf864c099ae18a623ad9&#34;&gt;参考链接&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://mp.weixin.qq.com/s?__biz=MzIzOTU0NTQ0MA==&amp;amp;mid=2247483811&amp;amp;idx=1&amp;amp;sn=fc3ee4ddfc4a8d6014a4cd90cdb5983c&#34;&gt;常用推荐算法&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://mp.weixin.qq.com/s?__biz=MzA5NzkxMzg1Nw==&amp;amp;mid=2653160714&amp;amp;idx=1&amp;amp;sn=7e53c70b3567f2277206dd5ba5347591&#34;&gt;百分点亿级个性化推荐系统的发展历程和实践架构&lt;/a&gt;&lt;/p&gt;
 </description>
     </item>
     
     <item>
-      <title>Spark开发学习</title>
-      <link>http://cherishzhang.github.io/post/spark/</link>
+      <title>Spark之RDD</title>
+      <link>http://cherishzhang.github.io/post/spark/sparkRDD/</link>
       <pubDate>Sat, 20 Aug 2016 00:00:00 +0000</pubDate>
       
-      <guid>http://cherishzhang.github.io/post/spark/</guid>
+      <guid>http://cherishzhang.github.io/post/spark/sparkRDD/</guid>
       <description>
 
-&lt;h3 id=&#34;rdd:912d68735e1dc303baa4d59608c12d96&#34;&gt;RDD&lt;/h3&gt;
+&lt;h3 id=&#34;rdd:1676227db8a33b6ba8c0a321eafd5577&#34;&gt;RDD&lt;/h3&gt;
 
 &lt;p&gt;RDD，全称为Resilient Distributed Datasets（弹性分布式数据集）。它是一个&lt;r&gt;容错&lt;/r&gt;且&lt;r&gt;并行&lt;/r&gt;的数据结构，可以让用户&lt;r&gt;显式&lt;/r&gt;地将数据存储到磁盘和内存中，并能控制数据的&lt;r&gt;分区&lt;/r&gt;。它只能基于在稳定物理存储中的数据集和其他已有的RDD上执行确定性操作(transformation)来创建。&lt;/p&gt;
 
@@ -186,7 +392,7 @@ val rdd3 = sc.parallelize(List(1,2),(3,4),(3,6)))
 &lt;tbody&gt;
 &lt;tr&gt;
 &lt;td&gt;map&lt;/td&gt;
-&lt;td&gt;对RDD中的每个元素执行一个指定的函数来产生一个新的RDD&lt;/td&gt;
+&lt;td&gt;对RDD中的每个元素执行一个指定的函数来产生一个新的RDD，映射函数的参数为RDD中的每一个元素&lt;/td&gt;
 &lt;td align=&#34;center&#34;&gt;一对一&lt;/td&gt;
 &lt;td&gt;val a = rdd1.map(x =&amp;gt; x*2)&lt;/td&gt;
 &lt;/tr&gt;
@@ -200,9 +406,16 @@ val rdd3 = sc.parallelize(List(1,2),(3,4),(3,6)))
 
 &lt;tr&gt;
 &lt;td&gt;flatMap&lt;/td&gt;
-&lt;td&gt;扁平化map后的结果&lt;/td&gt;
+&lt;td&gt;扁平化map后的结果，多个集合合并为一个集合&lt;/td&gt;
 &lt;td align=&#34;center&#34;&gt;一对一&lt;/td&gt;
 &lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;mapPartitions&lt;/td&gt;
+&lt;td&gt;映射函数的参数为RDD中&lt;strong&gt;每一个分区&lt;/strong&gt;的迭代器&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;一对一&lt;/td&gt;
+&lt;td&gt;可用于为RDD中数据按分区创建连接&lt;/td&gt;
 &lt;/tr&gt;
 
 &lt;tr&gt;
@@ -241,9 +454,9 @@ val rdd3 = sc.parallelize(List(1,2),(3,4),(3,6)))
 &lt;/tr&gt;
 
 &lt;tr&gt;
-&lt;td&gt;unpersist&lt;/td&gt;
-&lt;td&gt;&lt;/td&gt;
-&lt;td align=&#34;center&#34;&gt;&lt;/td&gt;
+&lt;td&gt;persist&lt;/td&gt;
+&lt;td&gt;对RDD缓存，位置可指定&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;cache型&lt;/td&gt;
 &lt;td&gt;&lt;/td&gt;
 &lt;/tr&gt;
 &lt;/tbody&gt;
@@ -257,7 +470,7 @@ val rdd3 = sc.parallelize(List(1,2),(3,4),(3,6)))
 
 &lt;p&gt;上图说明了narrow和wide之间的区别。 narrow dependencies可以支持在同一个cluster node上以管道形式执行多条命令，而且它的失败恢复更有效，只需要重新计算丢失的parent partition即可；wide dependencies需要所有的父分区都是可用的，牵涉到RDD各级的多个Parent Partitions。&lt;/p&gt;
 
-&lt;h3 id=&#34;共享变量:912d68735e1dc303baa4d59608c12d96&#34;&gt;共享变量&lt;/h3&gt;
+&lt;h3 id=&#34;共享变量:1676227db8a33b6ba8c0a321eafd5577&#34;&gt;共享变量&lt;/h3&gt;
 
 &lt;p&gt;&lt;r&gt;broadcast&lt;/r&gt;变量：只读的共享变量 每个节点上都有一个拷贝。&lt;/p&gt;
 
@@ -272,178 +485,6 @@ println(v)
 sc.parallelize(1 to 1000000).foreach(x =&amp;gt; accum+= 1)
 println(accum.name + &amp;quot;:&amp;quot; + accum.value)
 &lt;/code&gt;&lt;/pre&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>决策树</title>
-      <link>http://cherishzhang.github.io/post/decision_tree/</link>
-      <pubDate>Mon, 08 Aug 2016 00:00:00 +0000</pubDate>
-      
-      <guid>http://cherishzhang.github.io/post/decision_tree/</guid>
-      <description>
-
-&lt;h2 id=&#34;1-intro:998e3d52f8819c2e5f687d19cc26909b&#34;&gt;1.Intro&lt;/h2&gt;
-
-&lt;p&gt;决策树常用的算法有&lt;r&gt;ID3&lt;/r&gt;,&lt;r&gt;C4.5&lt;/r&gt;和&lt;r&gt;CART&lt;/r&gt;，学习过程分为三部分：&lt;r&gt;特征选择&lt;/r&gt;，&lt;r&gt;决策树生成&lt;/r&gt;和&lt;r&gt;决策树剪枝&lt;/r&gt;。&lt;/p&gt;
-
-&lt;p&gt;决策树的&lt;r&gt;生成&lt;/r&gt;只考虑局部最优（&lt;r&gt;贪心算法&lt;/r&gt;），而决策树的&lt;r&gt;剪枝&lt;/r&gt;则考虑&lt;r&gt;全局最优&lt;/r&gt;。简而言之，这是&lt;strong&gt;一个递归地选择最优特征，并根据该特征对训练数据进行分割，使得对每个子数据集有一个最好的分类过程&lt;/strong&gt;。&lt;/p&gt;
-
-&lt;h2 id=&#34;2-准则函数:998e3d52f8819c2e5f687d19cc26909b&#34;&gt;2.准则函数&lt;/h2&gt;
-
-&lt;p&gt;主要用来衡量节点数据集合的有序性，有&lt;r&gt;熵&lt;/r&gt;，&lt;r&gt;基尼指数(Gini)&lt;/r&gt;，&lt;r&gt;方差&lt;/r&gt;，其中前两种针对分类问题，而方差针对回归问题。寻找最好的分割点是通过量化&lt;strong&gt;分割后&lt;/strong&gt;类的纯度来确定的，计算方式总结如下表：&lt;/p&gt;
-
-&lt;table&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th&gt;Impurity&lt;/th&gt;
-&lt;th&gt;Task&lt;/th&gt;
-&lt;th&gt;Description&lt;/th&gt;
-&lt;th&gt;formula&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td&gt;熵Entropy&lt;/td&gt;
-&lt;td&gt;-&lt;/td&gt;
-&lt;td&gt;随机变量X不确定性的度量，X的概率分布为\(P(X=x_i) = p_i\)&lt;/td&gt;
-&lt;td&gt;\(H(X) =-\sum_{i=1}^{n} p_ilogp_i\)&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td&gt;条件熵&lt;/td&gt;
-&lt;td&gt;-&lt;/td&gt;
-&lt;td&gt;已知随机变量X的条件下随机变量Y的不确定性&lt;/td&gt;
-&lt;td&gt;\(H(Y|X)=\sum_{i=1}^n p_i H(Y|x=x_i)\)&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td&gt;信息增益(互信息)&lt;/td&gt;
-&lt;td&gt;分类ID3&lt;/td&gt;
-&lt;td&gt;特征A对训练集D的信息增益，&lt;strong&gt;值越大，特征分类能力越强&lt;/strong&gt;&lt;/td&gt;
-&lt;td&gt;\(g(D,A)=H(D)-H(D|A)\)&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td&gt;信息增益比&lt;/td&gt;
-&lt;td&gt;分类C4.5&lt;/td&gt;
-&lt;td&gt;校正信息增益存在&lt;strong&gt;偏向选择取值较多的特征&lt;/strong&gt;的缺点，n是特征A的取值个数&lt;/td&gt;
-&lt;td&gt;\(g_R(D,A) = \frac{g(D,A)}{H_A(D)}\), \(H_A(D)= \frac{|D_i|}{|D|}*log_2(\frac{|D_i|}{|D|})\)&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td&gt;基尼&lt;/td&gt;
-&lt;td&gt;-&lt;/td&gt;
-&lt;td&gt;假设有K类，样本点属于第i类的概率为\(p_i\)，表示集合不确定性&lt;/td&gt;
-&lt;td&gt;\(Gini(D) = \sum_{i=1}^{K} p_i*(1-p_i)\)&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td&gt;基尼&lt;/td&gt;
-&lt;td&gt;分类&lt;/td&gt;
-&lt;td&gt;经过A=a分割后集合D的不确定性&lt;/td&gt;
-&lt;td&gt;\(Gini(D,A)=\frac{|D1|}{|D|} Gini(D1) + \frac{|D2|}{|D|} Gini(D2)\)&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td&gt;方差&lt;/td&gt;
-&lt;td&gt;回归&lt;/td&gt;
-&lt;td&gt;平方误差最小，求解最优输出值&lt;/td&gt;
-&lt;td&gt;\(\frac{1}{N} \sum_{i=1}^N (y_i-\mu)^2\)&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;h3 id=&#34;信息增益:998e3d52f8819c2e5f687d19cc26909b&#34;&gt;信息增益&lt;/h3&gt;
-
-&lt;p&gt;定义： 得知特征X的信息而使类Y的信息&lt;r&gt;不确定减少&lt;/r&gt;的程度。信息增益大的特征有更强的分类能力。&lt;br/&gt;
-计算：\(g(D,A) = H(D)-H(D|A)\)。&lt;br/&gt;
-方法： 对训练数据集（或子集）D，计算其每个特征的信息增益，比较大小，选择信息增益大的特征。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;算法描述：计算特征A的信息增益
-输入：训练数据集D和特征A
-输出：特征A对训练数据集D的信息增益g(D,A)
-1.计算数据集D的经验熵H(D）
-2.计算特征A对数据集D的经验条件熵H(D|A)
-3.计算信息增益g(D,A)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;3-生成算法:998e3d52f8819c2e5f687d19cc26909b&#34;&gt;3 生成算法&lt;/h2&gt;
-
-&lt;p&gt;核心是&lt;strong&gt;在应用准则函数的基础上&lt;/strong&gt;选择特征，递归地构建决策树。&lt;r&gt;具体方法&lt;/r&gt;：从根节点开始，计算所有可能的特征的准则值，选择最优的特征作为节点的特征，由该特征的不同取值建立子节点；再对子节点递归调用以上方法，构建决策树。&lt;strong&gt;结束条件&lt;/strong&gt;：直到所有特征的信息增益均很小或没有特征可选择为止。&lt;/p&gt;
-
-&lt;p&gt;ID3算法应用&lt;r&gt;信息增益&lt;/r&gt;选择特征；C4.5对此进行改进，应用&lt;r&gt;信息增益比&lt;/r&gt;选择特征。&lt;/p&gt;
-
-&lt;p&gt;CART(classification and regression tree)，又称分类与回归树。决策树的生成是一个递归地构建&lt;r&gt;二叉树&lt;/r&gt;的过程，对回归树应用平方误差最小化准则，对分类树用Gini指数最小化准则，进行特征选择，生成二叉树。预测时，先根据样本特征判断该样本点位于哪块区域，然后用该区域内的训练样本点集的&lt;r&gt;众数&lt;/r&gt; (分类) 或&lt;r&gt;均值&lt;/r&gt; (回归) 作为该样本点的预测值。&lt;/p&gt;
-
-&lt;p&gt;算法描述：CART树生成算法&lt;br/&gt;
-输入: 训练数据集D，停止条件&lt;br/&gt;
-输出: 决策树f(x)&lt;br/&gt;
-(1)在平方误差最小或Gini最小的准则下选择&lt;r&gt;最优切分变量j与切分点s&lt;/r&gt;，切分变量从可用特征集中选择。
-回归树中，单元\(R_m\)下的最优值是\(R_m\)上所有输入实例对应的输出\(y_i\)的均值，即切分点。分类中，切分点是该变量所有可能的取值。&lt;br/&gt;
-(2)用选定的对(j,s)划分区域并决定相应的输出值&lt;br/&gt;
-(3)继续对子区域调用(1),(2),直至满足停止条件&lt;br/&gt;
-(4)将输入空间划分为M个区域\(R_1\),\(R_2\),&amp;hellip;,\(R_M\).生成如下决策树：&lt;br/&gt;&lt;/p&gt;
-
-&lt;p&gt;$$f(x) = \sum_{m=1}^{M} c_m*I(x \in R_m)$$&lt;/p&gt;
-
-&lt;p&gt;算法的&lt;r&gt;停止条件&lt;/r&gt;是节点中的样本个数小于预定阈值，或样本集的基尼指数小于预订阈值（样本基本属于同一类），或没有更多特征。&lt;/p&gt;
-
-&lt;h2 id=&#34;4-剪枝过程-pruning:998e3d52f8819c2e5f687d19cc26909b&#34;&gt;4 剪枝过程(pruning)&lt;/h2&gt;
-
-&lt;p&gt;将已生成的树进行简化的过程，通过极小化决策树整体的损失函数（loss function）来实现。 分为前向剪枝和后向剪枝。&lt;/p&gt;
-
-&lt;h2 id=&#34;5-单机实现-参考scikit-learn:998e3d52f8819c2e5f687d19cc26909b&#34;&gt;5 单机实现(参考scikit-learn)&lt;/h2&gt;
-
-&lt;p&gt;实现接口分为DecisionTreeClassifier和DecisionTreeRegressor&lt;/p&gt;
-
-&lt;p&gt;关于准则函数：Criterion, ClassificationCriterion(Entropy, Gini), RegressionCriterion(MSE(FriedmanMSE), MAE)&lt;/p&gt;
-
-&lt;p&gt;关于树的生成：&lt;/p&gt;
-
-&lt;h3 id=&#34;使用技巧:998e3d52f8819c2e5f687d19cc26909b&#34;&gt;使用技巧&lt;/h3&gt;
-
-&lt;h2 id=&#34;6-mllib实现:998e3d52f8819c2e5f687d19cc26909b&#34;&gt;6.MLlib实现&lt;/h2&gt;
-
-&lt;h3 id=&#34;6-1-bin和split:998e3d52f8819c2e5f687d19cc26909b&#34;&gt;6.1 bin和split&lt;/h3&gt;
-
-&lt;p&gt;对于离散的feature,如果有m个值，最多有\(2^{m-1}-1\)个划分，如果是有序的，则有m-1个划分；对于连续的feature，进行范围划分。其中划分的点是split，而划分的区间是bin。训练时，两个重要的参数maxDepth（树的最大高度），maxBins（每个特征分裂时，最大划分桶数量）。&lt;/p&gt;
-
-&lt;p&gt;bin中预先计算样本的统计信息，节省计算开销。&lt;strong&gt;分类问题&lt;/strong&gt;，bin中保存训练样本个数 (count) 以及各 label 数目 (count for label)；&lt;strong&gt;回归问题&lt;/strong&gt;，bin中保存训练样本个数 (count)、 label 之和 (sum) 以及 label 的平方和 (squared sum)。&lt;/p&gt;
-
-&lt;p&gt;特征选择时，统计同一分区下，选择不同切分变量时，对应bin中的信息（ImpurityAggregator），合并所有分区，确定最佳切分变量和切分点，从而实现并行化。&lt;/p&gt;
-
-&lt;p&gt;为了防止过拟合，采用前向剪枝。当任一以下情况发生，节点就终止划分，形成叶子节点：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;(1)树高度达到maxDepth
-(2)minInfoGain，当前节点的所有属性分割带来的信息增益都比这个值要小
-(3)minInstancesPerNode，需要保证节点分割出的左右子节点的最少的样本数量达到这个值
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h3 id=&#34;6-2-关键优化点:998e3d52f8819c2e5f687d19cc26909b&#34;&gt;6.2 关键优化点：&lt;/h3&gt;
-
-&lt;ol&gt;
-&lt;li&gt;&lt;p&gt;查找最优split，是树的level级别的并行，处于同一层次的节点，查找是并行的。查找次数的时间复杂度为O(L）,其中L是树的层数。&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;连续特征，是用排序后的唯一特征值集合作为计算最佳split的候选，对于大规模数据，为了减小开销，采用分位数（等频分箱）作为split的候选。&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;统计信息在bin中计算，节省开销。&lt;/p&gt;&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h3 id=&#34;6-3-源码分析:998e3d52f8819c2e5f687d19cc26909b&#34;&gt;6.3 源码分析&lt;/h3&gt;
-
-&lt;p&gt;类：CARTPoint(样本点),TreeNode(树结点)&lt;/p&gt;
-
-&lt;p&gt;从根节点开始，对所有特征，从0开始编号，n_fs是全部特征数。统计所有特征所有分箱结果，对应每个样本集，计算该样本，每个特征对应的特征值会被分配到的箱子id。&lt;/p&gt;
-
-&lt;p&gt;统计属于该节点的训练样本集（总样本数，各类别下的样本数，各类别对应的索引，类别总数）；根据统计信息计算当前节点的信息不确定性(Gini或Varience),并给出该节点的预测值（众数或平均值），根据以上信息更新当前树节点的信息，包括节点ID，预测类别ID，所在深度，样本数，特征总数，列采样率，该节点的Gini或Variance,里面包括一系列函数，判断是否是叶节点，分割方式，左右孩子，采样后的特征等。&lt;/p&gt;
-
-&lt;p&gt;决策树生成的过程，用队列Queue实现，将根节点插入队列，每次取队列中的全部节点（层级并行化），并行处理，作为当前节点，计算当前节点的最好分割，将其左右孩子插入队列中。&lt;/p&gt;
-
-&lt;p&gt;并行是通过mapPartitions(foreach, update), reduceByKey(),然后对aggs后的信息进行findBestSplits&lt;/p&gt;
-
-&lt;p&gt;每个待分裂节点，都根据其父节点而初始化，全部特征，每个特征对应的分箱下的n个状态，初始化为0.0&lt;/p&gt;
 </description>
     </item>
     
@@ -479,6 +520,8 @@ println(accum.name + &amp;quot;:&amp;quot; + accum.value)
 
 &lt;p&gt;如果过程中出现\(count(w_{k-n+1}^k)\) = \(count(w_{k-n+1}^{k-1})\) 或者 \(count(w_{k-n+1}^{k-1}) = 0\)，则需要做&lt;r&gt;平滑处理&lt;/r&gt;。&lt;/p&gt;
 
+&lt;p&gt;n-gram模型的缺陷是无法建模更远的关系，语料的不足使得无法训练更高阶的语言模型；而且无法建模出词之间的相似度。&lt;/p&gt;
+
 &lt;h3 id=&#34;最大似然:d45865320239d7818255e82b856775aa&#34;&gt;最大似然&lt;/h3&gt;
 
 &lt;p&gt;对句子模型的另一种转化是利用机器学习，构造一个目标函数，并最大似然该函数。优化目标求得最优参数，利用最优参数预测未知句子的概率。&lt;strong&gt;&lt;r&gt;目标函数&lt;/r&gt;&lt;/strong&gt;一般为: $$\prod_{w \in C} p(w|Context(w))$$&lt;/p&gt;
@@ -513,7 +556,7 @@ println(accum.name + &amp;quot;:&amp;quot; + accum.value)
 
 &lt;h2 id=&#34;word2vec核心:d45865320239d7818255e82b856775aa&#34;&gt;Word2vec核心&lt;/h2&gt;
 
-&lt;p&gt;word2vec中用到了两个重要模型: &lt;r&gt;CBOW&lt;/r&gt;和&lt;r&gt;Skip-gram&lt;/r&gt;，对于这两个模型，分别都给出了基于&lt;r&gt;Hierarchical Softmax&lt;/r&gt;和&lt;r&gt;Negative Sampling&lt;/r&gt;两套框架的实现。&lt;/p&gt;
+&lt;p&gt;word2vec中用到了两个重要模型: &lt;r&gt;CBOW&lt;/r&gt;和&lt;r&gt;Skip-gram&lt;/r&gt;，对于这两个模型，分别都给出了基于&lt;r&gt;Hierarchical Softmax&lt;/r&gt;和&lt;r&gt;Negative Sampling&lt;/r&gt;两套框架的实现。而word2vec的高效具体体现在这两个策略上。&lt;/p&gt;
 
 &lt;p&gt;CBOW和Skip-gram包括三层：&lt;r&gt;输入层&lt;/r&gt;，&lt;r&gt;投影层&lt;/r&gt;，&lt;r&gt;输出层&lt;/r&gt;。前者是已知词的上下文预测当前词，后者是通过当前词预测上下文。&lt;/p&gt;
 
@@ -527,7 +570,7 @@ println(accum.name + &amp;quot;:&amp;quot; + accum.value)
 
 &lt;h4 id=&#34;hierarchical-softmax:d45865320239d7818255e82b856775aa&#34;&gt;Hierarchical Softmax&lt;/h4&gt;
 
-&lt;p&gt;&lt;img src=&#34;http://ocwpxekrq.bkt.clouddn.com/word2vec-hs-cbow.png.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;http://ocwpxekrq.bkt.clouddn.com/word2vec-hs-cbow.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
 
 &lt;p&gt;相比于之前的神经概率语言模型，主要有&lt;r&gt;三处改动&lt;/r&gt;：&lt;strong&gt;去掉隐藏层；首尾拼接改为累加求和；输出为树结构。&lt;/strong&gt;&lt;/p&gt;
 
@@ -636,7 +679,7 @@ $$ = \sum\limits_{w \in C} \sum\limits_{u \in Context(w)} \sum\limits_{z \in u \
 
 &lt;p&gt;公式中对于一个样本(w, Context(w)), 对Context(w)中的每个词，都做了一次负采样。而word2vec源码对此作了改动，只对词w进行了|Context(w)|次负采样。&lt;/p&gt;
 
-&lt;h2 id=&#34;c-源码阅读:d45865320239d7818255e82b856775aa&#34;&gt;c++源码阅读&lt;/h2&gt;
+&lt;h2 id=&#34;c源码阅读:d45865320239d7818255e82b856775aa&#34;&gt;c源码阅读&lt;/h2&gt;
 
 &lt;h3 id=&#34;命令行参数:d45865320239d7818255e82b856775aa&#34;&gt;命令行参数&lt;/h3&gt;
 
@@ -755,37 +798,64 @@ vocab_hash = (int *)calloc(vocab_hash_size, sizeof(int));
 
 &lt;h4 id=&#34;1-关于net:d45865320239d7818255e82b856775aa&#34;&gt;1. 关于Net&lt;/h4&gt;
 
-&lt;p&gt;定义了&lt;r&gt;syn0&lt;/r&gt;,&lt;r&gt;syn1&lt;/r&gt;,&lt;r&gt;syn1neg&lt;/r&gt;三个浮点数组，大小都为vocab_size*layer1_size。其中vocab_size为词表的长度，layer1_size为词向量的长度。&lt;/p&gt;
+&lt;p&gt;对于hs来说，参数主要有&lt;r&gt;词向量&lt;/r&gt;(syn0)，&lt;r&gt;huffman树中间结点的辅助向量&lt;/r&gt;(syn1)；对于skip-gram来说，参数主要有&lt;r&gt;词向量&lt;/r&gt;(syn0),&lt;r&gt;负采样中每个词的辅助向量&lt;/r&gt;(syn1neg)。&lt;/p&gt;
 
-&lt;p&gt;syn0表示输入层需要的每个词的词向量\(v\), syn1表示huffman树中每个中间结点的辅助向量\(\theta\), syn1neg表示negative sampling中为每个词设置的辅助向量\(theta\)。代码中Hierarchical Softmax和Negative Sampling可以同时训练。neu1代表\(X_w\),即输入词向量加和后的向量；neu1e代表\(e\)，即huffman树每一条路径（从根到叶子节点）梯度更新的求和，用来更新相应的词向量。&lt;/p&gt;
+&lt;p&gt;关于初始化，syn0采用&lt;strong&gt;零初始化&lt;/strong&gt;，syn1,syn1neg采用&lt;strong&gt;随机初始化&lt;/strong&gt;([\(-\frac{-0.5}{size}, \frac{0.5}{size}\)])，其中size为词向量的长度。&lt;/p&gt;
+
+&lt;p&gt;代码中Hierarchical Softmax和Negative Sampling可以同时训练。neu1代表\(X_w\),即输入词向量加和后的向量；neu1e代表\(e\)，即huffman树每一条路径（从根到叶子节点）梯度更新的求和，用来更新相应的词向量。&lt;/p&gt;
 
 &lt;h4 id=&#34;2-sigmoid函数值计算:d45865320239d7818255e82b856775aa&#34;&gt;2. sigmoid函数值计算&lt;/h4&gt;
 
-&lt;p&gt;建模过程中用到&lt;r&gt;逻辑回归&lt;/r&gt;做二分类问题，程序中采用表格的方式，存储\(x \in [-6,6]\区间（等分成1000份）的sigmoid函数值，小于-6，默认为0；大于6，默认为1。每次计算时，查表即可。&lt;/p&gt;
+&lt;p&gt;建模过程中用到&lt;r&gt;逻辑回归&lt;/r&gt;做二分类问题，需要计算sigmod函数值。程序中采用的&lt;r&gt;近似计算&lt;/r&gt;的方法，将区间&lt;r&gt;(-6,-6)&lt;/r&gt;等分成若干份(1000)，事先将每个结点处的函数值保存起来，对于某个x，判断x的范围，如果小于-6，返回0；如果大于6；返回1；否则对x取整查表，返回对应值。&lt;/p&gt;
 
-&lt;h4 id=&#34;3-创建huffman树:d45865320239d7818255e82b856775aa&#34;&gt;3. 创建huffman树&lt;/h4&gt;
+&lt;p&gt;&lt;em&gt;sigmoid函数中涉及指数运算，指数运算利用幂级数展开式实现，如果展开项数过多，则计算比较耗时。&lt;/em&gt;&lt;/p&gt;
 
-&lt;p&gt;简单来说，用一个vocab_size*2+1大小的数组存储树的&lt;r&gt;全部节点&lt;/r&gt;，其中前vocab_size个元素为全部的&lt;r&gt;叶子节点&lt;/r&gt;且按词频降序排列；后面的元素表示&lt;r&gt;中间结点&lt;/r&gt;，且初始化词频为1e15。用两个变量&lt;r&gt;pos1&lt;/r&gt;,&lt;r&gt;pos2&lt;/r&gt;记录构造树的情况，其中pos1指向vocab_size-1，pos2指向vocab_size。每次从pos1,pos2选取词频较小的那个结点，并相应的向前或向后移动，更新pos。选择两次，合并两个选中的结点为一棵新树。在构建树的过程中，还需要记录各个节点的编码。&lt;/p&gt;
+&lt;h4 id=&#34;3-词频和窗口:d45865320239d7818255e82b856775aa&#34;&gt;3. 词频和窗口&lt;/h4&gt;
+
+&lt;p&gt;删除小于阈值(min_count)的低频词，对高频词采用&lt;r&gt;subsampling&lt;/r&gt;，可以提高训练速度和词向量精度。具体做法：给定一个阈值t，对于词w，以\(prob(w) = 1-(\sqrt{(\frac{t}{f(w)})} + \frac{t}{f(w)})\)的概率舍弃。&lt;/p&gt;
+
+&lt;p&gt;模型训练以行为单位进行，对于一个给定行，包含T个词，每个词为一个训练样本，对于某个词w，定义context(w)为：设置一个窗口阈值参数window(5)，每次构造context(w)时，生成一个随机数\(c \in [1, window]\)，w前后各取c个词构成context。&lt;/p&gt;
+
+&lt;h4 id=&#34;4-创建huffman树:d45865320239d7818255e82b856775aa&#34;&gt;4. 创建huffman树&lt;/h4&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://ocwpxekrq.bkt.clouddn.com/huffman.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;简单来说，用一个vocab_size*2+1大小的数组存储树的&lt;r&gt;全部节点&lt;/r&gt;，其中前vocab_size个元素为全部的&lt;r&gt;叶子节点&lt;/r&gt;且按词频降序排列；后面的元素表示&lt;r&gt;中间结点&lt;/r&gt;，且初始化词频为1e15。用两个变量&lt;r&gt;pos1&lt;/r&gt;,&lt;r&gt;pos2&lt;/r&gt;记录构造树的情况，其中pos1指向vocab_size-1，pos2指向vocab_size。每次从pos1,pos2选取词频较小的那个结点，并相应的向前或向后移动，更新pos。选择两次，合并两个选中的结点为一棵新树。&lt;/p&gt;
+
+&lt;p&gt;在构建树的过程中，不断更新中间结点的词频，并保存各个节点的编码(0/1)，各个节点的父节点(层次信息)。从叶子节点(词)回溯，得出该词在树中的&lt;r&gt;路径&lt;/r&gt;和&lt;r&gt;huffman编码&lt;/r&gt;。&lt;/p&gt;
 
 &lt;p&gt;详见&lt;r&gt;CreateBinaryTree&lt;/r&gt;函数。&lt;/p&gt;
 
-&lt;h4 id=&#34;4-负采样:d45865320239d7818255e82b856775aa&#34;&gt;4. 负采样&lt;/h4&gt;
+&lt;h4 id=&#34;5-负采样:d45865320239d7818255e82b856775aa&#34;&gt;5. 负采样&lt;/h4&gt;
 
 &lt;p&gt;假设词典中的每个词w对应一个线段l(w),其长度为：&lt;/p&gt;
 
 &lt;p&gt;$$len(w) = \frac{[counter(w)]^{0.75}}{\sum\limits_{u \in D} [counter(u)]^{0.75}} $$&lt;/p&gt;
 
-&lt;p&gt;将这些线段首尾相接拼接在一起，形成一个长度为1的线段。随机往这个线段上打点，则高频词被打中的概率大。将这个单位线段等距离分割成M份(M&amp;gt;&amp;gt;N)，每次生成一个[0,M-1]的随机数r，r对应的词即为采样。&lt;/p&gt;
+&lt;p&gt;将这些线段首尾相接拼接在一起，形成一个长度为1的线段。随机往这个线段上打点，则高频词被打中的概率大。将这个单位线段等距离分割成M份(M远大于N,\(M=10^8\))，每次生成一个[0,M-1]的随机数r，r对应的词即为采样。有点类似k-means++的做法。&lt;/p&gt;
 
 &lt;p&gt;详见&lt;r&gt;InitUnigramTable&lt;/r&gt;函数。&lt;/p&gt;
 
-&lt;h4 id=&#34;5-学习率:d45865320239d7818255e82b856775aa&#34;&gt;5. 学习率&lt;/h4&gt;
+&lt;h4 id=&#34;6-学习率-eta:d45865320239d7818255e82b856775aa&#34;&gt;6. 学习率\(\eta\)&lt;/h4&gt;
 
-&lt;p&gt;自适应&lt;/p&gt;
+&lt;p&gt;学习率采用&lt;r&gt;自适应&lt;/r&gt;的方法，具体为：预先设置一个初始学习率(0.025)，每处理完固定数目(10000)个词，对学习率进行一次调整。&lt;/p&gt;
 
-&lt;h4 id=&#34;6-多线程并行:d45865320239d7818255e82b856775aa&#34;&gt;6. 多线程并行&lt;/h4&gt;
+&lt;p&gt;$$\eta = \eta_{0}(1-\frac{word\_count\_actual}{train\_words+1})$$&lt;/p&gt;
+
+&lt;p&gt;随着训练的进行\(\eta\)会逐渐变小，当小于阈值\(\eta_{min}\)时，\(\eta = \eta_{min}\)&lt;/p&gt;
+
+&lt;h4 id=&#34;7-多线程并行:d45865320239d7818255e82b856775aa&#34;&gt;7. 多线程并行&lt;/h4&gt;
 
 &lt;p&gt;整个工作流程是：首先读取语料库中词表并统计词频，做一些模型初始化工作，然后多线程训练word2vec，判断classes，如果为0，则保存词向量；反之，对得到的词向量进行K-means聚类，聚类个数为classes，并保存聚类结果。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;pthread_t *pt = (pthread_t *)malloc(num_threads * sizeof(pthread_t));
+for (a = 0; a &amp;lt; num_threads; a++)
+    pthread_create(&amp;amp;pt[a], NULL, TrainModelThread, (void *)a);
+for (a = 0; a &amp;lt; num_threads; a++)
+    pthread_join(pt[a], NULL);
+//平衡划分语料文件
+fseek(fi, file_size / (long long)num_threads * (long long)id, SEEK_SET);
+&lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;并行的&lt;r&gt;关键&lt;/r&gt;在于&lt;strong&gt;如何分割好并行的任务和如何达成任务之间的良好通信&lt;/strong&gt;。word2vec根据&lt;r&gt;线程数将语料划分成若干份&lt;/r&gt;，每个线程负责语料库的一部分，但训练的神经网络、词向量和哈夫曼树是共享的。首先根据文件指针读取一个句子，用一个数组保存下句子中的每个词；然后根据命令行参数，选择训练CBOW或Skip-gram，其中每个模型都可以采用hs或negative的框架训练。&lt;/p&gt;
 

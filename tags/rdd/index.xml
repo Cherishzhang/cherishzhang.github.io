@@ -10,14 +10,14 @@
     <atom:link href="http://cherishzhang.github.io/tags/rdd/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
-      <title>Spark开发学习</title>
-      <link>http://cherishzhang.github.io/post/spark/</link>
+      <title>Spark之RDD</title>
+      <link>http://cherishzhang.github.io/post/spark/sparkRDD/</link>
       <pubDate>Sat, 20 Aug 2016 00:00:00 +0000</pubDate>
       
-      <guid>http://cherishzhang.github.io/post/spark/</guid>
+      <guid>http://cherishzhang.github.io/post/spark/sparkRDD/</guid>
       <description>
 
-&lt;h3 id=&#34;rdd:912d68735e1dc303baa4d59608c12d96&#34;&gt;RDD&lt;/h3&gt;
+&lt;h3 id=&#34;rdd:1676227db8a33b6ba8c0a321eafd5577&#34;&gt;RDD&lt;/h3&gt;
 
 &lt;p&gt;RDD，全称为Resilient Distributed Datasets（弹性分布式数据集）。它是一个&lt;r&gt;容错&lt;/r&gt;且&lt;r&gt;并行&lt;/r&gt;的数据结构，可以让用户&lt;r&gt;显式&lt;/r&gt;地将数据存储到磁盘和内存中，并能控制数据的&lt;r&gt;分区&lt;/r&gt;。它只能基于在稳定物理存储中的数据集和其他已有的RDD上执行确定性操作(transformation)来创建。&lt;/p&gt;
 
@@ -51,7 +51,7 @@ val rdd3 = sc.parallelize(List(1,2),(3,4),(3,6)))
 &lt;tbody&gt;
 &lt;tr&gt;
 &lt;td&gt;map&lt;/td&gt;
-&lt;td&gt;对RDD中的每个元素执行一个指定的函数来产生一个新的RDD&lt;/td&gt;
+&lt;td&gt;对RDD中的每个元素执行一个指定的函数来产生一个新的RDD，映射函数的参数为RDD中的每一个元素&lt;/td&gt;
 &lt;td align=&#34;center&#34;&gt;一对一&lt;/td&gt;
 &lt;td&gt;val a = rdd1.map(x =&amp;gt; x*2)&lt;/td&gt;
 &lt;/tr&gt;
@@ -65,9 +65,16 @@ val rdd3 = sc.parallelize(List(1,2),(3,4),(3,6)))
 
 &lt;tr&gt;
 &lt;td&gt;flatMap&lt;/td&gt;
-&lt;td&gt;扁平化map后的结果&lt;/td&gt;
+&lt;td&gt;扁平化map后的结果，多个集合合并为一个集合&lt;/td&gt;
 &lt;td align=&#34;center&#34;&gt;一对一&lt;/td&gt;
 &lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;mapPartitions&lt;/td&gt;
+&lt;td&gt;映射函数的参数为RDD中&lt;strong&gt;每一个分区&lt;/strong&gt;的迭代器&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;一对一&lt;/td&gt;
+&lt;td&gt;可用于为RDD中数据按分区创建连接&lt;/td&gt;
 &lt;/tr&gt;
 
 &lt;tr&gt;
@@ -106,9 +113,9 @@ val rdd3 = sc.parallelize(List(1,2),(3,4),(3,6)))
 &lt;/tr&gt;
 
 &lt;tr&gt;
-&lt;td&gt;unpersist&lt;/td&gt;
-&lt;td&gt;&lt;/td&gt;
-&lt;td align=&#34;center&#34;&gt;&lt;/td&gt;
+&lt;td&gt;persist&lt;/td&gt;
+&lt;td&gt;对RDD缓存，位置可指定&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;cache型&lt;/td&gt;
 &lt;td&gt;&lt;/td&gt;
 &lt;/tr&gt;
 &lt;/tbody&gt;
@@ -122,7 +129,7 @@ val rdd3 = sc.parallelize(List(1,2),(3,4),(3,6)))
 
 &lt;p&gt;上图说明了narrow和wide之间的区别。 narrow dependencies可以支持在同一个cluster node上以管道形式执行多条命令，而且它的失败恢复更有效，只需要重新计算丢失的parent partition即可；wide dependencies需要所有的父分区都是可用的，牵涉到RDD各级的多个Parent Partitions。&lt;/p&gt;
 
-&lt;h3 id=&#34;共享变量:912d68735e1dc303baa4d59608c12d96&#34;&gt;共享变量&lt;/h3&gt;
+&lt;h3 id=&#34;共享变量:1676227db8a33b6ba8c0a321eafd5577&#34;&gt;共享变量&lt;/h3&gt;
 
 &lt;p&gt;&lt;r&gt;broadcast&lt;/r&gt;变量：只读的共享变量 每个节点上都有一个拷贝。&lt;/p&gt;
 

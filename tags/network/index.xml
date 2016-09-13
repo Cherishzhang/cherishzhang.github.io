@@ -41,6 +41,8 @@
 
 &lt;p&gt;如果过程中出现\(count(w_{k-n+1}^k)\) = \(count(w_{k-n+1}^{k-1})\) 或者 \(count(w_{k-n+1}^{k-1}) = 0\)，则需要做&lt;r&gt;平滑处理&lt;/r&gt;。&lt;/p&gt;
 
+&lt;p&gt;n-gram模型的缺陷是无法建模更远的关系，语料的不足使得无法训练更高阶的语言模型；而且无法建模出词之间的相似度。&lt;/p&gt;
+
 &lt;h3 id=&#34;最大似然:d45865320239d7818255e82b856775aa&#34;&gt;最大似然&lt;/h3&gt;
 
 &lt;p&gt;对句子模型的另一种转化是利用机器学习，构造一个目标函数，并最大似然该函数。优化目标求得最优参数，利用最优参数预测未知句子的概率。&lt;strong&gt;&lt;r&gt;目标函数&lt;/r&gt;&lt;/strong&gt;一般为: $$\prod_{w \in C} p(w|Context(w))$$&lt;/p&gt;
@@ -75,7 +77,7 @@
 
 &lt;h2 id=&#34;word2vec核心:d45865320239d7818255e82b856775aa&#34;&gt;Word2vec核心&lt;/h2&gt;
 
-&lt;p&gt;word2vec中用到了两个重要模型: &lt;r&gt;CBOW&lt;/r&gt;和&lt;r&gt;Skip-gram&lt;/r&gt;，对于这两个模型，分别都给出了基于&lt;r&gt;Hierarchical Softmax&lt;/r&gt;和&lt;r&gt;Negative Sampling&lt;/r&gt;两套框架的实现。&lt;/p&gt;
+&lt;p&gt;word2vec中用到了两个重要模型: &lt;r&gt;CBOW&lt;/r&gt;和&lt;r&gt;Skip-gram&lt;/r&gt;，对于这两个模型，分别都给出了基于&lt;r&gt;Hierarchical Softmax&lt;/r&gt;和&lt;r&gt;Negative Sampling&lt;/r&gt;两套框架的实现。而word2vec的高效具体体现在这两个策略上。&lt;/p&gt;
 
 &lt;p&gt;CBOW和Skip-gram包括三层：&lt;r&gt;输入层&lt;/r&gt;，&lt;r&gt;投影层&lt;/r&gt;，&lt;r&gt;输出层&lt;/r&gt;。前者是已知词的上下文预测当前词，后者是通过当前词预测上下文。&lt;/p&gt;
 
@@ -89,7 +91,7 @@
 
 &lt;h4 id=&#34;hierarchical-softmax:d45865320239d7818255e82b856775aa&#34;&gt;Hierarchical Softmax&lt;/h4&gt;
 
-&lt;p&gt;&lt;img src=&#34;http://ocwpxekrq.bkt.clouddn.com/word2vec-hs-cbow.png.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;http://ocwpxekrq.bkt.clouddn.com/word2vec-hs-cbow.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
 
 &lt;p&gt;相比于之前的神经概率语言模型，主要有&lt;r&gt;三处改动&lt;/r&gt;：&lt;strong&gt;去掉隐藏层；首尾拼接改为累加求和；输出为树结构。&lt;/strong&gt;&lt;/p&gt;
 
@@ -198,7 +200,7 @@ $$ = \sum\limits_{w \in C} \sum\limits_{u \in Context(w)} \sum\limits_{z \in u \
 
 &lt;p&gt;公式中对于一个样本(w, Context(w)), 对Context(w)中的每个词，都做了一次负采样。而word2vec源码对此作了改动，只对词w进行了|Context(w)|次负采样。&lt;/p&gt;
 
-&lt;h2 id=&#34;c-源码阅读:d45865320239d7818255e82b856775aa&#34;&gt;c++源码阅读&lt;/h2&gt;
+&lt;h2 id=&#34;c源码阅读:d45865320239d7818255e82b856775aa&#34;&gt;c源码阅读&lt;/h2&gt;
 
 &lt;h3 id=&#34;命令行参数:d45865320239d7818255e82b856775aa&#34;&gt;命令行参数&lt;/h3&gt;
 
@@ -317,37 +319,64 @@ vocab_hash = (int *)calloc(vocab_hash_size, sizeof(int));
 
 &lt;h4 id=&#34;1-关于net:d45865320239d7818255e82b856775aa&#34;&gt;1. 关于Net&lt;/h4&gt;
 
-&lt;p&gt;定义了&lt;r&gt;syn0&lt;/r&gt;,&lt;r&gt;syn1&lt;/r&gt;,&lt;r&gt;syn1neg&lt;/r&gt;三个浮点数组，大小都为vocab_size*layer1_size。其中vocab_size为词表的长度，layer1_size为词向量的长度。&lt;/p&gt;
+&lt;p&gt;对于hs来说，参数主要有&lt;r&gt;词向量&lt;/r&gt;(syn0)，&lt;r&gt;huffman树中间结点的辅助向量&lt;/r&gt;(syn1)；对于skip-gram来说，参数主要有&lt;r&gt;词向量&lt;/r&gt;(syn0),&lt;r&gt;负采样中每个词的辅助向量&lt;/r&gt;(syn1neg)。&lt;/p&gt;
 
-&lt;p&gt;syn0表示输入层需要的每个词的词向量\(v\), syn1表示huffman树中每个中间结点的辅助向量\(\theta\), syn1neg表示negative sampling中为每个词设置的辅助向量\(theta\)。代码中Hierarchical Softmax和Negative Sampling可以同时训练。neu1代表\(X_w\),即输入词向量加和后的向量；neu1e代表\(e\)，即huffman树每一条路径（从根到叶子节点）梯度更新的求和，用来更新相应的词向量。&lt;/p&gt;
+&lt;p&gt;关于初始化，syn0采用&lt;strong&gt;零初始化&lt;/strong&gt;，syn1,syn1neg采用&lt;strong&gt;随机初始化&lt;/strong&gt;([\(-\frac{-0.5}{size}, \frac{0.5}{size}\)])，其中size为词向量的长度。&lt;/p&gt;
+
+&lt;p&gt;代码中Hierarchical Softmax和Negative Sampling可以同时训练。neu1代表\(X_w\),即输入词向量加和后的向量；neu1e代表\(e\)，即huffman树每一条路径（从根到叶子节点）梯度更新的求和，用来更新相应的词向量。&lt;/p&gt;
 
 &lt;h4 id=&#34;2-sigmoid函数值计算:d45865320239d7818255e82b856775aa&#34;&gt;2. sigmoid函数值计算&lt;/h4&gt;
 
-&lt;p&gt;建模过程中用到&lt;r&gt;逻辑回归&lt;/r&gt;做二分类问题，程序中采用表格的方式，存储\(x \in [-6,6]\区间（等分成1000份）的sigmoid函数值，小于-6，默认为0；大于6，默认为1。每次计算时，查表即可。&lt;/p&gt;
+&lt;p&gt;建模过程中用到&lt;r&gt;逻辑回归&lt;/r&gt;做二分类问题，需要计算sigmod函数值。程序中采用的&lt;r&gt;近似计算&lt;/r&gt;的方法，将区间&lt;r&gt;(-6,-6)&lt;/r&gt;等分成若干份(1000)，事先将每个结点处的函数值保存起来，对于某个x，判断x的范围，如果小于-6，返回0；如果大于6；返回1；否则对x取整查表，返回对应值。&lt;/p&gt;
 
-&lt;h4 id=&#34;3-创建huffman树:d45865320239d7818255e82b856775aa&#34;&gt;3. 创建huffman树&lt;/h4&gt;
+&lt;p&gt;&lt;em&gt;sigmoid函数中涉及指数运算，指数运算利用幂级数展开式实现，如果展开项数过多，则计算比较耗时。&lt;/em&gt;&lt;/p&gt;
 
-&lt;p&gt;简单来说，用一个vocab_size*2+1大小的数组存储树的&lt;r&gt;全部节点&lt;/r&gt;，其中前vocab_size个元素为全部的&lt;r&gt;叶子节点&lt;/r&gt;且按词频降序排列；后面的元素表示&lt;r&gt;中间结点&lt;/r&gt;，且初始化词频为1e15。用两个变量&lt;r&gt;pos1&lt;/r&gt;,&lt;r&gt;pos2&lt;/r&gt;记录构造树的情况，其中pos1指向vocab_size-1，pos2指向vocab_size。每次从pos1,pos2选取词频较小的那个结点，并相应的向前或向后移动，更新pos。选择两次，合并两个选中的结点为一棵新树。在构建树的过程中，还需要记录各个节点的编码。&lt;/p&gt;
+&lt;h4 id=&#34;3-词频和窗口:d45865320239d7818255e82b856775aa&#34;&gt;3. 词频和窗口&lt;/h4&gt;
+
+&lt;p&gt;删除小于阈值(min_count)的低频词，对高频词采用&lt;r&gt;subsampling&lt;/r&gt;，可以提高训练速度和词向量精度。具体做法：给定一个阈值t，对于词w，以\(prob(w) = 1-(\sqrt{(\frac{t}{f(w)})} + \frac{t}{f(w)})\)的概率舍弃。&lt;/p&gt;
+
+&lt;p&gt;模型训练以行为单位进行，对于一个给定行，包含T个词，每个词为一个训练样本，对于某个词w，定义context(w)为：设置一个窗口阈值参数window(5)，每次构造context(w)时，生成一个随机数\(c \in [1, window]\)，w前后各取c个词构成context。&lt;/p&gt;
+
+&lt;h4 id=&#34;4-创建huffman树:d45865320239d7818255e82b856775aa&#34;&gt;4. 创建huffman树&lt;/h4&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://ocwpxekrq.bkt.clouddn.com/huffman.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;简单来说，用一个vocab_size*2+1大小的数组存储树的&lt;r&gt;全部节点&lt;/r&gt;，其中前vocab_size个元素为全部的&lt;r&gt;叶子节点&lt;/r&gt;且按词频降序排列；后面的元素表示&lt;r&gt;中间结点&lt;/r&gt;，且初始化词频为1e15。用两个变量&lt;r&gt;pos1&lt;/r&gt;,&lt;r&gt;pos2&lt;/r&gt;记录构造树的情况，其中pos1指向vocab_size-1，pos2指向vocab_size。每次从pos1,pos2选取词频较小的那个结点，并相应的向前或向后移动，更新pos。选择两次，合并两个选中的结点为一棵新树。&lt;/p&gt;
+
+&lt;p&gt;在构建树的过程中，不断更新中间结点的词频，并保存各个节点的编码(0/1)，各个节点的父节点(层次信息)。从叶子节点(词)回溯，得出该词在树中的&lt;r&gt;路径&lt;/r&gt;和&lt;r&gt;huffman编码&lt;/r&gt;。&lt;/p&gt;
 
 &lt;p&gt;详见&lt;r&gt;CreateBinaryTree&lt;/r&gt;函数。&lt;/p&gt;
 
-&lt;h4 id=&#34;4-负采样:d45865320239d7818255e82b856775aa&#34;&gt;4. 负采样&lt;/h4&gt;
+&lt;h4 id=&#34;5-负采样:d45865320239d7818255e82b856775aa&#34;&gt;5. 负采样&lt;/h4&gt;
 
 &lt;p&gt;假设词典中的每个词w对应一个线段l(w),其长度为：&lt;/p&gt;
 
 &lt;p&gt;$$len(w) = \frac{[counter(w)]^{0.75}}{\sum\limits_{u \in D} [counter(u)]^{0.75}} $$&lt;/p&gt;
 
-&lt;p&gt;将这些线段首尾相接拼接在一起，形成一个长度为1的线段。随机往这个线段上打点，则高频词被打中的概率大。将这个单位线段等距离分割成M份(M&amp;gt;&amp;gt;N)，每次生成一个[0,M-1]的随机数r，r对应的词即为采样。&lt;/p&gt;
+&lt;p&gt;将这些线段首尾相接拼接在一起，形成一个长度为1的线段。随机往这个线段上打点，则高频词被打中的概率大。将这个单位线段等距离分割成M份(M远大于N,\(M=10^8\))，每次生成一个[0,M-1]的随机数r，r对应的词即为采样。有点类似k-means++的做法。&lt;/p&gt;
 
 &lt;p&gt;详见&lt;r&gt;InitUnigramTable&lt;/r&gt;函数。&lt;/p&gt;
 
-&lt;h4 id=&#34;5-学习率:d45865320239d7818255e82b856775aa&#34;&gt;5. 学习率&lt;/h4&gt;
+&lt;h4 id=&#34;6-学习率-eta:d45865320239d7818255e82b856775aa&#34;&gt;6. 学习率\(\eta\)&lt;/h4&gt;
 
-&lt;p&gt;自适应&lt;/p&gt;
+&lt;p&gt;学习率采用&lt;r&gt;自适应&lt;/r&gt;的方法，具体为：预先设置一个初始学习率(0.025)，每处理完固定数目(10000)个词，对学习率进行一次调整。&lt;/p&gt;
 
-&lt;h4 id=&#34;6-多线程并行:d45865320239d7818255e82b856775aa&#34;&gt;6. 多线程并行&lt;/h4&gt;
+&lt;p&gt;$$\eta = \eta_{0}(1-\frac{word\_count\_actual}{train\_words+1})$$&lt;/p&gt;
+
+&lt;p&gt;随着训练的进行\(\eta\)会逐渐变小，当小于阈值\(\eta_{min}\)时，\(\eta = \eta_{min}\)&lt;/p&gt;
+
+&lt;h4 id=&#34;7-多线程并行:d45865320239d7818255e82b856775aa&#34;&gt;7. 多线程并行&lt;/h4&gt;
 
 &lt;p&gt;整个工作流程是：首先读取语料库中词表并统计词频，做一些模型初始化工作，然后多线程训练word2vec，判断classes，如果为0，则保存词向量；反之，对得到的词向量进行K-means聚类，聚类个数为classes，并保存聚类结果。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;pthread_t *pt = (pthread_t *)malloc(num_threads * sizeof(pthread_t));
+for (a = 0; a &amp;lt; num_threads; a++)
+    pthread_create(&amp;amp;pt[a], NULL, TrainModelThread, (void *)a);
+for (a = 0; a &amp;lt; num_threads; a++)
+    pthread_join(pt[a], NULL);
+//平衡划分语料文件
+fseek(fi, file_size / (long long)num_threads * (long long)id, SEEK_SET);
+&lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;并行的&lt;r&gt;关键&lt;/r&gt;在于&lt;strong&gt;如何分割好并行的任务和如何达成任务之间的良好通信&lt;/strong&gt;。word2vec根据&lt;r&gt;线程数将语料划分成若干份&lt;/r&gt;，每个线程负责语料库的一部分，但训练的神经网络、词向量和哈夫曼树是共享的。首先根据文件指针读取一个句子，用一个数组保存下句子中的每个词；然后根据命令行参数，选择训练CBOW或Skip-gram，其中每个模型都可以采用hs或negative的框架训练。&lt;/p&gt;
 
