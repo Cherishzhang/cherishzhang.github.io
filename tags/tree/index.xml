@@ -404,6 +404,8 @@ input: 给定训练集S，测试集T，特征维数F。确定参数集(CART的�
 
 &lt;h3 id=&#34;源码分析:998e3d52f8819c2e5f687d19cc26909b&#34;&gt;源码分析&lt;/h3&gt;
 
+&lt;h4 id=&#34;impurity:998e3d52f8819c2e5f687d19cc26909b&#34;&gt;Impurity&lt;/h4&gt;
+
 &lt;p&gt;DecisionTree&lt;/p&gt;
 
 &lt;p&gt;DecisionTreeModel&lt;/p&gt;
