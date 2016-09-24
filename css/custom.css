@@ -1,20 +1,29 @@
 body{
-    font-family:'Microsoft YaHei',Arial,'Times New Roman',SimHei;
-    color:#2d1111;;
+    font-family:arial,sans-serif,"Helvetica Neue",Helvetica;
+    color:#000;
+    background-color:#f8ffff;
 }
 r {padding:2px 4px;
-font-size: 90%;
+font-size: 95%;
 color: #c7254e;
 background-color: #f9f2f4;
+border-radius: 4px;}
+
+gr {padding:2px 4px;
+font-size: 105%;
+color: #000;
+background-color: #FFB90F;
 border-radius: 4px;}
 
 code{
   border-radius: 4px;
 }
+h2>a {font-size: 18px;color: #1a0dab;}
 h3 {font-size: 1.0rem;}
 h4 { font-size: 0.9rem; color:rgb(0,0,140);}
 h5,
 h6 { font-size: 0.8rem; }
 article{
-    width: 800px;
+    width: 850px;
+    background-color: #fff;
 }

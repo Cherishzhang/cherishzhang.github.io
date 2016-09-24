@@ -3,12 +3,17 @@
   
   <url>
     <loc>http://cherishzhang.github.io/</loc>
-    <lastmod>2016-09-08T00:00:00+00:00</lastmod>
+    <lastmod>2016-09-22T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>http://cherishzhang.github.io/post/kaggle/recommender/</loc>
+    <loc>http://cherishzhang.github.io/post/cplus/basic/</loc>
+    <lastmod>2016-09-22T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://cherishzhang.github.io/post/rec/recommender/</loc>
     <lastmod>2016-09-08T00:00:00+00:00</lastmod>
   </url>
   
@@ -18,13 +23,8 @@
   </url>
   
   <url>
-    <loc>http://cherishzhang.github.io/post/word2vec/</loc>
+    <loc>http://cherishzhang.github.io/post/ml/word2vec/</loc>
     <lastmod>2016-08-05T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://cherishzhang.github.io/post/ml/random_forest/</loc>
-    <lastmod>2016-08-03T00:00:00+00:00</lastmod>
   </url>
   
   <url>

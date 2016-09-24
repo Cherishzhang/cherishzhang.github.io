@@ -6,241 +6,11 @@
     <description>Recent content in Machine Learning on Learn and record</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 03 Aug 2016 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 01 Aug 2016 00:00:00 +0000</lastBuildDate>
     <atom:link href="http://cherishzhang.github.io/tags/machine-learning/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
-      <title>Random Forest</title>
-      <link>http://cherishzhang.github.io/post/ml/random_forest/</link>
-      <pubDate>Wed, 03 Aug 2016 00:00:00 +0000</pubDate>
-      
-      <guid>http://cherishzhang.github.io/post/ml/random_forest/</guid>
-      <description>
-
-&lt;h2 id=&#34;1-intro:00635f635026fbac82e8a20eddd81309&#34;&gt;1. Intro&lt;/h2&gt;
-
-&lt;p&gt;基本原理：一个由多个决策树构成的森林，算法分类结果由这些决策树投票得到，决策树在生成的过程当中分别在行方向和列方向上添加&lt;r&gt;随机过程&lt;/r&gt;，行方向上构建决策树时采用&lt;r&gt;放回抽样&lt;/r&gt;（bootstraping）得到训练数据，列方向上采用&lt;r&gt;无放回随机抽样&lt;/r&gt;得到特征子集，并据此得到其最优切分点。&lt;strong&gt;随机森林通过多个决策树投票结果进行分类，算法不容易出现过度拟合问题。&lt;/strong&gt;&lt;/p&gt;
-
-&lt;h2 id=&#34;2-construct:00635f635026fbac82e8a20eddd81309&#34;&gt;2. Construct&lt;/h2&gt;
-
-&lt;p&gt;分为两方面:&lt;strong&gt;&lt;r&gt;数据&lt;/r&gt;&lt;/strong&gt;的随机性选取，以及&lt;strong&gt;&lt;r&gt;待选特征&lt;/r&gt;&lt;/strong&gt;的随机选取。&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;p&gt;&lt;strong&gt;数据&lt;/strong&gt;&lt;/p&gt;
-
-&lt;ol&gt;
-&lt;li&gt;从原始数据集中&lt;strong&gt;有放回&lt;/strong&gt;的抽样，构造子数据集，子数据集的数据量和原始数据集相同。&lt;/li&gt;
-&lt;li&gt;利用子数据集构建子决策树&lt;/li&gt;
-&lt;/ol&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;待选特征&lt;/p&gt;
-
-&lt;ol&gt;
-&lt;li&gt;在子树的每一个分裂过程中并未用到所有的待选特征。&lt;/li&gt;
-&lt;li&gt;从原始特征无放回随机抽取一定比例的特征，用所抽取的特征集作特征选择。&lt;/li&gt;
-&lt;li&gt;假设总的特征数量是M，则比例可为\(\sqrt{M}, \frac{1}{2}\sqrt{M}, 2\sqrt{M}\)。&lt;/li&gt;
-&lt;/ol&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;训练过程：&lt;br/&gt;
-input: 给定训练集S，测试集T，特征维数F。确定参数集(CART的数量t，每棵树的深度d，每个节点用到的特征数量f，终止条件：节点上最少的样本数，节点上最少的信息增益m)&lt;/p&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;对于i = 1,2,&amp;hellip;,t;&lt;/p&gt;
-
-&lt;blockquote&gt;
-&lt;p&gt;(1) 从S中有放回的抽样，生成一个大小和S相同的训练集S(i)，作为根节点的样本集，从根节点开始训练。&lt;br/&gt;
-(2) a. 如果当前节点满足终止条件，则设置当前节点为叶子节点。&lt;/p&gt;
-
-&lt;blockquote&gt;
-&lt;ul&gt;
-&lt;li&gt;分类问题，该叶子节点的预测输出为当前样本集和中数量最多的那一类C(j),概率p为c(j)占当前样本集的比例；&lt;/li&gt;
-&lt;li&gt;回归问题，预测输出为当前样本集所有样本的平均值。&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;(2) b. 如果不满足终止条件，则从F维特征中无放回的随机选取f维特征。利用这f维特征，寻找分类效果最好的那一维特征k及阈值th。当前节点上样本第k维特征小于th的样本被划分到左节点，其余的被划分到右节点。&lt;/p&gt;
-
-&lt;p&gt;(3) 重复(1)(2)直到所有节点都被训练过或标记为叶子节点。 &lt;br/&gt;
-(4) 重复(1)(2)(3)直到所有的决策树被训练过。 &lt;br/&gt;&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;ul&gt;
-&lt;li&gt;预测过程：&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;对于i = 1,2,&amp;hellip;,t;&lt;/p&gt;
-
-&lt;blockquote&gt;
-&lt;p&gt;(1) 从当前树的根节点开始，根据节点对应阈值th，判断是进入左节点还是右节点，直到到达某个叶子节点，并输出预测值。&lt;br/&gt;
-(2) 重复执行(1)，直到得到所有树的预测值。&lt;strong&gt;分类问题&lt;/strong&gt;，则输出所有树中预测概率总和最大的那一类，即对每个c(j)的p进行累计；&lt;strong&gt;回归问题&lt;/strong&gt;，则输出为所有树的平均预测值。&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;h2 id=&#34;3-evaluation:00635f635026fbac82e8a20eddd81309&#34;&gt;3. Evaluation&lt;/h2&gt;
-
-&lt;p&gt;rf无需交叉验证来评价分类的准确性，本身自带OOB（out-of-bag）错误估计。&lt;/p&gt;
-
-&lt;h2 id=&#34;4-spark-mllib:00635f635026fbac82e8a20eddd81309&#34;&gt;4. Spark MLlib&lt;/h2&gt;
-
-&lt;p&gt;(1)切分点抽样统计&lt;/p&gt;
-
-&lt;p&gt;在单机环境下的决策树对连续变量进行切分点选择时，一般是通过对特征点进行排序，然后取相邻两个数之间的点作为切分点，这在单机环境下是可行的，但如果在分布式环境下如此操作的话，会带来大量的网络传输操作，特别是当数据量达到 PB 级时，算法效率将极为低下。为避免该问题，Spark 中的随机森林在构建决策树时，会对各分区采用一定的子特征策略进行抽样，然后生成各个分区的统计数据，并最终得到切分点。&lt;/p&gt;
-
-&lt;p&gt;(2)特征装箱（Binning）&lt;/p&gt;
-
-&lt;p&gt;决策树的构建过程就是对特征的取值不断进行划分的过程，对于离散的特征，如果有 M 个值，最多\(2^M-1\)个划分，如果值是有序的，那么就最多 M-1 个划分。比如年龄特征，有老，中，少 3 个值，如果无序有\(2^M-1\)个，即 3 种划分：老|中，少；老，中|少；老，少|中；如果是有序的，即按老，中，少的序，那么只有 m-1 个，即 2 种划分，老|中，少；老，中|少。对于连续的特征，其实就是进行范围划分，而划分的点就是 split（切分点），划分出的区间就是 bin。对于连续特征，理论上 split 是无数的，在分布环境下不可能取出所有的值，因此它采用的是（1）中的切点抽样统计方法。&lt;/p&gt;
-
-&lt;p&gt;(3)逐层训练（level-wise training）&lt;/p&gt;
-
-&lt;p&gt;单机版本的决策数生成过程是通过递归调用（本质上是深度优先）的方式构造树，在构造树的同时，需要移动数据，将同一个子节点的数据移动到一起。此方法在分布式数据结构上无法有效的执行，而且也无法执行，因为数据太大，无法放在一起，所以在分布式环境下采用的策略是逐层构建树节点（本质上是广度优先），这样遍历所有数据的次数等于所有树中的最大层数。每次遍历时，只需要计算每个节点所有切分点统计参数，遍历完后，根据节点的特征划分，决定是否切分，以及如何切分。&lt;/p&gt;
-
-&lt;h2 id=&#34;5-codes:00635f635026fbac82e8a20eddd81309&#34;&gt;5. Codes&lt;/h2&gt;
-
-&lt;p&gt;参考sklearn.ensemble.RandomForestRegressor，sklearn.ensemble.RandomForestClassifier&lt;/p&gt;
-
-&lt;p&gt;输入参数&lt;/p&gt;
-
-&lt;table&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th&gt;名称&lt;/th&gt;
-&lt;th&gt;说明&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td&gt;n_estimators&lt;/td&gt;
-&lt;td&gt;一个森林中决策树的个数&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td&gt;criterion&lt;/td&gt;
-&lt;td&gt;分类准则，如&amp;rsquo;rmse&amp;rsquo;,&amp;lsquo;gini&amp;rsquo;&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td&gt;max_depth&lt;/td&gt;
-&lt;td&gt;树的最大深度，tree-specific&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td&gt;min_samples_split&lt;/td&gt;
-&lt;td&gt;中间节点分裂前的最少样本数，tree-specific&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td&gt;min_samples_leaf&lt;/td&gt;
-&lt;td&gt;新生成叶节点上的最少样本数，tree-specific&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td&gt;min_weight_fraction_leaf&lt;/td&gt;
-&lt;td&gt;叶节点上样本数占全部样本的最小比例值，tree-specific&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td&gt;max_features&lt;/td&gt;
-&lt;td&gt;每个节点用到的特征数量，tree-specific&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td&gt;max_leaf_nodes&lt;/td&gt;
-&lt;td&gt;每棵树中的叶节点能达到的最大值，tree-specific&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td&gt;bootstrap&lt;/td&gt;
-&lt;td&gt;是否构建决策树过程中，对样本进行bootstrap&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td&gt;oob_score&lt;/td&gt;
-&lt;td&gt;是否使用out-of-bag样本估计泛化误差&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td&gt;n_jobs&lt;/td&gt;
-&lt;td&gt;并行运行的进程数，默认等于CPU的核数&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td&gt;random_state&lt;/td&gt;
-&lt;td&gt;随机生成器的种子&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td&gt;verbose&lt;/td&gt;
-&lt;td&gt;是否输出构建过程中的信息&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td&gt;warm_start&lt;/td&gt;
-&lt;td&gt;设置为是，则使用上次拟合后的solution，再附加决策树，否则，拟合一个新的森林&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td&gt;class_weight&lt;/td&gt;
-&lt;td&gt;类别权重列表&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;p&gt;模型属性&lt;/p&gt;
-
-&lt;table&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th&gt;名称&lt;/th&gt;
-&lt;th&gt;说明&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td&gt;estimators_&lt;/td&gt;
-&lt;td&gt;&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td&gt;classes_&lt;/td&gt;
-&lt;td&gt;&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td&gt;n&lt;em&gt;classes&lt;/em&gt;&lt;/td&gt;
-&lt;td&gt;&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td&gt;n&lt;em&gt;features&lt;/em&gt;&lt;/td&gt;
-&lt;td&gt;&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td&gt;n_outputs&lt;/td&gt;
-&lt;td&gt;&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td&gt;feature&lt;em&gt;importances&lt;/em&gt;&lt;/td&gt;
-&lt;td&gt;&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td&gt;oob_score&lt;/td&gt;
-&lt;td&gt;&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;h2 id=&#34;参考链接:00635f635026fbac82e8a20eddd81309&#34;&gt;参考链接&lt;/h2&gt;
-
-&lt;p&gt;&lt;a href=&#34;http://www.cnblogs.com/hrlnw/p/3850459.html&#34;&gt;RandomForest随机森林总结&lt;/a&gt;&lt;/p&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>决策树</title>
+      <title>[ml] Decision Tree模型</title>
       <link>http://cherishzhang.github.io/post/ml/decision_tree/</link>
       <pubDate>Mon, 01 Aug 2016 00:00:00 +0000</pubDate>
       
@@ -257,7 +27,7 @@ input: 给定训练集S，测试集T，特征维数F。确定参数集(CART的�
 
 &lt;h2 id=&#34;2-准则函数:998e3d52f8819c2e5f687d19cc26909b&#34;&gt;2.准则函数&lt;/h2&gt;
 
-&lt;p&gt;主要用来衡量节点数据集合的有序性，有&lt;r&gt;熵&lt;/r&gt;，&lt;r&gt;基尼指数(Gini)&lt;/r&gt;，&lt;r&gt;方差&lt;/r&gt;，其中前两种针对分类问题，而方差针对回归问题。寻找最好的分割点是通过量化&lt;strong&gt;分割后&lt;/strong&gt;类的纯度来确定的，计算方式总结如下表：&lt;/p&gt;
+&lt;p&gt;主要用来衡量节点数据集合的有序性，有&lt;r&gt;熵(Entropy)&lt;/r&gt;，&lt;r&gt;基尼指数(Gini)&lt;/r&gt;，&lt;r&gt;方差(Variance)&lt;/r&gt;，其中前两种针对分类问题，而方差针对回归问题。寻找最好的分割点是通过量化&lt;strong&gt;分割后&lt;/strong&gt;类的纯度来确定的，计算方式总结如下表：&lt;/p&gt;
 
 &lt;table&gt;
 &lt;thead&gt;
@@ -271,68 +41,37 @@ input: 给定训练集S，测试集T，特征维数F。确定参数集(CART的�
 
 &lt;tbody&gt;
 &lt;tr&gt;
-&lt;td&gt;熵Entropy&lt;/td&gt;
-&lt;td&gt;-&lt;/td&gt;
-&lt;td&gt;随机变量X不确定性的度量，X的概率分布为\(P(X=x_i) = p_i\)&lt;/td&gt;
-&lt;td&gt;\(H(X) =-\sum_{i=1}^{n} p_ilogp_i\)&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td&gt;条件熵&lt;/td&gt;
-&lt;td&gt;-&lt;/td&gt;
-&lt;td&gt;已知随机变量X的条件下随机变量Y的不确定性&lt;/td&gt;
-&lt;td&gt;\(H(Y|X)=\sum_{i=1}^n p_i H(Y|x=x_i)\)&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td&gt;信息增益(互信息)&lt;/td&gt;
-&lt;td&gt;分类ID3&lt;/td&gt;
-&lt;td&gt;特征A对训练集D的信息增益，&lt;strong&gt;值越大，特征分类能力越强&lt;/strong&gt;&lt;/td&gt;
-&lt;td&gt;\(g(D,A)=H(D)-H(D|A)\)&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td&gt;信息增益比&lt;/td&gt;
-&lt;td&gt;分类C4.5&lt;/td&gt;
-&lt;td&gt;校正信息增益存在&lt;strong&gt;偏向选择取值较多的特征&lt;/strong&gt;的缺点，n是特征A的取值个数&lt;/td&gt;
-&lt;td&gt;\(g_R(D,A) = \frac{g(D,A)}{H_A(D)}\), \(H_A(D)= \frac{|D_i|}{|D|}*log_2(\frac{|D_i|}{|D|})\)&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td&gt;基尼&lt;/td&gt;
-&lt;td&gt;-&lt;/td&gt;
-&lt;td&gt;假设有K类，样本点属于第i类的概率为\(p_i\)，表示集合不确定性&lt;/td&gt;
-&lt;td&gt;\(Gini(D) = \sum_{i=1}^{K} p_i*(1-p_i)\)&lt;/td&gt;
+&lt;td&gt;熵&lt;/td&gt;
+&lt;td&gt;分类&lt;/td&gt;
+&lt;td&gt;假设有K类，样本点属于第i类的概率为\(p_i\)，度量数据的不确定性&lt;/td&gt;
+&lt;td&gt;\(E(D) =\sum_{i=1}^{K} -p_ilogp_i\)&lt;/td&gt;
 &lt;/tr&gt;
 
 &lt;tr&gt;
 &lt;td&gt;基尼&lt;/td&gt;
 &lt;td&gt;分类&lt;/td&gt;
-&lt;td&gt;经过A=a分割后集合D的不确定性&lt;/td&gt;
-&lt;td&gt;\(Gini(D,A)=\frac{|D1|}{|D|} Gini(D1) + \frac{|D2|}{|D|} Gini(D2)\)&lt;/td&gt;
+&lt;td&gt;同上&lt;/td&gt;
+&lt;td&gt;\(Gini(D) = \sum_{i=1}^{K} p_i*(1-p_i)\)&lt;/td&gt;
 &lt;/tr&gt;
 
 &lt;tr&gt;
 &lt;td&gt;方差&lt;/td&gt;
 &lt;td&gt;回归&lt;/td&gt;
-&lt;td&gt;平方误差最小，求解最优输出值&lt;/td&gt;
-&lt;td&gt;\(\frac{1}{N} \sum_{i=1}^N (y_i-\mu)^2\),\(\mu = \frac{1}{N} \sum_{i=1}^N y_i\)&lt;/td&gt;
+&lt;td&gt;度量数据的离散程度&lt;/td&gt;
+&lt;td&gt;\(Variance(D) = \frac{1}{N} \sum_{i=1}^N (y_i-\mu)^2\),\(\mu = \frac{1}{N} \sum_{i=1}^N y_i\)&lt;/td&gt;
 &lt;/tr&gt;
 &lt;/tbody&gt;
 &lt;/table&gt;
 
-&lt;p&gt;&lt;strong&gt;信息增益&lt;/strong&gt;&lt;br/&gt;
-定义： 得知特征X的信息而使类Y的信息&lt;r&gt;不确定减少&lt;/r&gt;的程度。信息增益大的特征有更强的分类能力。&lt;br/&gt;
-计算：\(g(D,A) = H(D)-H(D|A)\)。 即 &lt;r&gt;特征A的信息增益 = D的经验熵 - A对D的经验条件熵&lt;/r&gt;&lt;br/&gt;
-方法： 对训练数据集（或子集）D，计算其每个特征的信息增益，比较大小，从中选择信息增益大的特征。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;信息增益&lt;/strong&gt;: 得知某特征X的信息而使目标Y的信息&lt;r&gt;不确定减少&lt;/r&gt;的程度。信息增益大的特征有更强的分类能力。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;具体方法&lt;/strong&gt;：对训练集D，计算每个特征的信息增益，比较大小，选择信息增益大的特征列来分割集合。假设分割点将数据集分成左右两部分，则信息增益为 \( IG(D,s) = Impurity(D) - \frac{N_{left}}{N} Impurity(D_{left}) - \frac{N_{right}}{N} Impurity(D_{right})\)&lt;/p&gt;
+
+&lt;p&gt;ID3s算法选择信息增益作分类，为了校正信息增益存在“偏向选择取值较多的特征”的缺点，C4.5采用&lt;r&gt;信息增益比&lt;/r&gt;\(IG_R(D,s) = \frac{IG(D,s)}{E_s(D)}\), \(E_s(D)= \sum_{i=1}^K -\frac{|D_i|}{|D|}*log_2(\frac{|D_i|}{|D|})\), 其中K是特征s的取值个数。&lt;/p&gt;
 
 &lt;h2 id=&#34;3-生成算法:998e3d52f8819c2e5f687d19cc26909b&#34;&gt;3 生成算法&lt;/h2&gt;
 
 &lt;p&gt;&lt;strong&gt;具体方法&lt;/strong&gt;：从根节点开始，计算所有可能的特征的准则值(应用准则函数)，选择最优的特征作为节点的特征，由该特征的不同取值建立子节点；再对子节点递归调用以上方法，构建决策树。&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;结束条件&lt;/strong&gt;：直到所有特征的信息增益均很小或没有特征可选择为止。&lt;/p&gt;
-
-&lt;p&gt;ID3算法应用&lt;r&gt;信息增益&lt;/r&gt;选择特征；C4.5对此进行改进，应用&lt;r&gt;信息增益比&lt;/r&gt;选择特征。&lt;/p&gt;
 
 &lt;h4 id=&#34;cart:998e3d52f8819c2e5f687d19cc26909b&#34;&gt;CART&lt;/h4&gt;
 
@@ -355,19 +94,21 @@ input: 给定训练集S，测试集T，特征维数F。确定参数集(CART的�
 
 &lt;h2 id=&#34;4-剪枝过程-pruning:998e3d52f8819c2e5f687d19cc26909b&#34;&gt;4 剪枝过程(pruning)&lt;/h2&gt;
 
-&lt;p&gt;将已生成的树进行简化的过程，通过极小化决策树整体的损失函数（loss function）来实现。 分为前向剪枝和后向剪枝。&lt;/p&gt;
+&lt;p&gt;将已生成的树进行简化的过程，通过极小化决策树整体的损失函数（loss function）来实现。 分为前向剪枝和后向剪枝。前向剪枝是在构造决策树的同时对树进行剪枝；后向剪枝是在决策树构建完成后，对树从根节点向上递归剪枝。&lt;/p&gt;
 
 &lt;h2 id=&#34;5-mllib实现:998e3d52f8819c2e5f687d19cc26909b&#34;&gt;5.MLlib实现&lt;/h2&gt;
 
 &lt;h4 id=&#34;连续值特征:998e3d52f8819c2e5f687d19cc26909b&#34;&gt;连续值特征&lt;/h4&gt;
 
-&lt;p&gt;对于连续值类型的特征，单个机器上选取全部唯一值作为切分点候选。加速计算的方法是对唯一值集合进行排序，用排序好的数组做候选集。&lt;/p&gt;
+&lt;p&gt;对于连续值类型的特征，单台机器上的做法是选取所有出现过的值作为切分点候选集。加速计算的方法是对该集合按值大小排序，用排序好的数组做候选集。&lt;/p&gt;
 
-&lt;p&gt;在分布式中，对于规模大的数据集，排序是比较耗时的。于是先对整体数据按一定比例采样，然后&lt;r&gt;采用分位数(等频分箱)作为分割点的近似候选集&lt;/r&gt;。规定分箱总数不能超过训练样本的实例数(maxBins的默认值为32)。&lt;/p&gt;
+&lt;p&gt;在分布式中，对于规模大的数据集，排序是比较耗时的。于是先&lt;r&gt;对整体数据按比例采样&lt;/r&gt;，然后&lt;r&gt;采用分位数(等频分箱)作为分割点的近似候选集&lt;/r&gt;(&lt;gr&gt;&lt;strong&gt;优化点&lt;/strong&gt;&lt;/gr&gt;)。&lt;/p&gt;
+
+&lt;p&gt;&lt;r&gt;采样策略&lt;/r&gt;为选取样本集中的&lt;strong&gt;&lt;r&gt;max&lt;/r&gt;(maxBins*maxBins, 10000)&lt;/strong&gt;条记录。&lt;r&gt;等频分箱策略&lt;/r&gt;有三种(&lt;strong&gt;Sort&lt;/strong&gt;,MinMax,ApproxHist)，目前只支持第一种。规定分箱总数不能超过训练样本的实例数(maxBins的默认值为32)。&lt;/p&gt;
 
 &lt;h4 id=&#34;类别值特征:998e3d52f8819c2e5f687d19cc26909b&#34;&gt;类别值特征&lt;/h4&gt;
 
-&lt;p&gt;如果一个离散的特征，有m个值，那么最多产生\(2^{m-1}-1\)种划分可能。对于二分类或回归问题，可以将划分候选缩减到m-1种可能。&lt;/p&gt;
+&lt;p&gt;对于离散值类型的特征，有m个值，那么最多产生\(2^{m-1}-1\)种划分可能，\(2*(2^{m-1}-1)\)个分箱。对于二分类或回归问题，可以将划分候选缩减到m-1种可能。&lt;/p&gt;
 
 &lt;p&gt;举个例子，在二分类问题中，一个特征有A,B,C三个值。特征值为A的样本集中label是1的比例为0.2，B和C分别为0.6，0.4。则产生了一个类别值的有序序列ACB，共有两种划分可能：A|C,B，A,C|B。&lt;/p&gt;
 
@@ -375,7 +116,11 @@ input: 给定训练集S，测试集T，特征维数F。确定参数集(CART的�
 
 &lt;h4 id=&#34;bin和split:998e3d52f8819c2e5f687d19cc26909b&#34;&gt;bin和split&lt;/h4&gt;
 
-&lt;p&gt;split是划分点，bin是划分区间。bin中预先计算样本的统计信息，节省计算开销。&lt;strong&gt;分类问题&lt;/strong&gt;，bin中保存训练样本个数 (count) 以及各 label 数目 (count for label)；&lt;strong&gt;回归问题&lt;/strong&gt;，bin中保存训练样本个数 (count)、 label 之和 (sum) 以及 label 的平方和 (squared sum)。特征选择时，统计同一分区下，选择不同切分变量时，对应bin中的信息（ImpurityAggregator），合并所有分区，确定最佳切分变量和切分点，从而实现并行化。&lt;/p&gt;
+&lt;p&gt;split是划分点，bin是划分区间。每个特征都分别有一组bin和split。&lt;/p&gt;
+
+&lt;p&gt;其中bin中&lt;r&gt;预先计算样本的统计信息&lt;/r&gt;，节省计算开销(&lt;gr&gt;&lt;strong&gt;优化点&lt;/strong&gt;&lt;/gr&gt;)。&lt;strong&gt;分类问题&lt;/strong&gt;，bin中保存训练样本个数 (count) 以及各 label 数目 (count for label)；&lt;strong&gt;回归问题&lt;/strong&gt;，bin中保存训练样本个数 (count)、 label 之和 (sum) 以及 label 的平方和 (squared sum)。&lt;/p&gt;
+
+&lt;p&gt;特征选择时，对于某个特征，计算不同切分变量下信息增益的大小，确定出该特征下的最佳切分点。选择全部候选特征集中最优的切分点作为当前决策。特征选择是树的level级别的并行，对于同一层次的节点，查找可以并行，查找操作的时间复杂度为O(L),L为树的层数(&lt;gr&gt;&lt;strong&gt;优化点&lt;/strong&gt;&lt;/gr&gt;)。&lt;/p&gt;
 
 &lt;h4 id=&#34;终止条件:998e3d52f8819c2e5f687d19cc26909b&#34;&gt;终止条件&lt;/h4&gt;
 
@@ -384,35 +129,103 @@ input: 给定训练集S，测试集T，特征维数F。确定参数集(CART的�
 (2)minInfoGain，当前节点的所有属性分割带来的信息增益都比这个值要小 &lt;br/&gt;
 (3)minInstancesPerNode，需要保证节点分割出的左右子节点的最少的样本数量达到这个值 &lt;br/&gt;&lt;/p&gt;
 
-&lt;h4 id=&#34;关键优化点:998e3d52f8819c2e5f687d19cc26909b&#34;&gt;关键优化点&lt;/h4&gt;
+&lt;h4 id=&#34;源码分析:998e3d52f8819c2e5f687d19cc26909b&#34;&gt;源码分析&lt;/h4&gt;
 
-&lt;ol&gt;
-&lt;li&gt;查找最优split，是树的level级别的并行，处于同一层次的节点，查找是并行的。查找次数的时间复杂度为O(L）,其中L是树的层数。&lt;/li&gt;
-&lt;li&gt;对于连续值特征，采用分位数（等频分箱）作为split的候选集，减少了大规模数据的计算开销。&lt;br /&gt;&lt;/li&gt;
-&lt;li&gt;统计信息在bin中计算，节省开销。&lt;br /&gt;&lt;/li&gt;
-&lt;/ol&gt;
+&lt;p&gt;下面就一起揭开decision tree的真正面纱吧！&lt;/p&gt;
 
-&lt;h4 id=&#34;参数:998e3d52f8819c2e5f687d19cc26909b&#34;&gt;参数&lt;/h4&gt;
+&lt;p&gt;&lt;img src=&#34;http://ocwpxekrq.bkt.clouddn.com/DecisionTree.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
 
-&lt;p&gt;&lt;r&gt;categoricalFeaturesInfo&lt;/r&gt;: 若特征是离散型，需要显示指定类别个数，否则会当作连续值处理。&lt;/p&gt;
+&lt;p&gt;&lt;gr&gt;输入 - RDD[LabelPoint]&lt;/gr&gt;：
+LabelPoint类有两个属性label(标签值), features(特征向量)。将训练数据集转换为LabelPoint形式，作为决策树训练的输入之一。&lt;/p&gt;
 
-&lt;p&gt;&lt;r&gt;maxBins&lt;/r&gt;: 值越大，算法越有可能产生更多的划分候选，但随之也会增加通信和计算开销。如果存在m个值的离散特征，maxBins至少为m。&lt;/p&gt;
+&lt;p&gt;&lt;gr&gt;输入 - Strategy&lt;/gr&gt;:
+这是关于模型训练过程中需要指定的参数集。&lt;/p&gt;
 
-&lt;p&gt;&lt;r&gt;maxMemoryInMB&lt;/r&gt;: 用于统计计算的内存空间大小。&lt;/p&gt;
+&lt;p&gt;&lt;gr&gt;buildMetadata()&lt;/gr&gt;:
+DecisionTreeMetadata是一个决策树&lt;r&gt;元数据信息&lt;/r&gt;类，其中大部分属性和Strategy类重合。该函数的&lt;r&gt;功能&lt;/r&gt;: &lt;strong&gt;对于类别值特征，区分有序/无序；统计类别值特征的划分点数目和分箱数目。&lt;/strong&gt;是训练决策树模型的一个准备工作。&lt;/p&gt;
 
-&lt;p&gt;&lt;r&gt;subsamplingRate&lt;/r&gt;: 训练决策树时数据集的采样比例(随机森林和GBDT)。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;def buildMetadata(input:RDD[LabeledPoint], strategy:Strategy,
+numTrees: Int, featureSubsetStrategy: String):DecisionTreeMetadata =
+{...}
+&lt;/code&gt;&lt;/pre&gt;
 
-&lt;h3 id=&#34;源码分析:998e3d52f8819c2e5f687d19cc26909b&#34;&gt;源码分析&lt;/h3&gt;
+&lt;p&gt;对于每个类别值特征fi，&lt;r&gt;多分类情况下&lt;/r&gt;：首先计算最大可能分箱maxPossibleBins确定情况下，能够允许的最多类别值m，如果fi的类别值超过m，则当作有序处理；否则认为该特征是无序的，并计算分箱数。&lt;/p&gt;
 
-&lt;h4 id=&#34;impurity:998e3d52f8819c2e5f687d19cc26909b&#34;&gt;Impurity&lt;/h4&gt;
+&lt;p&gt;&lt;r&gt;二分类/回归情况下&lt;/r&gt;：当作有序处理，即numBins(fi) = numCategories(fi)。&lt;/p&gt;
 
-&lt;p&gt;DecisionTree&lt;/p&gt;
+&lt;p&gt;&lt;gr&gt;findSplitsBins&lt;/gr&gt;:
+这是DecisionTree.scala中一个方法，基于buildMetadata统计的划分点数目和分箱数，加上数据采样，确定每个特征的划分点值。&lt;/p&gt;
 
-&lt;p&gt;DecisionTreeModel&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;def findSplitsBins(input:RDD[LabeledPoint],
+metadata:DecisionTreeMetadata): (Array[Array[Split]], Array[Array[Bin]]) =
+{ ... }
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;如果存在连续值特征，则对数据集进行无放回采样，采样个数为max(maxBins*maxBins, 10000)。接着进行分箱操作（见findSplitsBinsBySorting函数，findSplitsForContinuousFeature函数）。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;treeRDD,BaggedRDD&lt;/strong&gt;:
+treeRDD的类型是：RDD[TreePoint],treePoint类有两个属性：label和binnedFeatures。BaggedPoint类有两个属性datum和subsampleWeights(在各个采样后数据集中的权重，即出现次数)。&lt;/p&gt;
+
+&lt;p&gt;&lt;gr&gt;findBestSplits&lt;/gr&gt;:
+对于当前节点，计算准则函数下的信息增益，选择最优切分特征和最优切分点。&lt;/p&gt;
+
+&lt;p&gt;&lt;gr&gt;其他&lt;/gr&gt;:&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;configuration&lt;/strong&gt;:&lt;/p&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;类名&lt;/th&gt;
+&lt;th&gt;枚举值&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;Algo&lt;/td&gt;
+&lt;td&gt;Classification, Regression&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;FeatureType&lt;/td&gt;
+&lt;td&gt;Continuous, Categorical&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;QuantileStrategy&lt;/td&gt;
+&lt;td&gt;Sort, MinMax, ApproxHist&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;EnsembleCombiningStrategy&lt;/td&gt;
+&lt;td&gt;Average, Sum, Vote&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;&lt;strong&gt;impurtiy,loss&lt;/strong&gt;:&lt;/p&gt;
+
+&lt;p&gt;Impurity是准则函数的抽象类，其三个子类分别为Gini,Variance,Entropy。Impurities是Impurity的工厂类，负责解析用户参数，选择对应的准则函数。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;private[mllib] object Impurities {
+  def fromString(name: String): Impurity = name match {
+    case &amp;quot;gini&amp;quot; =&amp;gt; Gini
+    case &amp;quot;entropy&amp;quot; =&amp;gt; Entropy
+    case &amp;quot;variance&amp;quot; =&amp;gt; Variance
+    case _ =&amp;gt; throw new IllegalArgumentException(s&amp;quot;Did not recognize
+    Impurity name: $name&amp;quot;)
+  }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Loss与Impurity情况类似，它是损失函数的抽象类，其三个子类分别是AbsoluteError,SquaredError,LogLoss。Losses是Loss的工厂类，负责判断损失的所属类别。&lt;/p&gt;
 
 &lt;h2 id=&#34;参考链接:998e3d52f8819c2e5f687d19cc26909b&#34;&gt;参考链接&lt;/h2&gt;
 
 &lt;p&gt;&lt;a href=&#34;http://spark.apache.org/docs/latest/mllib-decision-tree.html&#34;&gt;spark mllib - decision tree&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;统计学习方法，李航著&lt;/p&gt;
 </description>
     </item>
     

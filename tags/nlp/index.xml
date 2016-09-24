@@ -10,11 +10,11 @@
     <atom:link href="http://cherishzhang.github.io/tags/nlp/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
-      <title>word2vec模型和源码解析</title>
-      <link>http://cherishzhang.github.io/post/word2vec/</link>
+      <title>[ml] word2vec模型和源码解析</title>
+      <link>http://cherishzhang.github.io/post/ml/word2vec/</link>
       <pubDate>Fri, 05 Aug 2016 00:00:00 +0000</pubDate>
       
-      <guid>http://cherishzhang.github.io/post/word2vec/</guid>
+      <guid>http://cherishzhang.github.io/post/ml/word2vec/</guid>
       <description>
 
 &lt;h2 id=&#34;词向量:d45865320239d7818255e82b856775aa&#34;&gt;词向量&lt;/h2&gt;
