@@ -1,0 +1,249 @@
+
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+
+  
+  <meta charset="UTF-8">
+  <title>
+    计算机基础知识 - TCP/IP | Learn and record
+  </title>
+
+
+  
+  <meta name="viewport" content="width=device-width,user-scalable=no,maximum-scale=1,initial-scale=1">
+
+  
+  <link rel="canonical" href="http://cherishzhang.github.io/post/interviews/tcpip/"/>
+
+  
+  <link rel="stylesheet" href="/css/sanitize.css">
+  <link rel="stylesheet" href="/css/responsive.css">
+  <link rel="stylesheet" href="/css/highlight_monokai.css">
+  <link rel="stylesheet" href="/css/theme.css">
+  <link rel="stylesheet" href="/css/custom.css">
+
+  
+  <link href="http://cherishzhang.github.io/index.xml" rel="alternate" type="application/rss+xml" title="Learn and record" />
+  <link href="http://cherishzhang.github.io/index.xml" rel="feed" type="application/rss+xml" title="Learn and record" />
+
+  
+  
+  <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=default"></script>
+  <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-84092408-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+</head>
+
+
+
+<body>
+<div class="container">
+
+  
+  <header role="banner">
+    <div class="row gutters">
+      <div id="site-title" class="col span_6">
+        <h1><a href="http://cherishzhang.github.io/">Learn and record</a></h1>
+        
+      </div>
+      
+      <img src="/images/avatar.jpg" width="64" height="64" style="margin-left:30px;">
+      
+      <div id="social" class="col span_4">
+        <ul>
+          <li><a href="http://cherishzhang.github.io/about" target="_blank">About me</a></li>
+          <li><a href="https://github.com/Cherishzhang" target="_blank">GitHub</a></li>
+          <li><a href="mailto:cherishzhang920508@gmail.com" target="_blank">Email</a></li>
+        </ul>
+      </div>
+  </header>
+
+
+  
+  <main id="single" role="main">
+    <div class="article-header">
+      <h1>计算机基础知识 - TCP/IP</h1>
+      <div class="meta" >
+        Sep 22, 2016 &nbsp;
+        
+          #<a href="/tags/reviews">reviews</a>&nbsp;
+        
+          #<a href="/tags/tcp">tcp</a>&nbsp;
+        
+          #<a href="/tags/ip">ip</a>&nbsp;
+        
+          #<a href="/tags/socket">socket</a>&nbsp;
+        
+      </div>
+    </div>
+    <article style="padding:30px; border: 2px solid;border-radius: 4px; border-color: #ddd;">
+      
+
+<h2 id="tcp-ip参考模型:d8af67bdb74c500ac497612f09ab5444">TCP/IP参考模型</h2>
+
+<p>四层结构：<r>主机到网络层(物理层、数据链路层)</r>、<r>网络层</r>、<r>传输层和应用层(会话层、表示层、应用层)</r>。与OSI参考模型相对应。</p>
+
+<h4 id="网络层:d8af67bdb74c500ac497612f09ab5444">网络层：</h4>
+
+<p>是整个协议栈的核心，负责把分组发送到目标网络或主机。定义了IP协议。功能：路由，异构网互连，拥塞控制。</p>
+
+<p>A类：1.0.0.0-126.0.0.0，共126个；
+B类：128.0.0.0-191.255.255.255；
+C类：192.0.0.0-223.255.255.255；</p>
+
+<p>ARP(Address Resolution Protocol)表：IP到MAC的映射，通过目标设备的IP地址，查询目标设备的MAC地址，以保证通信的顺利进行；发送的是广播包。</p>
+
+<p>路由表:IP地址可达范围的一张表，相当于是网络里的地图，负责三层的数据转发；</p>
+
+<p>MAC地址表:MAC地址和交换机接口的逻辑关系表，负责二层的数据转发。</p>
+
+<h4 id="传输层:d8af67bdb74c500ac497612f09ab5444">传输层：</h4>
+
+<p>负责端到端的会话。定义了TCP(面向连接，可靠的)和UDP(无连接的，不可靠的)两类协议。</p>
+
+<h4 id="应用层:d8af67bdb74c500ac497612f09ab5444">应用层：</h4>
+
+<p>面向不同的网络应用引入了不同的应用层协议。如FTP(文件传输协议),TELNET(虚拟终端协议),HTTP(超文本传送协议)是基于TCP的；SNMP(电子邮件传输协议),TFTP(简单文件传输协议),NNTP(网上新闻传输协议)是基于UDP的。</p>
+
+<h4 id="socket:d8af67bdb74c500ac497612f09ab5444">socket</h4>
+
+<p>网络中的进程间通信，使用ip地址(网络层) + 协议(传输层) + 端口(传输层)唯一标识一个进程。</p>
+
+<p>每个TCP、UDP数据段中都包含<strong>源端口</strong>和<strong>目标端口</strong>字段，Socket = IP地址+端口号，Socket pair = 客户IP+客户端口号+服务器IP+服务器端口号</p>
+
+<p>socket本质是编程接口(API)，即TCP/IP提供的网络开发接口。</p>
+
+<p>套接字连接过程分为三个步骤：</p>
+
+<ol>
+<li>服务器监听(服务器端处于等待连接的状态，实时监控网络状态)</li>
+<li>客户端请求(客户端描述要连接的服务器套接字，向服务器发送请求)</li>
+<li>连接确认(服务器接到连接请求，建立一个新线程，响应该请求)</li>
+</ol>
+
+<h4 id="tcp连接:d8af67bdb74c500ac497612f09ab5444">tcp连接</h4>
+
+<p><img src="http://ocwpxekrq.bkt.clouddn.com/tcp.jpg" alt="" /></p>
+
+<p>三次握手 - 建立连接（使数据段的发送和接收同步）</p>
+
+<ol>
+<li>客户端向服务器发送一个SYN J(同步标志位) (请求建立连接)</li>
+<li>服务器向客户端响应一个SYN K，并对SYN J进行确认ACK J+1 (确认收到请求)</li>
+<li>客户端再向服务器发一个确认ACK K+1 (确认收到确认请求)</li>
+</ol>
+
+<p>四次握手 - 释放连接</p>
+
+<ol>
+<li>一端调用close主动关闭连接，发送一个FIN M；</li>
+<li>另一端接收到FIN M，执行被动关闭。它的接收也作为文件结束符传递给应用进程。(FIN的接收意味着应用进程在相应的连接上再也接收不到额外数据)</li>
+<li>一段时间后，接收到文件结束符的应用进程调用close关闭它的socket。TCP也发送一个FIN N；</li>
+<li>接收到这个FIN的源发送端TCP对它进行确认。</li>
+</ol>
+
+<p><strong>为什么建立连接是3次，释放连接是4次？</strong></p>
+
+<p>服务端在LISTEN状态下的SOCKET当收到SYN报文的建连请求后，<r>它可以把ACK和SYN（ACK起<strong>应答</strong>作用，而SYN起<strong>同步</strong>作用）放在一个报文里来发送</r>。但关闭连接时，当收到对方的FIN报文通知时，它仅仅表示对方没有数据发送给你了；但未必你所有的数据都全部发送给对方了，所以你可以未必会马上会关闭SOCKET,也即你可能还需要发送一些数据给对方之后，再发送FIN报文给对方来表示你同意现在可以关闭连接了，所以它这里的ACK报文和FIN报文多数情况下都是分开发送的。</p>
+
+<p><strong>滑动窗口协议</strong>(可靠性和流量控制)</p>
+
+<p>窗口”对应的是一段可以被发送者发送的字节序列，其连续的范围称之为“窗口”。</p>
+
+<p>“滑动”则是指这段“允许发送的范围”是可以随着发送的过程而变化的，方式就是按顺序“滑动”。</p>
+
+<p>TCP协议包括发送端和接收端，分别对应发送缓冲区和接收缓冲区。发送窗口是发送缓存中一部分。</p>
+
+<ol>
+<li>已发送并收到确认的数据(不在发送窗口和缓冲区内)</li>
+<li>已发送但未收到确认的数据(位于发送窗口之中)</li>
+<li>允许发送但尚未发送的数据(位于发送窗口之中)</li>
+<li>发送窗口外发送缓冲区内暂时不允许发送的数据</li>
+</ol>
+
+<p>每次成功发送数据之后，发送窗口就会在发送缓冲区中按顺序移动，将新的数据包含到窗口中准备发送。</p>
+
+<p><strong>流量控制</strong>，主要是接收方传递信息给发送方，使其不要发送数据太快，是一种端到端的控制。返回的ACK中会包含自己的接收窗口的大小，并且利用大小来控制发送方的数据发送。</p>
+
+<p><strong>拥塞控制</strong>，是防止过多的数据注入到网络中，这样可以使网络中的路由器或链路不致过载。常用的方法是慢开始、拥塞控制；快重传、快恢复。</p>
+
+<h2 id="浏览器通信:d8af67bdb74c500ac497612f09ab5444">浏览器通信</h2>
+
+<p><strong>同源策略</strong>（Same Origin Policy，SOP）是指浏览器请求的资源必须是同域名、同协议、同端口。不同源的客户端脚本（js，actionscript）在没有明确的授权的情况下不能读取对方的资源。</p>
+
+<p><strong>跨源资源</strong>（CrossOrigin Resources Sharing，CORS ）是一种允许多种资源在一个web页面请求域之外的另一个域的资源的协议，是为了让AJAX能够跨域而生的。</p>
+
+<p><strong>内容安全策略</strong>（Content Security Policy，CSP）是一种白名单机制，限制网站中是否可以包含某来源的内容。</p>
+
+<p><strong>Oauth</strong>是一个关于授权的开放网络标准，相当于在客户端与服务器之间添加了一个授权层。</p>
+
+<h2 id="参考链接:d8af67bdb74c500ac497612f09ab5444">参考链接</h2>
+
+<ol>
+<li><p><a href="http://baike.baidu.com/link?url=tMNzUW-jPiPum3wRSbZb3mvvLp7BnXqHFVID4cN3TcYo2YGre8uZu80XK1qhvg3lbd4tDrzcxupe_af6XRhNUq">TCP/IP协议</a></p></li>
+
+<li><p><a href="http://blog.csdn.net/xiaoweige207/article/details/6211577/">Socket通信简介</a></p></li>
+
+<li><p><a href="http://www.cnblogs.com/BlueTzar/articles/811160.html">TCP/IP四层模型</a></p></li>
+
+<li><p><a href="http://www.cnblogs.com/woaiyy/p/3554182.html">tcp窗口滑动以及拥塞控制</a></p></li>
+</ol>
+
+
+      
+    </article>
+  </main>
+
+  <nav class="pagination-single">
+    
+      <span class="previous">&larr; <a href="http://cherishzhang.github.io/post/rec/recommender/" rel="prev">[rec] 推荐系统总结</a></span>
+    
+    
+      <span class="next"><a href="http://cherishzhang.github.io/post/interviews/algorithm/" rel="next">计算机基础知识 - 算法和数据结构</a> &rarr;</span>
+    
+  </nav>
+  
+ <aside><div id="disqus_thread"></div></aside>
+
+<script type="text/javascript">
+     
+    var disqus_shortname = 'http-cherishzhang-github-io';
+
+     
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+
+
+
+
+  
+  <footer role="contentinfo">
+    <div style="text-align:center;">
+      
+    </div>
+  </footer>
+
+
+</div>
+
+<script src="/js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+
+</body>
+</html>
+

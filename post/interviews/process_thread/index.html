@@ -1,0 +1,276 @@
+
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+
+  
+  <meta charset="UTF-8">
+  <title>
+    进程与线程 | Learn and record
+  </title>
+
+
+  
+  <meta name="viewport" content="width=device-width,user-scalable=no,maximum-scale=1,initial-scale=1">
+
+  
+  <link rel="canonical" href="http://cherishzhang.github.io/post/interviews/process_thread/"/>
+
+  
+  <link rel="stylesheet" href="/css/sanitize.css">
+  <link rel="stylesheet" href="/css/responsive.css">
+  <link rel="stylesheet" href="/css/highlight_monokai.css">
+  <link rel="stylesheet" href="/css/theme.css">
+  <link rel="stylesheet" href="/css/custom.css">
+
+  
+  <link href="http://cherishzhang.github.io/index.xml" rel="alternate" type="application/rss+xml" title="Learn and record" />
+  <link href="http://cherishzhang.github.io/index.xml" rel="feed" type="application/rss+xml" title="Learn and record" />
+
+  
+  
+  <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=default"></script>
+  <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-84092408-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+</head>
+
+
+
+<body>
+<div class="container">
+
+  
+  <header role="banner">
+    <div class="row gutters">
+      <div id="site-title" class="col span_6">
+        <h1><a href="http://cherishzhang.github.io/">Learn and record</a></h1>
+        
+      </div>
+      
+      <img src="/images/avatar.jpg" width="64" height="64" style="margin-left:30px;">
+      
+      <div id="social" class="col span_4">
+        <ul>
+          <li><a href="http://cherishzhang.github.io/about" target="_blank">About me</a></li>
+          <li><a href="https://github.com/Cherishzhang" target="_blank">GitHub</a></li>
+          <li><a href="mailto:cherishzhang920508@gmail.com" target="_blank">Email</a></li>
+        </ul>
+      </div>
+  </header>
+
+
+  
+  <main id="single" role="main">
+    <div class="article-header">
+      <h1>进程与线程</h1>
+      <div class="meta" >
+        Aug 11, 2016 &nbsp;
+        
+          #<a href="/tags/thread">thread</a>&nbsp;
+        
+          #<a href="/tags/process">process</a>&nbsp;
+        
+      </div>
+    </div>
+    <article style="padding:30px; border: 2px solid;border-radius: 4px; border-color: #ddd;">
+      
+
+<h2 id="intro:b06c2f68ff0c689b19082510e376e99f">Intro</h2>
+
+<p><code>进程</code>(process)和<code>线程</code>(thread)是操作系统的基本概念。进程是一个应用程序在处理机上的一次执行过程，是一个动态概念，而线程是进程中一部分，进程包含多个线程在运行。</p>
+
+<h2 id="一个比喻:b06c2f68ff0c689b19082510e376e99f">一个比喻</h2>
+
+<p>计算机的核心是CPU，它承担了所有的计算任务，就像一座工厂，时刻在运行。</p>
+
+<p>假设工厂的电力有限，一次只能供给一个车间使用（一个车间开工的时候，其他车间都必须停工）。背后的含义是<code>单个CPU一次只能运行一个任务</code>。</p>
+
+<p>进程好比工厂的车间，它代表CPU所能处理的单个任务。任一时刻，CPU总是运行一个进程，其他进程处于非运行状态。线程好比车间里的工人，一个车间，可以有很多工人。他们协同完成一个任务。</p>
+
+<p>车间的空间是工人们共享的，比如许多房间是每个工人都可以进出的。这象征一个进程的内存空间是共享的，每个线程都可以使用这些<code>共享内存</code>。可是，有些房间只能容纳一个人，比如厕所。这代表一个线程使用某些共享内存时，其他线程必须等它结束，才能使用这一块内存。</p>
+
+<p>一个防止他人进入的简单方法，是门口加一把锁。先到的人锁上门，后到的人看到上锁，就在门口排队，等锁打开再进去。这就是“<code>互斥锁</code>”(Mutual exclusion, Mutex)，防止多个线程同时读写某一块内存区域。</p>
+
+<p>还有些房间，可以同时容纳n个人，比如厨房。也就是说，如果人数大于n，多出来的人只能在外面等着。好比某些内存区域，只能供给固定数目的线程使用。这时的解决方式，是在门口挂n把钥匙。进去的人取一把钥匙，出来时再把钥匙挂回原处。这种做法称为&rdquo;<code>信号量</code>&ldquo;，保证多个线程不会互相冲突。</p>
+
+<h2 id="区别归纳:b06c2f68ff0c689b19082510e376e99f">区别归纳</h2>
+
+<p>地址空间和其他资源：进程间相互独立，同一进程的各线程间共享。某进程内的线程在其他进程不可见</p>
+
+<p>通信：<code>进程间通信IPC</code>(管道，命名管道，信号，消息队列，共享内存，内存映射，信号量，socket)，线程间可以直接读写进程数据段(如全局变量)来进行通信，需要进程同步和互斥手段的辅助，来保证数据的一致性。</p>
+
+<p>调度和切换：线程上下文切换比进程快得多</p>
+
+<p>在多线程OS中，进程不是一个可执行实体。</p>
+
+<h2 id="in-c-c:b06c2f68ff0c689b19082510e376e99f">In C/C++</h2>
+
+<p>POSIX线程，简称<code>Pthreads</code>，是线程的POSIX标准。使用pthreads编写的代码可运行于Solaris、FreeBSD、Linux 等平台。</p>
+
+<table>
+<thead>
+<tr>
+<th>数据类型</th>
+<th>说明</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>pthread_t</td>
+<td>线程ID</td>
+</tr>
+
+<tr>
+<td>pthread_attr_t</td>
+<td>线程属性</td>
+</tr>
+</tbody>
+</table>
+
+<table>
+<thead>
+<tr>
+<th>操作函数</th>
+<th>说明</th>
+<th>参数</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>pthread_create()</td>
+<td>创建一个线程</td>
+<td>线程标识符指针，线程属性，线程运行函数的起始地址，运行函数的参数；创建成功返回0</td>
+</tr>
+
+<tr>
+<td>pthread_exit()</td>
+<td>终止当前线程</td>
+<td>函数的返回代码</td>
+</tr>
+
+<tr>
+<td>pthread_cancel()</td>
+<td>中断另外一个线程的运行</td>
+<td></td>
+</tr>
+
+<tr>
+<td>pthread_join()</td>
+<td>阻塞当前的线程，直到另外一个线程运行结束</td>
+<td>被等待的线程标识符，用户定义的指针(存储被等待线程的返回值)</td>
+</tr>
+
+<tr>
+<td>pthread_attr_init()</td>
+<td>初始化线程的属性</td>
+<td>创建线程前调用</td>
+</tr>
+
+<tr>
+<td>pthread_attr_destroy()</td>
+<td>删除线程的属性</td>
+<td></td>
+</tr>
+
+<tr>
+<td>pthread_kill()</td>
+<td>向线程发送一个信号</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+
+<p>注：一个线程不能被多个线程等待</p>
+
+<pre><code>//编译命令：gcc -o ex1 ex1.c -lpthread
+#include &lt;pthread.h&gt;
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+void thread(void)
+{
+  int i;
+  for(i=0; i&lt;3; i++)
+    printf(&quot;This is a pthread.\n&quot;);
+}
+int main(void)
+{
+  pthread_t id; //线程标识符
+  int i,ret;
+  ret = pthread_create(&amp;id, NULL, (void *)thread, NULL);//创建线程
+  if(ret!=0)
+  {
+    printf(&quot;Create pthread error!\n&quot;);
+    exit(1);
+  }
+  for(i=0; i&lt;3; i++)
+  {
+    printf(&quot;This is the main process.\n&quot;);
+  }
+  pthread_join(id, NULL);//等待一个线程结束
+  return (0);
+}
+</code></pre>
+
+<p>参考：<a href="http://baike.baidu.com/view/400319.htm">http://baike.baidu.com/view/400319.htm</a></p>
+
+
+      
+    </article>
+  </main>
+
+  <nav class="pagination-single">
+    
+      <span class="previous">&larr; <a href="http://cherishzhang.github.io/post/ml/word2vec/" rel="prev">[ml] word2vec模型和源码解析</a></span>
+    
+    
+      <span class="next"><a href="http://cherishzhang.github.io/post/spark/sparkRDD/" rel="next">Spark之RDD</a> &rarr;</span>
+    
+  </nav>
+  
+ <aside><div id="disqus_thread"></div></aside>
+
+<script type="text/javascript">
+     
+    var disqus_shortname = 'http-cherishzhang-github-io';
+
+     
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+
+
+
+
+  
+  <footer role="contentinfo">
+    <div style="text-align:center;">
+      
+    </div>
+  </footer>
+
+
+</div>
+
+<script src="/js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+
+</body>
+</html>
+

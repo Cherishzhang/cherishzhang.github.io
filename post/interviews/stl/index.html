@@ -1,0 +1,238 @@
+
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+
+  
+  <meta charset="UTF-8">
+  <title>
+    计算机基础知识 - c&#43;&#43;相关 | Learn and record
+  </title>
+
+
+  
+  <meta name="viewport" content="width=device-width,user-scalable=no,maximum-scale=1,initial-scale=1">
+
+  
+  <link rel="canonical" href="http://cherishzhang.github.io/post/interviews/stl/"/>
+
+  
+  <link rel="stylesheet" href="/css/sanitize.css">
+  <link rel="stylesheet" href="/css/responsive.css">
+  <link rel="stylesheet" href="/css/highlight_monokai.css">
+  <link rel="stylesheet" href="/css/theme.css">
+  <link rel="stylesheet" href="/css/custom.css">
+
+  
+  <link href="http://cherishzhang.github.io/index.xml" rel="alternate" type="application/rss+xml" title="Learn and record" />
+  <link href="http://cherishzhang.github.io/index.xml" rel="feed" type="application/rss+xml" title="Learn and record" />
+
+  
+  
+  <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=default"></script>
+  <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-84092408-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+</head>
+
+
+
+<body>
+<div class="container">
+
+  
+  <header role="banner">
+    <div class="row gutters">
+      <div id="site-title" class="col span_6">
+        <h1><a href="http://cherishzhang.github.io/">Learn and record</a></h1>
+        
+      </div>
+      
+      <img src="/images/avatar.jpg" width="64" height="64" style="margin-left:30px;">
+      
+      <div id="social" class="col span_4">
+        <ul>
+          <li><a href="http://cherishzhang.github.io/about" target="_blank">About me</a></li>
+          <li><a href="https://github.com/Cherishzhang" target="_blank">GitHub</a></li>
+          <li><a href="mailto:cherishzhang920508@gmail.com" target="_blank">Email</a></li>
+        </ul>
+      </div>
+  </header>
+
+
+  
+  <main id="single" role="main">
+    <div class="article-header">
+      <h1>计算机基础知识 - c&#43;&#43;相关</h1>
+      <div class="meta" >
+        Sep 25, 2016 &nbsp;
+        
+          #<a href="/tags/reviews">reviews</a>&nbsp;
+        
+          #<a href="/tags/map">map</a>&nbsp;
+        
+          #<a href="/tags/set">set</a>&nbsp;
+        
+      </div>
+    </div>
+    <article style="padding:30px; border: 2px solid;border-radius: 4px; border-color: #ddd;">
+      
+
+<h2 id="stl:6ed27b3f498c2364ac84768bcb8781b5">STL</h2>
+
+<p>C++ STL提供了vector,string,list等容器，其中vector封装数组，list封装链表，map和set封装二叉树等。STL以成员函数方式提供常用操作，如插入、删除、排序、查找等。</p>
+
+<h2 id="vector-list:6ed27b3f498c2364ac84768bcb8781b5">vector, list</h2>
+
+<p>二者不同于数组的一点是，支持动态增长。不同在于：</p>
+
+<ol>
+<li>vector是顺序表，表示一块连续的内存；list是双向链表，在内存中不一定连续。</li>
+<li>当内存不够时，vector会重新申请一块新内存，对数据做拷贝。list不用考虑内存的连续。</li>
+<li>list通过指针访问元素，随机访问的效率低。需要随机存取元素时，vector更合适。</li>
+<li>向vector插入或删除一个元素时，会复制移动待插入元素右边的所有元素。有频繁插入删除操作时，list更合适。</li>
+</ol>
+
+<h2 id="map-set:6ed27b3f498c2364ac84768bcb8781b5">map,set</h2>
+
+<p>set和map内部采用平衡检索二叉树：<r>红黑树</r>实现。查找效率为\(O(logn)\)。unordered_map是无序的，采用散列表实现，查找效率为O(N)。</p>
+
+<p>关联容器的插入删除效率比其他容器高？所有元素以节点方式存储，插入和删除时，不需要做内存拷贝和内存移动，只是指针的方向变动。</p>
+
+<p>每次insert后，以前保存的iterator不会失效？iterator相当于指向节点的指针，内存没有变，指向内存的指针就不会失效。相对于vector来说，每次删除和插入，指针都有可能失效。原因是，为了保证内存数据的<strong>连续存放</strong>，当容器内部空间不够时，会开辟一块新的更大的内存，释放之前的内存，复制已有的数据到新的内存。</p>
+
+<h2 id="extern:6ed27b3f498c2364ac84768bcb8781b5">extern</h2>
+
+<p>可置于变量或函数前，原理是告诉编译器：“你现在编译的文件中，有一个标识符虽然没有在本文件或本文件当前位置中定义，但是它是在别的文件中或本文件其它位置定义的全局变量，你要放行！”</p>
+
+<h2 id="const:6ed27b3f498c2364ac84768bcb8781b5">const</h2>
+
+<table>
+<thead>
+<tr>
+<th></th>
+<th>作用</th>
+<th>说明</th>
+<th>代码</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>1</td>
+<td>定义const常量</td>
+<td></td>
+<td>const int Max = 100;</td>
+</tr>
+
+<tr>
+<td>2</td>
+<td>类型检查</td>
+<td>const有数据类型，而宏常量没有。编译器可以对前者进行<strong>类型安全检查</strong>，避免后者在字符替换时产生意想不到的错误</td>
+<td>void f(const int i){&hellip;..}//不匹配时提示</td>
+</tr>
+
+<tr>
+<td>3</td>
+<td>保护被修饰的对象</td>
+<td>防止意外修改，增强程序健壮性</td>
+<td>void f(const int i){i=10;//error!}//如果在函数体内修改i，编译器会报错</td>
+</tr>
+
+<tr>
+<td>4</td>
+<td>方便地进行参数的调整和修改</td>
+<td>同宏定义一样，做到一变都变</td>
+<td></td>
+</tr>
+
+<tr>
+<td>5</td>
+<td>为函数重载提供一个参考</td>
+<td></td>
+<td>class A<br/>{&hellip;<br/>void f(int i) {&hellip;}<br/>void f(int i) const {&hellip;.}<br/>}</td>
+</tr>
+
+<tr>
+<td>6</td>
+<td>节省空间，避免不必要的内存分配</td>
+<td>const定义常量从汇编的角度来看，<br/>只是给出了对应的内存地址，<br/>而不是象#define一样给出的是立即数，<br/>所以，const定义的常量在程序运行过程中只有一份拷贝，<br/>而#define定义的常量在内存中有若干个拷贝</td>
+<td>#define PI 3.14159         //常量宏<br/>const doulbe  Pi=3.14159;  //此时并未将Pi放入ROM中<br/>&hellip;&hellip;<br/>double i=Pi;   //此时为Pi分配内存，以后不再分配！<br/>double I=PI;  //编译期间进行宏替换，分配内存<br/>double j=Pi;  //没有内存分配<br/>double J=PI;  //再进行宏替换，又一次分配内存！</td>
+</tr>
+
+<tr>
+<td>7</td>
+<td>提高效率</td>
+<td>编译器通常不为普通const常量分配存储空间，而是将它们保存在符号表中，这使得它成为一个编译期间的常量，没有了存储与读内存的操作，使得它的效率也很高</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+
+<h2 id="虚函数:6ed27b3f498c2364ac84768bcb8781b5">虚函数</h2>
+
+<p>实现了多态机制，用父亲类别的指针指向其子类的实例，然后通过父亲的指针调用实际子类的成员函数。</p>
+
+<p>虚函数是通过一张虚函数表(virtual table)实现的。它像一张地图，指明了实际所应调用的函数。</p>
+
+<h2 id="参考链接:6ed27b3f498c2364ac84768bcb8781b5">参考链接</h2>
+
+<p><a href="http://blog.csdn.net/Eric_Jo/article/details/4138548"> 关于C++ const 的全面总结</a></p>
+
+
+      
+    </article>
+  </main>
+
+  <nav class="pagination-single">
+    
+      <span class="previous">&larr; <a href="http://cherishzhang.github.io/post/interviews/os/" rel="prev">计算机基础知识 - linux和操作系统</a></span>
+    
+    
+      <span class="next"><a href="http://cherishzhang.github.io/post/interviews/list/" rel="next">笔试/面试总结</a> &rarr;</span>
+    
+  </nav>
+  
+ <aside><div id="disqus_thread"></div></aside>
+
+<script type="text/javascript">
+     
+    var disqus_shortname = 'http-cherishzhang-github-io';
+
+     
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+
+
+
+
+  
+  <footer role="contentinfo">
+    <div style="text-align:center;">
+      
+    </div>
+  </footer>
+
+
+</div>
+
+<script src="/js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+
+</body>
+</html>
+

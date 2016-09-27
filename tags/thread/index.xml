@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Thread on Learn and record</title>
+    <link>http://cherishzhang.github.io/tags/thread/</link>
+    <description>Recent content in Thread on Learn and record</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 11 Aug 2016 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://cherishzhang.github.io/tags/thread/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>进程与线程</title>
+      <link>http://cherishzhang.github.io/post/interviews/process_thread/</link>
+      <pubDate>Thu, 11 Aug 2016 00:00:00 +0000</pubDate>
+      
+      <guid>http://cherishzhang.github.io/post/interviews/process_thread/</guid>
+      <description>
+
+&lt;h2 id=&#34;intro:b06c2f68ff0c689b19082510e376e99f&#34;&gt;Intro&lt;/h2&gt;
+
+&lt;p&gt;&lt;code&gt;进程&lt;/code&gt;(process)和&lt;code&gt;线程&lt;/code&gt;(thread)是操作系统的基本概念。进程是一个应用程序在处理机上的一次执行过程，是一个动态概念，而线程是进程中一部分，进程包含多个线程在运行。&lt;/p&gt;
+
+&lt;h2 id=&#34;一个比喻:b06c2f68ff0c689b19082510e376e99f&#34;&gt;一个比喻&lt;/h2&gt;
+
+&lt;p&gt;计算机的核心是CPU，它承担了所有的计算任务，就像一座工厂，时刻在运行。&lt;/p&gt;
+
+&lt;p&gt;假设工厂的电力有限，一次只能供给一个车间使用（一个车间开工的时候，其他车间都必须停工）。背后的含义是&lt;code&gt;单个CPU一次只能运行一个任务&lt;/code&gt;。&lt;/p&gt;
+
+&lt;p&gt;进程好比工厂的车间，它代表CPU所能处理的单个任务。任一时刻，CPU总是运行一个进程，其他进程处于非运行状态。线程好比车间里的工人，一个车间，可以有很多工人。他们协同完成一个任务。&lt;/p&gt;
+
+&lt;p&gt;车间的空间是工人们共享的，比如许多房间是每个工人都可以进出的。这象征一个进程的内存空间是共享的，每个线程都可以使用这些&lt;code&gt;共享内存&lt;/code&gt;。可是，有些房间只能容纳一个人，比如厕所。这代表一个线程使用某些共享内存时，其他线程必须等它结束，才能使用这一块内存。&lt;/p&gt;
+
+&lt;p&gt;一个防止他人进入的简单方法，是门口加一把锁。先到的人锁上门，后到的人看到上锁，就在门口排队，等锁打开再进去。这就是“&lt;code&gt;互斥锁&lt;/code&gt;”(Mutual exclusion, Mutex)，防止多个线程同时读写某一块内存区域。&lt;/p&gt;
+
+&lt;p&gt;还有些房间，可以同时容纳n个人，比如厨房。也就是说，如果人数大于n，多出来的人只能在外面等着。好比某些内存区域，只能供给固定数目的线程使用。这时的解决方式，是在门口挂n把钥匙。进去的人取一把钥匙，出来时再把钥匙挂回原处。这种做法称为&amp;rdquo;&lt;code&gt;信号量&lt;/code&gt;&amp;ldquo;，保证多个线程不会互相冲突。&lt;/p&gt;
+
+&lt;h2 id=&#34;区别归纳:b06c2f68ff0c689b19082510e376e99f&#34;&gt;区别归纳&lt;/h2&gt;
+
+&lt;p&gt;地址空间和其他资源：进程间相互独立，同一进程的各线程间共享。某进程内的线程在其他进程不可见&lt;/p&gt;
+
+&lt;p&gt;通信：&lt;code&gt;进程间通信IPC&lt;/code&gt;(管道，命名管道，信号，消息队列，共享内存，内存映射，信号量，socket)，线程间可以直接读写进程数据段(如全局变量)来进行通信，需要进程同步和互斥手段的辅助，来保证数据的一致性。&lt;/p&gt;
+
+&lt;p&gt;调度和切换：线程上下文切换比进程快得多&lt;/p&gt;
+
+&lt;p&gt;在多线程OS中，进程不是一个可执行实体。&lt;/p&gt;
+
+&lt;h2 id=&#34;in-c-c:b06c2f68ff0c689b19082510e376e99f&#34;&gt;In C/C++&lt;/h2&gt;
+
+&lt;p&gt;POSIX线程，简称&lt;code&gt;Pthreads&lt;/code&gt;，是线程的POSIX标准。使用pthreads编写的代码可运行于Solaris、FreeBSD、Linux 等平台。&lt;/p&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;数据类型&lt;/th&gt;
+&lt;th&gt;说明&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;pthread_t&lt;/td&gt;
+&lt;td&gt;线程ID&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;pthread_attr_t&lt;/td&gt;
+&lt;td&gt;线程属性&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;操作函数&lt;/th&gt;
+&lt;th&gt;说明&lt;/th&gt;
+&lt;th&gt;参数&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;pthread_create()&lt;/td&gt;
+&lt;td&gt;创建一个线程&lt;/td&gt;
+&lt;td&gt;线程标识符指针，线程属性，线程运行函数的起始地址，运行函数的参数；创建成功返回0&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;pthread_exit()&lt;/td&gt;
+&lt;td&gt;终止当前线程&lt;/td&gt;
+&lt;td&gt;函数的返回代码&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;pthread_cancel()&lt;/td&gt;
+&lt;td&gt;中断另外一个线程的运行&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;pthread_join()&lt;/td&gt;
+&lt;td&gt;阻塞当前的线程，直到另外一个线程运行结束&lt;/td&gt;
+&lt;td&gt;被等待的线程标识符，用户定义的指针(存储被等待线程的返回值)&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;pthread_attr_init()&lt;/td&gt;
+&lt;td&gt;初始化线程的属性&lt;/td&gt;
+&lt;td&gt;创建线程前调用&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;pthread_attr_destroy()&lt;/td&gt;
+&lt;td&gt;删除线程的属性&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;pthread_kill()&lt;/td&gt;
+&lt;td&gt;向线程发送一个信号&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;注：一个线程不能被多个线程等待&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;//编译命令：gcc -o ex1 ex1.c -lpthread
+#include &amp;lt;pthread.h&amp;gt;
+#include &amp;lt;stdio.h&amp;gt;
+#include &amp;lt;stdlib.h&amp;gt;
+
+void thread(void)
+{
+  int i;
+  for(i=0; i&amp;lt;3; i++)
+    printf(&amp;quot;This is a pthread.\n&amp;quot;);
+}
+int main(void)
+{
+  pthread_t id; //线程标识符
+  int i,ret;
+  ret = pthread_create(&amp;amp;id, NULL, (void *)thread, NULL);//创建线程
+  if(ret!=0)
+  {
+    printf(&amp;quot;Create pthread error!\n&amp;quot;);
+    exit(1);
+  }
+  for(i=0; i&amp;lt;3; i++)
+  {
+    printf(&amp;quot;This is the main process.\n&amp;quot;);
+  }
+  pthread_join(id, NULL);//等待一个线程结束
+  return (0);
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;参考：&lt;a href=&#34;http://baike.baidu.com/view/400319.htm&#34;&gt;http://baike.baidu.com/view/400319.htm&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

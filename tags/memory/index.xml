@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Fork on Learn and record</title>
-    <link>http://cherishzhang.github.io/tags/fork/</link>
-    <description>Recent content in Fork on Learn and record</description>
+    <title>Memory on Learn and record</title>
+    <link>http://cherishzhang.github.io/tags/memory/</link>
+    <description>Recent content in Memory on Learn and record</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Sun, 25 Sep 2016 00:00:00 +0000</lastBuildDate>
-    <atom:link href="http://cherishzhang.github.io/tags/fork/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://cherishzhang.github.io/tags/memory/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
       <title>计算机基础知识 - linux和操作系统</title>

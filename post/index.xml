@@ -6,203 +6,26 @@
     <description>Recent content in Posts on Learn and record</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 22 Sep 2016 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 25 Sep 2016 00:00:00 +0000</lastBuildDate>
     <atom:link href="http://cherishzhang.github.io/post/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
-      <title>计算机基础知识</title>
-      <link>http://cherishzhang.github.io/post/cplus/basic/</link>
-      <pubDate>Thu, 22 Sep 2016 00:00:00 +0000</pubDate>
+      <title>笔试/面试总结</title>
+      <link>http://cherishzhang.github.io/post/interviews/list/</link>
+      <pubDate>Sun, 25 Sep 2016 00:00:00 +0000</pubDate>
       
-      <guid>http://cherishzhang.github.io/post/cplus/basic/</guid>
-      <description>
+      <guid>http://cherishzhang.github.io/post/interviews/list/</guid>
+      <description>&lt;p&gt;关于笔试/面试基本知识点总结：&lt;/p&gt;
 
-&lt;h2 id=&#34;tcp-ip参考模型:9f043c0d0d320a105e644fbd6515da42&#34;&gt;TCP/IP参考模型&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;&lt;a href=&#34;http://cherishzhang.github.io/post/interviews/tcpip&#34;&gt;TCP/IP相关&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
 
-&lt;p&gt;该网络协议共分为四层：&lt;r&gt;网络访问层&lt;/r&gt;、&lt;r&gt;互联网层&lt;/r&gt;、&lt;r&gt;传输层和应用层&lt;/r&gt;。&lt;/p&gt;
+&lt;li&gt;&lt;p&gt;&lt;a href=&#34;http://cherishzhang.github.io/post/interviews/os&#34;&gt;linux/操作系统相关&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
 
-&lt;p&gt;&lt;strong&gt;互联网层&lt;/strong&gt;使用因特网协议(&lt;r&gt;IP&lt;/r&gt;)，IP地址分别三类，A类(&lt;r&gt;1.0.0.0-126.0.0.0&lt;/r&gt;,共126个)，B类(&lt;r&gt;128.0.0.0-191.255.255.255&lt;/r&gt;,共16382个)，C类(&lt;r&gt;192.0.0.0-223.255.255.255&lt;/r&gt;,达209万余个)&lt;/p&gt;
+&lt;li&gt;&lt;p&gt;&lt;a href=&#34;http://cherishzhang.github.io/post/interviews/stl&#34;&gt;C/C++相关&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
 
-&lt;p&gt;&lt;strong&gt;传输层&lt;/strong&gt;定义了两个&lt;r&gt;端到端&lt;/r&gt;的协议：TCP是面向连接的协议，它提供可靠的报文传输和对上层应用的连接服务；UDP是面向无连接的不可靠传输的协议，主要用于不需要TCP的排序和流量控制等功能的应用程序。&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;应用层&lt;/strong&gt;包含所有的高层协议，包括：&lt;strong&gt;虚拟终端协议&lt;/strong&gt;(&lt;r&gt;TELNET&lt;/r&gt;，TELecommunications NETwork)、&lt;strong&gt;文件传输协议&lt;/strong&gt;(&lt;r&gt;FTP&lt;/r&gt;，File Transfer Protocol)、&lt;strong&gt;电子邮件传输协议&lt;/strong&gt;(&lt;r&gt;SMTP&lt;/r&gt;，Simple Mail Transfer Protocol)、&lt;strong&gt;域名服务&lt;/strong&gt;(&lt;r&gt;DNS&lt;/r&gt;，Domain Name Service)、&lt;strong&gt;网上新闻传输协议&lt;/strong&gt;(&lt;r&gt;NNTP&lt;/r&gt;，Net News Transfer Protocol)和&lt;strong&gt;超文本传送协议&lt;/strong&gt;(&lt;r&gt;HTTP&lt;/r&gt;，HyperText Transfer Protocol)等。TELNET允许一台机器上的用户登录到远程机器上，并进行工作；FTP提供有效地将文件从一台机器上移到另一台机器上的方法；SMTP用于电子邮件的收发；DNS用于把主机名映射到网络地址；NNTP用于新闻的发布、检索和获取；HTTP用于在WWW上获取主页。&lt;/p&gt;
-
-&lt;p&gt;&lt;r&gt;ARP(Address Resolution Protocol)表&lt;/r&gt;：IP到MAC的映射，通过目标设备的IP地址，查询目标设备的MAC地址，以保证通信的顺利进行；发送的是广播包。&lt;/p&gt;
-
-&lt;p&gt;&lt;r&gt;路由表&lt;/r&gt;是IP地址可达范围的一张表，相当于是网络里的地图，负责三层的数据转发；&lt;/p&gt;
-
-&lt;p&gt;&lt;r&gt;MAC地址表&lt;/r&gt;是MAC地址和交换机接口的逻辑关系表，负责二层的数据转发。&lt;/p&gt;
-
-&lt;h2 id=&#34;socket通信:9f043c0d0d320a105e644fbd6515da42&#34;&gt;Socket通信&lt;/h2&gt;
-
-&lt;p&gt;本地的进程间通信（IPC）分为：&lt;/p&gt;
-
-&lt;blockquote&gt;
-&lt;p&gt;消息传递（管道、FIFO、消息队列）&lt;/p&gt;
-
-&lt;p&gt;同步（互斥量、条件变量、读写锁、文件和写记录锁、信号量）&lt;/p&gt;
-
-&lt;p&gt;共享内存（匿名的和具名的）&lt;/p&gt;
-
-&lt;p&gt;远程过程调用（Solaris门和Sun RPC）&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;网络中进程通信，使用ip地址(网络层) + 协议(传输层) + 端口(传输层)唯一标识一个进程。&lt;/p&gt;
-
-&lt;h4 id=&#34;tcp连接:9f043c0d0d320a105e644fbd6515da42&#34;&gt;tcp连接&lt;/h4&gt;
-
-&lt;p&gt;&lt;img src=&#34;http://ocwpxekrq.bkt.clouddn.com/tcp.jpg&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;三次握手 - 建立连接&lt;/p&gt;
-
-&lt;blockquote&gt;
-&lt;p&gt;客户端向服务器发送一个SYN J (请求建立连接)
-服务器向客户端响应一个SYN K，并对SYN J进行确认ACK J+1 (确认收到请求)
-客户端再向服务器发一个确认ACK K+1 (确认收到确认请求)&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;四次握手 - 释放连接&lt;/p&gt;
-
-&lt;blockquote&gt;
-&lt;p&gt;一端调用close主动关闭连接，TCP发送一个FIN M；
-另一端接收到FIN M，执行被动关闭。它的接收也作为文件结束符传递给应用进程。(FIN的接收意味着应用进程在相应的连接上再也接收不到额外数据)
-一段时间后，接收到文件结束符的应用进程调用close关闭它的socket。TCP也发送一个FIN N；
-接收到这个FIN的源发送端TCP对它进行确认。&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;&lt;r&gt;为什么建立连接是3次，释放连接是4次？&lt;/r&gt;&lt;/p&gt;
-
-&lt;p&gt;服务端在LISTEN状态下的SOCKET当收到SYN报文的建连请求后，&lt;r&gt;它可以把ACK和SYN（ACK起&lt;strong&gt;应答&lt;/strong&gt;作用，而SYN起&lt;strong&gt;同步&lt;/strong&gt;作用）放在一个报文里来发送&lt;/r&gt;。但关闭连接时，当收到对方的FIN报文通知时，它仅仅表示对方没有数据发送给你了；但未必你所有的数据都全部发送给对方了，所以你可以未必会马上会关闭SOCKET,也即你可能还需要发送一些数据给对方之后，再发送FIN报文给对方来表示你同意现在可以关闭连接了，所以它这里的ACK报文和FIN报文多数情况下都是分开发送的。&lt;/p&gt;
-
-&lt;h2 id=&#34;fork:9f043c0d0d320a105e644fbd6515da42&#34;&gt;fork&lt;/h2&gt;
-
-&lt;p&gt;一个进程，包括代码、数据和分配给进程的资源。fork通过系统调用创建一个与原来进程几乎完全相同的新进程，系统为新进程分配资源，相当于克隆了一个自己。&lt;/p&gt;
-
-&lt;p&gt;fork调用的一个奇妙之处就是它仅仅被调用一次，却能够返回两次，它可能有三种不同的返回值：&lt;/p&gt;
-
-&lt;p&gt;1）在父进程中，fork返回新创建子进程的进程ID；&lt;br/&gt;
-2）在子进程中，fork返回0；&lt;br/&gt;
-3）如果出现错误，fork返回一个负值； &lt;br/&gt;&lt;/p&gt;
-
-&lt;h2 id=&#34;浏览器通信:9f043c0d0d320a105e644fbd6515da42&#34;&gt;浏览器通信&lt;/h2&gt;
-
-&lt;p&gt;&lt;strong&gt;同源策略&lt;/strong&gt;（Same Origin Policy，SOP）是指浏览器请求的资源必须是同域名、同协议、同端口。不同源的客户端脚本（js，actionscript）在没有明确的授权的情况下不能读取对方的资源。&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;跨源资源&lt;/strong&gt;（CrossOrigin Resources Sharing，CORS ）是一种允许多种资源在一个web页面请求域之外的另一个域的资源的协议，是为了让AJAX能够跨域而生的。&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;内容安全策略&lt;/strong&gt;（Content Security Policy，CSP）是一种白名单机制，限制网站中是否可以包含某来源的内容。&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Oauth&lt;/strong&gt;是一个关于授权的开放网络标准，相当于在客户端与服务器之间添加了一个授权层。&lt;/p&gt;
-
-&lt;h2 id=&#34;排序算法:9f043c0d0d320a105e644fbd6515da42&#34;&gt;排序算法&lt;/h2&gt;
-
-&lt;p&gt;稳定排序:(N是数组长度，K是不同键值的数量)&lt;/p&gt;
-
-&lt;table&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th&gt;名称&lt;/th&gt;
-&lt;th&gt;时间复杂度&lt;/th&gt;
-&lt;th&gt;空间复杂度&lt;/th&gt;
-&lt;th&gt;说明&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td&gt;bubble&lt;/td&gt;
-&lt;td&gt;\(O(N^2)\)&lt;/td&gt;
-&lt;td&gt;\(O(1)\)&lt;/td&gt;
-&lt;td&gt;比较相邻的两个元素，每次将当前排列中最大的元素冒泡到最后&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td&gt;Cocktail&lt;/td&gt;
-&lt;td&gt;\(O(N^2)\)&lt;/td&gt;
-&lt;td&gt;\(O(1)\)&lt;/td&gt;
-&lt;td&gt;双向的冒泡排序&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td&gt;insertion&lt;/td&gt;
-&lt;td&gt;\(O(N^2)\)&lt;/td&gt;
-&lt;td&gt;\(O(1)\)&lt;/td&gt;
-&lt;td&gt;在一个有序数组中，插入一个给定的数到指定位置&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td&gt;bucket&lt;/td&gt;
-&lt;td&gt;\(O(N)\)&lt;/td&gt;
-&lt;td&gt;需要\(O(K)\)的额外空间&lt;/td&gt;
-&lt;td&gt;将数组分到有限数量的桶中，每个桶在分别排序，非比较排序，适合海量的均匀分布数据排序&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td&gt;merge&lt;/td&gt;
-&lt;td&gt;\(O(NlogN)\)&lt;/td&gt;
-&lt;td&gt;需要\(O(N)\)的额外空间&lt;/td&gt;
-&lt;td&gt;将两个（或两个以上）有序表合并成一个新的有序表&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td&gt;binary tree&lt;/td&gt;
-&lt;td&gt;期望时间\(O(NlogN)\)，最坏\(O(N^2)\)&lt;/td&gt;
-&lt;td&gt;\(O(N)\)&lt;/td&gt;
-&lt;td&gt;二叉搜索树,左子树的所有结点值小于根结点 ,右子树所有结点值大于根结点,左右子树分别为二叉搜索树&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;p&gt;不稳定排序:&lt;/p&gt;
-
-&lt;table&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th&gt;名称&lt;/th&gt;
-&lt;th&gt;时间复杂度&lt;/th&gt;
-&lt;th&gt;空间复杂度&lt;/th&gt;
-&lt;th&gt;说明&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td&gt;selection&lt;/td&gt;
-&lt;td&gt;\(O(N^2)\)&lt;/td&gt;
-&lt;td&gt;\(O(1)\)&lt;/td&gt;
-&lt;td&gt;每次从待排序数据中选出最大/小的元素，放在序列的起始位置&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td&gt;shell&lt;/td&gt;
-&lt;td&gt;\(O(NlogN)\)&lt;/td&gt;
-&lt;td&gt;\(O(1)\)&lt;/td&gt;
-&lt;td&gt;插入排序的一种，也称缩小增量排序&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td&gt;heapsort&lt;/td&gt;
-&lt;td&gt;\(O(NlogN)\)&lt;/td&gt;
-&lt;td&gt;\(O(1)\)&lt;/td&gt;
-&lt;td&gt;利用堆积树，是选择排序的一种&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td&gt;quicksort&lt;/td&gt;
-&lt;td&gt;期望时间\(O(NlogN)\)，最坏\(O(N^2)\)&lt;/td&gt;
-&lt;td&gt;\(O(1)\)&lt;/td&gt;
-&lt;td&gt;适合于大的，乱数列表;将数据分成两部分,一部分的所有数据比另一部所有数据都要小,递归排列,直到整组数据有序&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;h2 id=&#34;参考链接:9f043c0d0d320a105e644fbd6515da42&#34;&gt;参考链接&lt;/h2&gt;
-
-&lt;p&gt;&lt;a href=&#34;http://baike.baidu.com/link?url=tMNzUW-jPiPum3wRSbZb3mvvLp7BnXqHFVID4cN3TcYo2YGre8uZu80XK1qhvg3lbd4tDrzcxupe_af6XRhNUq&#34;&gt;TCP/IP协议&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&#34;http://blog.csdn.net/xiaoweige207/article/details/6211577/&#34;&gt;Socket通信简介&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&#34;http://baike.baidu.com/link?url=2KJOOFEzbpB20KrSK4QVHs01QN7D9zVuf6Fesb4AZiTxGKwlS-vVZzADhIbOhzSNdxoqAREtyVE6FtZysGtJywCYThzSFn-Q3IAWCTLBtfDhyLiY4btPxS5AfjQcGbqR&#34;&gt;排序算法&lt;/a&gt;&lt;/p&gt;
+&lt;li&gt;&lt;p&gt;&lt;a href=&#34;http://cherishzhang.github.io/post/interviews/algorithm&#34;&gt;算法题相关&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
 </description>
     </item>
     

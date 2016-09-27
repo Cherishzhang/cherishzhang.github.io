@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Map on Learn and record</title>
+    <link>http://cherishzhang.github.io/tags/map/</link>
+    <description>Recent content in Map on Learn and record</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sun, 25 Sep 2016 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://cherishzhang.github.io/tags/map/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>计算机基础知识 - c&#43;&#43;相关</title>
+      <link>http://cherishzhang.github.io/post/interviews/stl/</link>
+      <pubDate>Sun, 25 Sep 2016 00:00:00 +0000</pubDate>
+      
+      <guid>http://cherishzhang.github.io/post/interviews/stl/</guid>
+      <description>
+
+&lt;h2 id=&#34;stl:6ed27b3f498c2364ac84768bcb8781b5&#34;&gt;STL&lt;/h2&gt;
+
+&lt;p&gt;C++ STL提供了vector,string,list等容器，其中vector封装数组，list封装链表，map和set封装二叉树等。STL以成员函数方式提供常用操作，如插入、删除、排序、查找等。&lt;/p&gt;
+
+&lt;h2 id=&#34;vector-list:6ed27b3f498c2364ac84768bcb8781b5&#34;&gt;vector, list&lt;/h2&gt;
+
+&lt;p&gt;二者不同于数组的一点是，支持动态增长。不同在于：&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;vector是顺序表，表示一块连续的内存；list是双向链表，在内存中不一定连续。&lt;/li&gt;
+&lt;li&gt;当内存不够时，vector会重新申请一块新内存，对数据做拷贝。list不用考虑内存的连续。&lt;/li&gt;
+&lt;li&gt;list通过指针访问元素，随机访问的效率低。需要随机存取元素时，vector更合适。&lt;/li&gt;
+&lt;li&gt;向vector插入或删除一个元素时，会复制移动待插入元素右边的所有元素。有频繁插入删除操作时，list更合适。&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&#34;map-set:6ed27b3f498c2364ac84768bcb8781b5&#34;&gt;map,set&lt;/h2&gt;
+
+&lt;p&gt;set和map内部采用平衡检索二叉树：&lt;r&gt;红黑树&lt;/r&gt;实现。查找效率为\(O(logn)\)。unordered_map是无序的，采用散列表实现，查找效率为O(N)。&lt;/p&gt;
+
+&lt;p&gt;关联容器的插入删除效率比其他容器高？所有元素以节点方式存储，插入和删除时，不需要做内存拷贝和内存移动，只是指针的方向变动。&lt;/p&gt;
+
+&lt;p&gt;每次insert后，以前保存的iterator不会失效？iterator相当于指向节点的指针，内存没有变，指向内存的指针就不会失效。相对于vector来说，每次删除和插入，指针都有可能失效。原因是，为了保证内存数据的&lt;strong&gt;连续存放&lt;/strong&gt;，当容器内部空间不够时，会开辟一块新的更大的内存，释放之前的内存，复制已有的数据到新的内存。&lt;/p&gt;
+
+&lt;h2 id=&#34;extern:6ed27b3f498c2364ac84768bcb8781b5&#34;&gt;extern&lt;/h2&gt;
+
+&lt;p&gt;可置于变量或函数前，原理是告诉编译器：“你现在编译的文件中，有一个标识符虽然没有在本文件或本文件当前位置中定义，但是它是在别的文件中或本文件其它位置定义的全局变量，你要放行！”&lt;/p&gt;
+
+&lt;h2 id=&#34;const:6ed27b3f498c2364ac84768bcb8781b5&#34;&gt;const&lt;/h2&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;&lt;/th&gt;
+&lt;th&gt;作用&lt;/th&gt;
+&lt;th&gt;说明&lt;/th&gt;
+&lt;th&gt;代码&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;1&lt;/td&gt;
+&lt;td&gt;定义const常量&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;const int Max = 100;&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;2&lt;/td&gt;
+&lt;td&gt;类型检查&lt;/td&gt;
+&lt;td&gt;const有数据类型，而宏常量没有。编译器可以对前者进行&lt;strong&gt;类型安全检查&lt;/strong&gt;，避免后者在字符替换时产生意想不到的错误&lt;/td&gt;
+&lt;td&gt;void f(const int i){&amp;hellip;..}//不匹配时提示&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;3&lt;/td&gt;
+&lt;td&gt;保护被修饰的对象&lt;/td&gt;
+&lt;td&gt;防止意外修改，增强程序健壮性&lt;/td&gt;
+&lt;td&gt;void f(const int i){i=10;//error!}//如果在函数体内修改i，编译器会报错&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;4&lt;/td&gt;
+&lt;td&gt;方便地进行参数的调整和修改&lt;/td&gt;
+&lt;td&gt;同宏定义一样，做到一变都变&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;5&lt;/td&gt;
+&lt;td&gt;为函数重载提供一个参考&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;class A&lt;br/&gt;{&amp;hellip;&lt;br/&gt;void f(int i) {&amp;hellip;}&lt;br/&gt;void f(int i) const {&amp;hellip;.}&lt;br/&gt;}&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;6&lt;/td&gt;
+&lt;td&gt;节省空间，避免不必要的内存分配&lt;/td&gt;
+&lt;td&gt;const定义常量从汇编的角度来看，&lt;br/&gt;只是给出了对应的内存地址，&lt;br/&gt;而不是象#define一样给出的是立即数，&lt;br/&gt;所以，const定义的常量在程序运行过程中只有一份拷贝，&lt;br/&gt;而#define定义的常量在内存中有若干个拷贝&lt;/td&gt;
+&lt;td&gt;#define PI 3.14159         //常量宏&lt;br/&gt;const doulbe  Pi=3.14159;  //此时并未将Pi放入ROM中&lt;br/&gt;&amp;hellip;&amp;hellip;&lt;br/&gt;double i=Pi;   //此时为Pi分配内存，以后不再分配！&lt;br/&gt;double I=PI;  //编译期间进行宏替换，分配内存&lt;br/&gt;double j=Pi;  //没有内存分配&lt;br/&gt;double J=PI;  //再进行宏替换，又一次分配内存！&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;7&lt;/td&gt;
+&lt;td&gt;提高效率&lt;/td&gt;
+&lt;td&gt;编译器通常不为普通const常量分配存储空间，而是将它们保存在符号表中，这使得它成为一个编译期间的常量，没有了存储与读内存的操作，使得它的效率也很高&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;h2 id=&#34;虚函数:6ed27b3f498c2364ac84768bcb8781b5&#34;&gt;虚函数&lt;/h2&gt;
+
+&lt;p&gt;实现了多态机制，用父亲类别的指针指向其子类的实例，然后通过父亲的指针调用实际子类的成员函数。&lt;/p&gt;
+
+&lt;p&gt;虚函数是通过一张虚函数表(virtual table)实现的。它像一张地图，指明了实际所应调用的函数。&lt;/p&gt;
+
+&lt;h2 id=&#34;参考链接:6ed27b3f498c2364ac84768bcb8781b5&#34;&gt;参考链接&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://blog.csdn.net/Eric_Jo/article/details/4138548&#34;&gt; 关于C++ const 的全面总结&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -10,81 +10,102 @@
     <atom:link href="http://cherishzhang.github.io/tags/ip/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
-      <title>计算机基础知识</title>
-      <link>http://cherishzhang.github.io/post/cplus/basic/</link>
+      <title>计算机基础知识 - TCP/IP</title>
+      <link>http://cherishzhang.github.io/post/interviews/tcpip/</link>
       <pubDate>Thu, 22 Sep 2016 00:00:00 +0000</pubDate>
       
-      <guid>http://cherishzhang.github.io/post/cplus/basic/</guid>
+      <guid>http://cherishzhang.github.io/post/interviews/tcpip/</guid>
       <description>
 
-&lt;h2 id=&#34;tcp-ip参考模型:9f043c0d0d320a105e644fbd6515da42&#34;&gt;TCP/IP参考模型&lt;/h2&gt;
+&lt;h2 id=&#34;tcp-ip参考模型:d8af67bdb74c500ac497612f09ab5444&#34;&gt;TCP/IP参考模型&lt;/h2&gt;
 
-&lt;p&gt;该网络协议共分为四层：&lt;r&gt;网络访问层&lt;/r&gt;、&lt;r&gt;互联网层&lt;/r&gt;、&lt;r&gt;传输层和应用层&lt;/r&gt;。&lt;/p&gt;
+&lt;p&gt;四层结构：&lt;r&gt;主机到网络层(物理层、数据链路层)&lt;/r&gt;、&lt;r&gt;网络层&lt;/r&gt;、&lt;r&gt;传输层和应用层(会话层、表示层、应用层)&lt;/r&gt;。与OSI参考模型相对应。&lt;/p&gt;
 
-&lt;p&gt;&lt;strong&gt;互联网层&lt;/strong&gt;使用因特网协议(&lt;r&gt;IP&lt;/r&gt;)，IP地址分别三类，A类(&lt;r&gt;1.0.0.0-126.0.0.0&lt;/r&gt;,共126个)，B类(&lt;r&gt;128.0.0.0-191.255.255.255&lt;/r&gt;,共16382个)，C类(&lt;r&gt;192.0.0.0-223.255.255.255&lt;/r&gt;,达209万余个)&lt;/p&gt;
+&lt;h4 id=&#34;网络层:d8af67bdb74c500ac497612f09ab5444&#34;&gt;网络层：&lt;/h4&gt;
 
-&lt;p&gt;&lt;strong&gt;传输层&lt;/strong&gt;定义了两个&lt;r&gt;端到端&lt;/r&gt;的协议：TCP是面向连接的协议，它提供可靠的报文传输和对上层应用的连接服务；UDP是面向无连接的不可靠传输的协议，主要用于不需要TCP的排序和流量控制等功能的应用程序。&lt;/p&gt;
+&lt;p&gt;是整个协议栈的核心，负责把分组发送到目标网络或主机。定义了IP协议。功能：路由，异构网互连，拥塞控制。&lt;/p&gt;
 
-&lt;p&gt;&lt;strong&gt;应用层&lt;/strong&gt;包含所有的高层协议，包括：&lt;strong&gt;虚拟终端协议&lt;/strong&gt;(&lt;r&gt;TELNET&lt;/r&gt;，TELecommunications NETwork)、&lt;strong&gt;文件传输协议&lt;/strong&gt;(&lt;r&gt;FTP&lt;/r&gt;，File Transfer Protocol)、&lt;strong&gt;电子邮件传输协议&lt;/strong&gt;(&lt;r&gt;SMTP&lt;/r&gt;，Simple Mail Transfer Protocol)、&lt;strong&gt;域名服务&lt;/strong&gt;(&lt;r&gt;DNS&lt;/r&gt;，Domain Name Service)、&lt;strong&gt;网上新闻传输协议&lt;/strong&gt;(&lt;r&gt;NNTP&lt;/r&gt;，Net News Transfer Protocol)和&lt;strong&gt;超文本传送协议&lt;/strong&gt;(&lt;r&gt;HTTP&lt;/r&gt;，HyperText Transfer Protocol)等。TELNET允许一台机器上的用户登录到远程机器上，并进行工作；FTP提供有效地将文件从一台机器上移到另一台机器上的方法；SMTP用于电子邮件的收发；DNS用于把主机名映射到网络地址；NNTP用于新闻的发布、检索和获取；HTTP用于在WWW上获取主页。&lt;/p&gt;
+&lt;p&gt;A类：1.0.0.0-126.0.0.0，共126个；
+B类：128.0.0.0-191.255.255.255；
+C类：192.0.0.0-223.255.255.255；&lt;/p&gt;
 
-&lt;p&gt;&lt;r&gt;ARP(Address Resolution Protocol)表&lt;/r&gt;：IP到MAC的映射，通过目标设备的IP地址，查询目标设备的MAC地址，以保证通信的顺利进行；发送的是广播包。&lt;/p&gt;
+&lt;p&gt;ARP(Address Resolution Protocol)表：IP到MAC的映射，通过目标设备的IP地址，查询目标设备的MAC地址，以保证通信的顺利进行；发送的是广播包。&lt;/p&gt;
 
-&lt;p&gt;&lt;r&gt;路由表&lt;/r&gt;是IP地址可达范围的一张表，相当于是网络里的地图，负责三层的数据转发；&lt;/p&gt;
+&lt;p&gt;路由表:IP地址可达范围的一张表，相当于是网络里的地图，负责三层的数据转发；&lt;/p&gt;
 
-&lt;p&gt;&lt;r&gt;MAC地址表&lt;/r&gt;是MAC地址和交换机接口的逻辑关系表，负责二层的数据转发。&lt;/p&gt;
+&lt;p&gt;MAC地址表:MAC地址和交换机接口的逻辑关系表，负责二层的数据转发。&lt;/p&gt;
 
-&lt;h2 id=&#34;socket通信:9f043c0d0d320a105e644fbd6515da42&#34;&gt;Socket通信&lt;/h2&gt;
+&lt;h4 id=&#34;传输层:d8af67bdb74c500ac497612f09ab5444&#34;&gt;传输层：&lt;/h4&gt;
 
-&lt;p&gt;本地的进程间通信（IPC）分为：&lt;/p&gt;
+&lt;p&gt;负责端到端的会话。定义了TCP(面向连接，可靠的)和UDP(无连接的，不可靠的)两类协议。&lt;/p&gt;
 
-&lt;blockquote&gt;
-&lt;p&gt;消息传递（管道、FIFO、消息队列）&lt;/p&gt;
+&lt;h4 id=&#34;应用层:d8af67bdb74c500ac497612f09ab5444&#34;&gt;应用层：&lt;/h4&gt;
 
-&lt;p&gt;同步（互斥量、条件变量、读写锁、文件和写记录锁、信号量）&lt;/p&gt;
+&lt;p&gt;面向不同的网络应用引入了不同的应用层协议。如FTP(文件传输协议),TELNET(虚拟终端协议),HTTP(超文本传送协议)是基于TCP的；SNMP(电子邮件传输协议),TFTP(简单文件传输协议),NNTP(网上新闻传输协议)是基于UDP的。&lt;/p&gt;
 
-&lt;p&gt;共享内存（匿名的和具名的）&lt;/p&gt;
+&lt;h4 id=&#34;socket:d8af67bdb74c500ac497612f09ab5444&#34;&gt;socket&lt;/h4&gt;
 
-&lt;p&gt;远程过程调用（Solaris门和Sun RPC）&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;p&gt;网络中的进程间通信，使用ip地址(网络层) + 协议(传输层) + 端口(传输层)唯一标识一个进程。&lt;/p&gt;
 
-&lt;p&gt;网络中进程通信，使用ip地址(网络层) + 协议(传输层) + 端口(传输层)唯一标识一个进程。&lt;/p&gt;
+&lt;p&gt;每个TCP、UDP数据段中都包含&lt;strong&gt;源端口&lt;/strong&gt;和&lt;strong&gt;目标端口&lt;/strong&gt;字段，Socket = IP地址+端口号，Socket pair = 客户IP+客户端口号+服务器IP+服务器端口号&lt;/p&gt;
 
-&lt;h4 id=&#34;tcp连接:9f043c0d0d320a105e644fbd6515da42&#34;&gt;tcp连接&lt;/h4&gt;
+&lt;p&gt;socket本质是编程接口(API)，即TCP/IP提供的网络开发接口。&lt;/p&gt;
+
+&lt;p&gt;套接字连接过程分为三个步骤：&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;服务器监听(服务器端处于等待连接的状态，实时监控网络状态)&lt;/li&gt;
+&lt;li&gt;客户端请求(客户端描述要连接的服务器套接字，向服务器发送请求)&lt;/li&gt;
+&lt;li&gt;连接确认(服务器接到连接请求，建立一个新线程，响应该请求)&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h4 id=&#34;tcp连接:d8af67bdb74c500ac497612f09ab5444&#34;&gt;tcp连接&lt;/h4&gt;
 
 &lt;p&gt;&lt;img src=&#34;http://ocwpxekrq.bkt.clouddn.com/tcp.jpg&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
 
-&lt;p&gt;三次握手 - 建立连接&lt;/p&gt;
+&lt;p&gt;三次握手 - 建立连接（使数据段的发送和接收同步）&lt;/p&gt;
 
-&lt;blockquote&gt;
-&lt;p&gt;客户端向服务器发送一个SYN J (请求建立连接)
-服务器向客户端响应一个SYN K，并对SYN J进行确认ACK J+1 (确认收到请求)
-客户端再向服务器发一个确认ACK K+1 (确认收到确认请求)&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;ol&gt;
+&lt;li&gt;客户端向服务器发送一个SYN J(同步标志位) (请求建立连接)&lt;/li&gt;
+&lt;li&gt;服务器向客户端响应一个SYN K，并对SYN J进行确认ACK J+1 (确认收到请求)&lt;/li&gt;
+&lt;li&gt;客户端再向服务器发一个确认ACK K+1 (确认收到确认请求)&lt;/li&gt;
+&lt;/ol&gt;
 
 &lt;p&gt;四次握手 - 释放连接&lt;/p&gt;
 
-&lt;blockquote&gt;
-&lt;p&gt;一端调用close主动关闭连接，TCP发送一个FIN M；
-另一端接收到FIN M，执行被动关闭。它的接收也作为文件结束符传递给应用进程。(FIN的接收意味着应用进程在相应的连接上再也接收不到额外数据)
-一段时间后，接收到文件结束符的应用进程调用close关闭它的socket。TCP也发送一个FIN N；
-接收到这个FIN的源发送端TCP对它进行确认。&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;ol&gt;
+&lt;li&gt;一端调用close主动关闭连接，发送一个FIN M；&lt;/li&gt;
+&lt;li&gt;另一端接收到FIN M，执行被动关闭。它的接收也作为文件结束符传递给应用进程。(FIN的接收意味着应用进程在相应的连接上再也接收不到额外数据)&lt;/li&gt;
+&lt;li&gt;一段时间后，接收到文件结束符的应用进程调用close关闭它的socket。TCP也发送一个FIN N；&lt;/li&gt;
+&lt;li&gt;接收到这个FIN的源发送端TCP对它进行确认。&lt;/li&gt;
+&lt;/ol&gt;
 
-&lt;p&gt;&lt;r&gt;为什么建立连接是3次，释放连接是4次？&lt;/r&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;为什么建立连接是3次，释放连接是4次？&lt;/strong&gt;&lt;/p&gt;
 
 &lt;p&gt;服务端在LISTEN状态下的SOCKET当收到SYN报文的建连请求后，&lt;r&gt;它可以把ACK和SYN（ACK起&lt;strong&gt;应答&lt;/strong&gt;作用，而SYN起&lt;strong&gt;同步&lt;/strong&gt;作用）放在一个报文里来发送&lt;/r&gt;。但关闭连接时，当收到对方的FIN报文通知时，它仅仅表示对方没有数据发送给你了；但未必你所有的数据都全部发送给对方了，所以你可以未必会马上会关闭SOCKET,也即你可能还需要发送一些数据给对方之后，再发送FIN报文给对方来表示你同意现在可以关闭连接了，所以它这里的ACK报文和FIN报文多数情况下都是分开发送的。&lt;/p&gt;
 
-&lt;h2 id=&#34;fork:9f043c0d0d320a105e644fbd6515da42&#34;&gt;fork&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;滑动窗口协议&lt;/strong&gt;(可靠性和流量控制)&lt;/p&gt;
 
-&lt;p&gt;一个进程，包括代码、数据和分配给进程的资源。fork通过系统调用创建一个与原来进程几乎完全相同的新进程，系统为新进程分配资源，相当于克隆了一个自己。&lt;/p&gt;
+&lt;p&gt;窗口”对应的是一段可以被发送者发送的字节序列，其连续的范围称之为“窗口”。&lt;/p&gt;
 
-&lt;p&gt;fork调用的一个奇妙之处就是它仅仅被调用一次，却能够返回两次，它可能有三种不同的返回值：&lt;/p&gt;
+&lt;p&gt;“滑动”则是指这段“允许发送的范围”是可以随着发送的过程而变化的，方式就是按顺序“滑动”。&lt;/p&gt;
 
-&lt;p&gt;1）在父进程中，fork返回新创建子进程的进程ID；&lt;br/&gt;
-2）在子进程中，fork返回0；&lt;br/&gt;
-3）如果出现错误，fork返回一个负值； &lt;br/&gt;&lt;/p&gt;
+&lt;p&gt;TCP协议包括发送端和接收端，分别对应发送缓冲区和接收缓冲区。发送窗口是发送缓存中一部分。&lt;/p&gt;
 
-&lt;h2 id=&#34;浏览器通信:9f043c0d0d320a105e644fbd6515da42&#34;&gt;浏览器通信&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;已发送并收到确认的数据(不在发送窗口和缓冲区内)&lt;/li&gt;
+&lt;li&gt;已发送但未收到确认的数据(位于发送窗口之中)&lt;/li&gt;
+&lt;li&gt;允许发送但尚未发送的数据(位于发送窗口之中)&lt;/li&gt;
+&lt;li&gt;发送窗口外发送缓冲区内暂时不允许发送的数据&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;每次成功发送数据之后，发送窗口就会在发送缓冲区中按顺序移动，将新的数据包含到窗口中准备发送。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;流量控制&lt;/strong&gt;，主要是接收方传递信息给发送方，使其不要发送数据太快，是一种端到端的控制。返回的ACK中会包含自己的接收窗口的大小，并且利用大小来控制发送方的数据发送。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;拥塞控制&lt;/strong&gt;，是防止过多的数据注入到网络中，这样可以使网络中的路由器或链路不致过载。常用的方法是慢开始、拥塞控制；快重传、快恢复。&lt;/p&gt;
+
+&lt;h2 id=&#34;浏览器通信:d8af67bdb74c500ac497612f09ab5444&#34;&gt;浏览器通信&lt;/h2&gt;
 
 &lt;p&gt;&lt;strong&gt;同源策略&lt;/strong&gt;（Same Origin Policy，SOP）是指浏览器请求的资源必须是同域名、同协议、同端口。不同源的客户端脚本（js，actionscript）在没有明确的授权的情况下不能读取对方的资源。&lt;/p&gt;
 
@@ -94,115 +115,17 @@
 
 &lt;p&gt;&lt;strong&gt;Oauth&lt;/strong&gt;是一个关于授权的开放网络标准，相当于在客户端与服务器之间添加了一个授权层。&lt;/p&gt;
 
-&lt;h2 id=&#34;排序算法:9f043c0d0d320a105e644fbd6515da42&#34;&gt;排序算法&lt;/h2&gt;
+&lt;h2 id=&#34;参考链接:d8af67bdb74c500ac497612f09ab5444&#34;&gt;参考链接&lt;/h2&gt;
 
-&lt;p&gt;稳定排序:(N是数组长度，K是不同键值的数量)&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;&lt;a href=&#34;http://baike.baidu.com/link?url=tMNzUW-jPiPum3wRSbZb3mvvLp7BnXqHFVID4cN3TcYo2YGre8uZu80XK1qhvg3lbd4tDrzcxupe_af6XRhNUq&#34;&gt;TCP/IP协议&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
 
-&lt;table&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th&gt;名称&lt;/th&gt;
-&lt;th&gt;时间复杂度&lt;/th&gt;
-&lt;th&gt;空间复杂度&lt;/th&gt;
-&lt;th&gt;说明&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
+&lt;li&gt;&lt;p&gt;&lt;a href=&#34;http://blog.csdn.net/xiaoweige207/article/details/6211577/&#34;&gt;Socket通信简介&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
 
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td&gt;bubble&lt;/td&gt;
-&lt;td&gt;\(O(N^2)\)&lt;/td&gt;
-&lt;td&gt;\(O(1)\)&lt;/td&gt;
-&lt;td&gt;比较相邻的两个元素，每次将当前排列中最大的元素冒泡到最后&lt;/td&gt;
-&lt;/tr&gt;
+&lt;li&gt;&lt;p&gt;&lt;a href=&#34;http://www.cnblogs.com/BlueTzar/articles/811160.html&#34;&gt;TCP/IP四层模型&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
 
-&lt;tr&gt;
-&lt;td&gt;Cocktail&lt;/td&gt;
-&lt;td&gt;\(O(N^2)\)&lt;/td&gt;
-&lt;td&gt;\(O(1)\)&lt;/td&gt;
-&lt;td&gt;双向的冒泡排序&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td&gt;insertion&lt;/td&gt;
-&lt;td&gt;\(O(N^2)\)&lt;/td&gt;
-&lt;td&gt;\(O(1)\)&lt;/td&gt;
-&lt;td&gt;在一个有序数组中，插入一个给定的数到指定位置&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td&gt;bucket&lt;/td&gt;
-&lt;td&gt;\(O(N)\)&lt;/td&gt;
-&lt;td&gt;需要\(O(K)\)的额外空间&lt;/td&gt;
-&lt;td&gt;将数组分到有限数量的桶中，每个桶在分别排序，非比较排序，适合海量的均匀分布数据排序&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td&gt;merge&lt;/td&gt;
-&lt;td&gt;\(O(NlogN)\)&lt;/td&gt;
-&lt;td&gt;需要\(O(N)\)的额外空间&lt;/td&gt;
-&lt;td&gt;将两个（或两个以上）有序表合并成一个新的有序表&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td&gt;binary tree&lt;/td&gt;
-&lt;td&gt;期望时间\(O(NlogN)\)，最坏\(O(N^2)\)&lt;/td&gt;
-&lt;td&gt;\(O(N)\)&lt;/td&gt;
-&lt;td&gt;二叉搜索树,左子树的所有结点值小于根结点 ,右子树所有结点值大于根结点,左右子树分别为二叉搜索树&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;p&gt;不稳定排序:&lt;/p&gt;
-
-&lt;table&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th&gt;名称&lt;/th&gt;
-&lt;th&gt;时间复杂度&lt;/th&gt;
-&lt;th&gt;空间复杂度&lt;/th&gt;
-&lt;th&gt;说明&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td&gt;selection&lt;/td&gt;
-&lt;td&gt;\(O(N^2)\)&lt;/td&gt;
-&lt;td&gt;\(O(1)\)&lt;/td&gt;
-&lt;td&gt;每次从待排序数据中选出最大/小的元素，放在序列的起始位置&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td&gt;shell&lt;/td&gt;
-&lt;td&gt;\(O(NlogN)\)&lt;/td&gt;
-&lt;td&gt;\(O(1)\)&lt;/td&gt;
-&lt;td&gt;插入排序的一种，也称缩小增量排序&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td&gt;heapsort&lt;/td&gt;
-&lt;td&gt;\(O(NlogN)\)&lt;/td&gt;
-&lt;td&gt;\(O(1)\)&lt;/td&gt;
-&lt;td&gt;利用堆积树，是选择排序的一种&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td&gt;quicksort&lt;/td&gt;
-&lt;td&gt;期望时间\(O(NlogN)\)，最坏\(O(N^2)\)&lt;/td&gt;
-&lt;td&gt;\(O(1)\)&lt;/td&gt;
-&lt;td&gt;适合于大的，乱数列表;将数据分成两部分,一部分的所有数据比另一部所有数据都要小,递归排列,直到整组数据有序&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;h2 id=&#34;参考链接:9f043c0d0d320a105e644fbd6515da42&#34;&gt;参考链接&lt;/h2&gt;
-
-&lt;p&gt;&lt;a href=&#34;http://baike.baidu.com/link?url=tMNzUW-jPiPum3wRSbZb3mvvLp7BnXqHFVID4cN3TcYo2YGre8uZu80XK1qhvg3lbd4tDrzcxupe_af6XRhNUq&#34;&gt;TCP/IP协议&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&#34;http://blog.csdn.net/xiaoweige207/article/details/6211577/&#34;&gt;Socket通信简介&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&#34;http://baike.baidu.com/link?url=2KJOOFEzbpB20KrSK4QVHs01QN7D9zVuf6Fesb4AZiTxGKwlS-vVZzADhIbOhzSNdxoqAREtyVE6FtZysGtJywCYThzSFn-Q3IAWCTLBtfDhyLiY4btPxS5AfjQcGbqR&#34;&gt;排序算法&lt;/a&gt;&lt;/p&gt;
+&lt;li&gt;&lt;p&gt;&lt;a href=&#34;http://www.cnblogs.com/woaiyy/p/3554182.html&#34;&gt;tcp窗口滑动以及拥塞控制&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
 </description>
     </item>
     

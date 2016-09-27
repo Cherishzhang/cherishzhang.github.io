@@ -1,0 +1,255 @@
+
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+
+  
+  <meta charset="UTF-8">
+  <title>
+    计算机基础知识 - 算法和数据结构 | Learn and record
+  </title>
+
+
+  
+  <meta name="viewport" content="width=device-width,user-scalable=no,maximum-scale=1,initial-scale=1">
+
+  
+  <link rel="canonical" href="http://cherishzhang.github.io/post/interviews/algorithm/"/>
+
+  
+  <link rel="stylesheet" href="/css/sanitize.css">
+  <link rel="stylesheet" href="/css/responsive.css">
+  <link rel="stylesheet" href="/css/highlight_monokai.css">
+  <link rel="stylesheet" href="/css/theme.css">
+  <link rel="stylesheet" href="/css/custom.css">
+
+  
+  <link href="http://cherishzhang.github.io/index.xml" rel="alternate" type="application/rss+xml" title="Learn and record" />
+  <link href="http://cherishzhang.github.io/index.xml" rel="feed" type="application/rss+xml" title="Learn and record" />
+
+  
+  
+  <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=default"></script>
+  <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-84092408-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+</head>
+
+
+
+<body>
+<div class="container">
+
+  
+  <header role="banner">
+    <div class="row gutters">
+      <div id="site-title" class="col span_6">
+        <h1><a href="http://cherishzhang.github.io/">Learn and record</a></h1>
+        
+      </div>
+      
+      <img src="/images/avatar.jpg" width="64" height="64" style="margin-left:30px;">
+      
+      <div id="social" class="col span_4">
+        <ul>
+          <li><a href="http://cherishzhang.github.io/about" target="_blank">About me</a></li>
+          <li><a href="https://github.com/Cherishzhang" target="_blank">GitHub</a></li>
+          <li><a href="mailto:cherishzhang920508@gmail.com" target="_blank">Email</a></li>
+        </ul>
+      </div>
+  </header>
+
+
+  
+  <main id="single" role="main">
+    <div class="article-header">
+      <h1>计算机基础知识 - 算法和数据结构</h1>
+      <div class="meta" >
+        Sep 23, 2016 &nbsp;
+        
+          #<a href="/tags/reviews">reviews</a>&nbsp;
+        
+          #<a href="/tags/sort">sort</a>&nbsp;
+        
+      </div>
+    </div>
+    <article style="padding:30px; border: 2px solid;border-radius: 4px; border-color: #ddd;">
+      
+
+<h2 id="排序算法:0410937a83f6b2d022d3a1c190b257c8">排序算法</h2>
+
+<p>稳定排序:(N是数组长度，K是不同键值的数量)</p>
+
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>时间复杂度</th>
+<th>空间复杂度</th>
+<th>说明</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>bubble</td>
+<td>\(O(N^2)\)</td>
+<td>\(O(1)\)</td>
+<td>比较相邻的两个元素，每次将当前排列中最大的元素冒泡到最后</td>
+</tr>
+
+<tr>
+<td>Cocktail</td>
+<td>\(O(N^2)\)</td>
+<td>\(O(1)\)</td>
+<td>双向的冒泡排序</td>
+</tr>
+
+<tr>
+<td>insertion</td>
+<td>\(O(N^2)\)</td>
+<td>\(O(1)\)</td>
+<td>在一个有序数组中，插入一个给定的数到指定位置</td>
+</tr>
+
+<tr>
+<td>bucket</td>
+<td>\(O(N)\)</td>
+<td>需要\(O(K)\)的额外空间</td>
+<td>将数组分到有限数量的桶中，每个桶在分别排序，非比较排序，适合海量的均匀分布数据排序</td>
+</tr>
+
+<tr>
+<td>merge</td>
+<td>\(O(NlogN)\)</td>
+<td>需要\(O(N)\)的额外空间</td>
+<td>将两个（或两个以上）有序表合并成一个新的有序表</td>
+</tr>
+
+<tr>
+<td>binary tree</td>
+<td>期望时间\(O(NlogN)\)，最坏\(O(N^2)\)</td>
+<td>\(O(N)\)</td>
+<td>二叉搜索树,左子树的所有结点值小于根结点 ,右子树所有结点值大于根结点,左右子树分别为二叉搜索树</td>
+</tr>
+</tbody>
+</table>
+
+<p>不稳定排序:</p>
+
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>时间复杂度</th>
+<th>空间复杂度</th>
+<th>说明</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>selection</td>
+<td>\(O(N^2)\)</td>
+<td>\(O(1)\)</td>
+<td>每次从待排序数据中选出最大/小的元素，放在序列的起始位置</td>
+</tr>
+
+<tr>
+<td>shell</td>
+<td>\(O(NlogN)\)</td>
+<td>\(O(1)\)</td>
+<td>插入排序的一种，也称缩小增量排序</td>
+</tr>
+
+<tr>
+<td>heapsort</td>
+<td>\(O(NlogN)\)</td>
+<td>\(O(1)\)</td>
+<td>利用堆积树，是选择排序的一种</td>
+</tr>
+
+<tr>
+<td>quicksort</td>
+<td>期望时间\(O(NlogN)\)，最坏\(O(N^2)\)</td>
+<td>\(O(1)\)</td>
+<td>适合于大的，乱数列表;将数据分成两部分,一部分的所有数据比另一部所有数据都要小,递归排列,直到整组数据有序</td>
+</tr>
+</tbody>
+</table>
+
+<h2 id="算法题:0410937a83f6b2d022d3a1c190b257c8">算法题</h2>
+
+<p>1 大整数加、减、乘、除、求模运算实现
+2 很多整数，找其中出现次数最多的那个数
+3 单链表翻转（两个指针如何实现）、查找、删除、插入以及双向链表、有序链表合并
+4 判断一个整数是否是2的整数次幂.(n&amp;(n-1))
+5 二分查找（注意边界条件）
+6 常见排序算法的实现以及稳定性（快排跟归并考的很多）
+7 字符串翻转（O(n)）、匹配（KMP算法）
+8 最长递增子序列（nlogn的算法）
+9 链表判断是否有环，环的入口，两个链表是否相交（快慢指针）。
+10 指定一个数组，求2个数的和等于指定的和（某一个数），如果是3,4,5，n个等于个的和（某一个数）呢？（可以看作背包问题）
+11 跳台阶问题</p>
+
+<h2 id="参考链接:0410937a83f6b2d022d3a1c190b257c8">参考链接</h2>
+
+<p><a href="http://baike.baidu.com/link?url=2KJOOFEzbpB20KrSK4QVHs01QN7D9zVuf6Fesb4AZiTxGKwlS-vVZzADhIbOhzSNdxoqAREtyVE6FtZysGtJywCYThzSFn-Q3IAWCTLBtfDhyLiY4btPxS5AfjQcGbqR">排序算法</a>11</p>
+
+
+      
+    </article>
+  </main>
+
+  <nav class="pagination-single">
+    
+      <span class="previous">&larr; <a href="http://cherishzhang.github.io/post/interviews/tcpip/" rel="prev">计算机基础知识 - TCP/IP</a></span>
+    
+    
+      <span class="next"><a href="http://cherishzhang.github.io/post/interviews/os/" rel="next">计算机基础知识 - linux和操作系统</a> &rarr;</span>
+    
+  </nav>
+  
+ <aside><div id="disqus_thread"></div></aside>
+
+<script type="text/javascript">
+     
+    var disqus_shortname = 'http-cherishzhang-github-io';
+
+     
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+
+
+
+
+  
+  <footer role="contentinfo">
+    <div style="text-align:center;">
+      
+    </div>
+  </footer>
+
+
+</div>
+
+<script src="/js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+
+</body>
+</html>
+
