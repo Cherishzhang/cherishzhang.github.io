@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Hash on Learn and record</title>
+    <link>http://cherishzhang.github.io/tags/hash/</link>
+    <description>Recent content in Hash on Learn and record</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sun, 18 Dec 2016 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://cherishzhang.github.io/tags/hash/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>哈希总结及简单实现</title>
+      <link>http://cherishzhang.github.io/post/hash/</link>
+      <pubDate>Sun, 18 Dec 2016 00:00:00 +0000</pubDate>
+      
+      <guid>http://cherishzhang.github.io/post/hash/</guid>
+      <description>
+
+&lt;h2 id=&#34;哈希表:77fbab5a984a0955bedde5c9e028b708&#34;&gt;哈希表&lt;/h2&gt;
+
+&lt;p&gt;之前看word2vec和line的实现代码，总会出现哈希表。这里总结一下哈希表的用处。&lt;/p&gt;
+
+&lt;p&gt;所谓哈希，其实就是一个映射函数y=f(key)，给定key时，可以得出y的值，希望独特的key对应独特的y。&lt;/p&gt;
+
+&lt;p&gt;一般使用的场景如下图：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://ocwpxekrq.bkt.clouddn.com/hash.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;（怕自己总是搞不清楚，所以干脆画了张图）&lt;/p&gt;
+
+&lt;p&gt;但不同关键字可能得到同一散列地址,这种现象称&lt;strong&gt;碰撞&lt;/strong&gt;。处理冲突的方法如下：&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;开放寻址法：线性探测再散列，二次探测再散列，伪随机数再散列&lt;/li&gt;
+&lt;li&gt;再散列法&lt;/li&gt;
+&lt;li&gt;链地址法&lt;/li&gt;
+&lt;li&gt;建立一个公共溢出区&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;code:77fbab5a984a0955bedde5c9e028b708&#34;&gt;Code&lt;/h2&gt;
+
+&lt;p&gt;下面是代码实现部分，借鉴了line开源代码的具体实现。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-c&#34;&gt;#include&amp;lt;stdlib.h&amp;gt;
+#include&amp;lt;string.h&amp;gt;
+struct Node {
+    double val;
+    char *key;
+}
+
+const int hash_table_size = 30000000;
+int *hash_table;
+struct Node *nodes;
+unsigned int Hash(char *key) {
+    unsigned int seed = 131;
+    unsigned int hash = 0;
+    while(*key) {
+        hash = hash * seed + (*key++);
+    }
+    return hash % hash_table_size;
+}
+void InitHashTable() {
+    hash_table = (int *)malloc(hash_table_size*sizeof(int));
+    for (int k = 0; k != hash_table_size; k++) hash_table[k] = -1;
+}
+void InsertHashTable(char *key, int value) {
+    int addr = Hash(key);
+    while(hash_table[addr] != -1) addr = (addr + 1) % hash_table_size;
+    hash_table[addr] = value;
+}
+int SearchHashTable(char *key) {
+    int addr = Hash(key);
+    while(1){
+        if(hash_table[addr] == -1) return -1;
+        if(!strcmp(key, node[hash_table[addr]].key)) return hash_table[addr];
+        addr = (addr + 1) % hash_table_size;
+    }
+    return -1;
+}
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

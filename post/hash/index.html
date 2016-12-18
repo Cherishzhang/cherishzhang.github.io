@@ -6,7 +6,7 @@
   
   <meta charset="UTF-8">
   <title>
-    笔试/面试总结 | Learn and record
+    哈希总结及简单实现 | Learn and record
   </title>
 
 
@@ -14,7 +14,7 @@
   <meta name="viewport" content="width=device-width,user-scalable=no,maximum-scale=1,initial-scale=1">
 
   
-  <link rel="canonical" href="http://cherishzhang.github.io/post/interviews/list/"/>
+  <link rel="canonical" href="http://cherishzhang.github.io/post/hash/"/>
 
   
   <link rel="stylesheet" href="/css/sanitize.css">
@@ -70,26 +70,79 @@
   
   <main id="single" role="main">
     <div class="article-header">
-      <h1>笔试/面试总结</h1>
+      <h1>哈希总结及简单实现</h1>
       <div class="meta" >
-        Sep 25, 2016 &nbsp;
+        Dec 18, 2016 &nbsp;
         
-          #<a href="/tags/reviews">reviews</a>&nbsp;
+          #<a href="/tags/hash">hash</a>&nbsp;
         
       </div>
     </div>
     <article style="padding:30px; border: 2px solid;border-radius: 4px; border-color: #ddd;">
-      <p>关于笔试/面试基本知识点总结：</p>
+      
 
-<ol>
-<li><p><a href="http://cherishzhang.github.io/post/interviews/tcpip">TCP/IP相关</a></p></li>
+<h2 id="哈希表:77fbab5a984a0955bedde5c9e028b708">哈希表</h2>
 
-<li><p><a href="http://cherishzhang.github.io/post/interviews/os">linux/操作系统相关</a></p></li>
+<p>之前看word2vec和line的实现代码，总会出现哈希表。这里总结一下哈希表的用处。</p>
 
-<li><p><a href="http://cherishzhang.github.io/post/interviews/stl">C/C++相关</a></p></li>
+<p>所谓哈希，其实就是一个映射函数y=f(key)，给定key时，可以得出y的值，希望独特的key对应独特的y。</p>
 
-<li><p><a href="http://cherishzhang.github.io/post/interviews/algorithm">算法题相关</a></p></li>
-</ol>
+<p>一般使用的场景如下图：</p>
+
+<p><img src="http://ocwpxekrq.bkt.clouddn.com/hash.png" alt="" /></p>
+
+<p>（怕自己总是搞不清楚，所以干脆画了张图）</p>
+
+<p>但不同关键字可能得到同一散列地址,这种现象称<strong>碰撞</strong>。处理冲突的方法如下：</p>
+
+<ul>
+<li>开放寻址法：线性探测再散列，二次探测再散列，伪随机数再散列</li>
+<li>再散列法</li>
+<li>链地址法</li>
+<li>建立一个公共溢出区</li>
+</ul>
+
+<h2 id="code:77fbab5a984a0955bedde5c9e028b708">Code</h2>
+
+<p>下面是代码实现部分，借鉴了line开源代码的具体实现。</p>
+
+<pre><code class="language-c">#include&lt;stdlib.h&gt;
+#include&lt;string.h&gt;
+struct Node {
+    double val;
+    char *key;
+}
+
+const int hash_table_size = 30000000;
+int *hash_table;
+struct Node *nodes;
+unsigned int Hash(char *key) {
+    unsigned int seed = 131;
+    unsigned int hash = 0;
+    while(*key) {
+        hash = hash * seed + (*key++);
+    }
+    return hash % hash_table_size;
+}
+void InitHashTable() {
+    hash_table = (int *)malloc(hash_table_size*sizeof(int));
+    for (int k = 0; k != hash_table_size; k++) hash_table[k] = -1;
+}
+void InsertHashTable(char *key, int value) {
+    int addr = Hash(key);
+    while(hash_table[addr] != -1) addr = (addr + 1) % hash_table_size;
+    hash_table[addr] = value;
+}
+int SearchHashTable(char *key) {
+    int addr = Hash(key);
+    while(1){
+        if(hash_table[addr] == -1) return -1;
+        if(!strcmp(key, node[hash_table[addr]].key)) return hash_table[addr];
+        addr = (addr + 1) % hash_table_size;
+    }
+    return -1;
+}
+</code></pre>
 
 
       
@@ -98,10 +151,8 @@
 
   <nav class="pagination-single">
     
-      <span class="previous">&larr; <a href="http://cherishzhang.github.io/post/rec/recommender/" rel="prev">[rec] 推荐系统总结</a></span>
+      <span class="previous">&larr; <a href="http://cherishzhang.github.io/post/daily_tips_1/" rel="prev">[tips]日常总结1</a></span>
     
-    
-      <span class="next"><a href="http://cherishzhang.github.io/post/cplus/atoi/" rel="next">[c&#43;&#43;] atoi函数</a> &rarr;</span>
     
   </nav>
   

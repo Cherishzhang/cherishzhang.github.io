@@ -6,7 +6,7 @@
   
   <meta charset="UTF-8">
   <title>
-    笔试/面试总结 | Learn and record
+    [c&#43;&#43;] atoi函数 | Learn and record
   </title>
 
 
@@ -14,7 +14,7 @@
   <meta name="viewport" content="width=device-width,user-scalable=no,maximum-scale=1,initial-scale=1">
 
   
-  <link rel="canonical" href="http://cherishzhang.github.io/post/interviews/list/"/>
+  <link rel="canonical" href="http://cherishzhang.github.io/post/cplus/atoi/"/>
 
   
   <link rel="stylesheet" href="/css/sanitize.css">
@@ -70,26 +70,81 @@
   
   <main id="single" role="main">
     <div class="article-header">
-      <h1>笔试/面试总结</h1>
+      <h1>[c&#43;&#43;] atoi函数</h1>
       <div class="meta" >
-        Sep 25, 2016 &nbsp;
+        Dec 1, 2016 &nbsp;
         
-          #<a href="/tags/reviews">reviews</a>&nbsp;
+          #<a href="/tags/c">c&#43;&#43;</a>&nbsp;
+        
+          #<a href="/tags/atoi">atoi</a>&nbsp;
         
       </div>
     </div>
     <article style="padding:30px; border: 2px solid;border-radius: 4px; border-color: #ddd;">
-      <p>关于笔试/面试基本知识点总结：</p>
+      
 
-<ol>
-<li><p><a href="http://cherishzhang.github.io/post/interviews/tcpip">TCP/IP相关</a></p></li>
+<h2 id="intro:3bc06ac4f925047d156733e1af084b5a">Intro</h2>
 
-<li><p><a href="http://cherishzhang.github.io/post/interviews/os">linux/操作系统相关</a></p></li>
+<p>这是遇到过的一道面试题，在很多工程代码中也经常用到。该函数主要实现将字符串转化成整数。</p>
 
-<li><p><a href="http://cherishzhang.github.io/post/interviews/stl">C/C++相关</a></p></li>
+<h2 id="code:3bc06ac4f925047d156733e1af084b5a">Code</h2>
 
-<li><p><a href="http://cherishzhang.github.io/post/interviews/algorithm">算法题相关</a></p></li>
-</ol>
+<p>一种最简单的方法，遍历字符串，然后依次解析每个字符。</p>
+
+<pre><code>// Solution 1
+// A simple C++ program for implementation of atoi
+int atoi(const char *nptr){
+    int res = 0;
+    for(int i = 0; nptr[i] != '\0'; ++i)
+        res = res*10 + nptr[i] - '0';
+     return res;
+}
+</code></pre>
+
+<p>下面考虑一些特殊情况（实际中的特殊情况要全部考虑在内，这很重要）。首先是如何解析负数。</p>
+
+<pre><code>// Solution 2
+int atoi(const char *nptr){
+    int res = 0;
+    int sign =-1;
+    int i = 0;
+
+    if(nptr[0]== '-'){
+        sign = -1;
+        i++;
+     }
+    for(; nptr[i] != '\0'; ++i)
+        res = res*10 + nptr[i];
+    return res*sign;
+}
+ 
+</code></pre>
+
+<p>在此基础上，考虑空字符和非法字符的情况。</p>
+
+<pre><code>//Solution 3
+bool isNumericChar(char x){
+    return (x &gt;= '0' &amp;&amp; x &lt;= '9') ? true: false;
+}
+int atoi(const char *nptr){
+    if(*nptr == NULL)
+        return 0;
+    int res = 0;
+    int sign = 1;
+    int i = 0;
+    
+    if(nptr[0] == '-'){
+        sign = -1;
+        i++;
+    }
+    for(; nptr[i] != '\0'; ++i){
+        if(isNumericChar(nptr[i]) == false)
+            return 0;
+         res = res*10 + nptr[i]-'0';
+    }
+    return sign*res;
+}
+</code></pre>
 
 
       
@@ -98,10 +153,10 @@
 
   <nav class="pagination-single">
     
-      <span class="previous">&larr; <a href="http://cherishzhang.github.io/post/rec/recommender/" rel="prev">[rec] 推荐系统总结</a></span>
+      <span class="previous">&larr; <a href="http://cherishzhang.github.io/post/interviews/list/" rel="prev">笔试/面试总结</a></span>
     
     
-      <span class="next"><a href="http://cherishzhang.github.io/post/cplus/atoi/" rel="next">[c&#43;&#43;] atoi函数</a> &rarr;</span>
+      <span class="next"><a href="http://cherishzhang.github.io/post/daily_tips_1/" rel="next">[tips]日常总结1</a> &rarr;</span>
     
   </nav>
   

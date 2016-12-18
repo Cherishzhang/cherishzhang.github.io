@@ -221,21 +221,23 @@ numTrees: Int, featureSubsetStrategy: String):DecisionTreeMetadata =
 
 <p><r>二分类/回归情况下</r>：当作有序处理，即numBins(fi) = numCategories(fi)。</p>
 
-<p><gr>findSplitsBins</gr>:
-这是DecisionTree.scala中一个方法，基于buildMetadata统计的划分点数目和分箱数，加上数据采样，确定每个特征的划分点值。</p>
+<h3>findSplitsBins</h3>
+
+<p><sg>这是DecisionTree.scala中一个方法，基于buildMetadata统计的划分点数目和分箱数，加上数据采样，确定每个特征的划分点值。</sg></p>
+
+<p><sg>如果存在连续值特征，则对数据集进行无放回采样，采样个数为max(maxBins*maxBins, 10000)。接着进行分箱操作（见findSplitsBinsBySorting函数，findSplitsForContinuousFeature函数）。</sg></p>
+
+<p><sg><strong>treeRDD,BaggedRDD</strong>:
+treeRDD的类型是：RDD[TreePoint],treePoint类有两个属性：label和binnedFeatures。BaggedPoint类有两个属性datum和subsampleWeights(在各个采样后数据集中的权重，即出现次数)。
+</sg></p>
 
 <pre><code>def findSplitsBins(input:RDD[LabeledPoint],
 metadata:DecisionTreeMetadata): (Array[Array[Split]], Array[Array[Bin]]) =
 { ... }
 </code></pre>
 
-<p>如果存在连续值特征，则对数据集进行无放回采样，采样个数为max(maxBins*maxBins, 10000)。接着进行分箱操作（见findSplitsBinsBySorting函数，findSplitsForContinuousFeature函数）。</p>
-
-<p><strong>treeRDD,BaggedRDD</strong>:
-treeRDD的类型是：RDD[TreePoint],treePoint类有两个属性：label和binnedFeatures。BaggedPoint类有两个属性datum和subsampleWeights(在各个采样后数据集中的权重，即出现次数)。</p>
-
-<p><gr>findBestSplits</gr>:
-对于当前节点，计算准则函数下的信息增益，选择最优切分特征和最优切分点。</p>
+<p><h3>findBestSplits</h3>
+<sg>对于当前节点，计算准则函数下的信息增益，选择最优切分特征和最优切分点。</sg></p>
 
 <p><gr>其他</gr>:</p>
 

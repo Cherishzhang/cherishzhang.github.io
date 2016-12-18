@@ -19,17 +19,34 @@
 
 &lt;h3 id=&#34;rdd:1676227db8a33b6ba8c0a321eafd5577&#34;&gt;RDD&lt;/h3&gt;
 
-&lt;p&gt;RDD，全称为Resilient Distributed Datasets（弹性分布式数据集）。它是一个&lt;r&gt;容错&lt;/r&gt;且&lt;r&gt;并行&lt;/r&gt;的数据结构，可以让用户&lt;r&gt;显式&lt;/r&gt;地将数据存储到磁盘和内存中，并能控制数据的&lt;r&gt;分区&lt;/r&gt;。它只能基于在稳定物理存储中的数据集和其他已有的RDD上执行确定性操作(transformation)来创建。&lt;/p&gt;
+&lt;p&gt;RDD，全称为Resilient Distributed Datasets（弹性分布式数据集）。简单接触了spark后，萌发了想要深入且透彻的了解RDD到底是什么。&lt;/p&gt;
+
+&lt;p&gt;从英文解释来看，它应该是Dataset的集合，且是一个提供了许多操作接口的数据集合。和普通数据集的区别是：&lt;r&gt;实际数据分布存储在一批机器的内存或硬盘中&lt;/r&gt;。当然RDD还有容错和并行的功能。&lt;/p&gt;
+
+&lt;p&gt;下面摘录了一段对RDD的解释：&lt;/p&gt;
+
+&lt;p&gt;&lt;sg&gt;它是一个&lt;strong&gt;容错&lt;/strong&gt;且&lt;strong&gt;并行&lt;/strong&gt;的数据结构，可以让用户&lt;strong&gt;显式&lt;/strong&gt;地将数据存储到磁盘和内存中，并能控制数据的&lt;strong&gt;分区&lt;/strong&gt;。它只能基于在稳定物理存储中的数据集和其他已有的RDD上执行确定性操作(transformation)来创建。&lt;/sg&gt;&lt;/p&gt;
+
+&lt;p&gt;所以RDD的两个关键点为：带操作接口的数据集，分布式。&lt;/p&gt;
 
 &lt;p&gt;举个例子：&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;//用普通数组[1,2,...,9]创建RDD，数据分别在3个分区中
-val rdd1 = sc.parallelize(1 to 9, 3)
-//读取文件创建RDD，每一行就是RDD的一个元素
-val rdd2 = sc.textFile(&amp;quot;README.md&amp;quot;)
+&lt;pre&gt;&lt;code&gt;//读取文件创建RDD
+val rdd = sc.textFile(&amp;quot;README.md&amp;quot;).cache()
+val numAs = rdd.filter(line =&amp;gt; line.contains(&amp;quot;a&amp;quot;)).count()//包含a的行数
+val numBs = rdd.filter(line =&amp;gt; line.contains(&amp;quot;b&amp;quot;)).count()//包含b的行数
+println(&amp;quot;Lines with a: %s, Lines with b: %s&amp;quot;.format(numAs, numBs))
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;由此可见，RDD&lt;r&gt;本质&lt;/r&gt;是一个&lt;r&gt;只读的分区记录集合&lt;/r&gt;。一个RDD包含多个分区，每个分区是一个dataset片段。&lt;/p&gt;
+
+&lt;p&gt;前面提到了带操作接口的数据集，操作接口主要是RDD提供了对数据进行映射，归一等操作的API接口。这无疑方便了对分布式环境中的数据整合操作。操作分为两类：转换(transformations)和行动(actions)。前者根据原有的RDD创建一个新的RDD，后者则操作结果返回给driver。&lt;/p&gt;
+
+&lt;p&gt;以前总是不理解操作分成两类的原因，直接每次操作后都返回结果不可以么？解释是这样的，首先考虑到有些操作(如filter)过后，返回结果的数据量较大，而有些操作(如count)过后，返回的结果却很简洁。spark设计时，将转换操作设置为lazy的，即不会立即计算结果，只有遇到action，才会处理并返回结果。这样会使spark更高效。&lt;/p&gt;
+
+&lt;p&gt;转换类的操作有：map, filter, flatMap, mapPartitions, mapPartitionsWithIndex, sample, union, intersection, distinct, groupByKey, reduceByKey, aggregateByKey, sortByKey, join, cogroup, cartesian, pipe, coalesce, repartition。&lt;/p&gt;
+
+&lt;p&gt;行动类的操作有：reduce, collect, count, first, take, takeSample, takeOrdered, saveAsTextFile, saveAsSequenceFile, saveAsObjectFile&lt;/p&gt;
 
 &lt;p&gt;相关操作函数如下表：&lt;/p&gt;
 
@@ -121,7 +138,8 @@ val rdd3 = sc.parallelize(List(1,2),(3,4),(3,6)))
 &lt;/tbody&gt;
 &lt;/table&gt;
 
-&lt;p&gt;通常来讲，针对数据处理有几种常见模型，包括：&lt;r&gt;Iterative Algorithms&lt;/r&gt;,&lt;r&gt;Relational Queries&lt;/r&gt;,&lt;r&gt;MapReduce&lt;/r&gt;,&lt;r&gt;Stream Processing&lt;/r&gt;。例如Hadoop MapReduce采用了MapReduces模型，Storm则采用了Stream Processing模型。RDD混合了这四种模型，使得Spark可以应用于各种大数据处理场景。&lt;/p&gt;
+&lt;p&gt;([1-9]\d+|[2-9])
+通常来讲，针对数据处理有几种常见模型，包括：&lt;r&gt;Iterative Algorithms&lt;/r&gt;,&lt;r&gt;Relational Queries&lt;/r&gt;,&lt;r&gt;MapReduce&lt;/r&gt;,&lt;r&gt;Stream Processing&lt;/r&gt;。例如Hadoop MapReduce采用了MapReduces模型，Storm则采用了Stream Processing模型。RDD混合了这四种模型，使得Spark可以应用于各种大数据处理场景。&lt;/p&gt;
 
 &lt;p&gt;Spark将依赖分为narrow与wide。如果RDD的每个分区最多只能被一个Child RDD的一个分区使用，则称之为narrow dependency；若多个Child RDD分区都可以依赖，则称之为wide dependency。不同的操作依据其特性，可能会产生不同的依赖。例如map操作会产生narrow dependency，而join操作则产生wide dependency。&lt;/p&gt;
 
@@ -144,6 +162,8 @@ println(v)
 sc.parallelize(1 to 1000000).foreach(x =&amp;gt; accum+= 1)
 println(accum.name + &amp;quot;:&amp;quot; + accum.value)
 &lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;sparkcontext:1676227db8a33b6ba8c0a321eafd5577&#34;&gt;SparkContext&lt;/h3&gt;
 </description>
     </item>
     

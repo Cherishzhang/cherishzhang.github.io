@@ -6,8 +6,235 @@
     <description>Recent content in Posts on Learn and record</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 25 Sep 2016 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 18 Dec 2016 00:00:00 +0000</lastBuildDate>
     <atom:link href="http://cherishzhang.github.io/post/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>哈希总结及简单实现</title>
+      <link>http://cherishzhang.github.io/post/hash/</link>
+      <pubDate>Sun, 18 Dec 2016 00:00:00 +0000</pubDate>
+      
+      <guid>http://cherishzhang.github.io/post/hash/</guid>
+      <description>
+
+&lt;h2 id=&#34;哈希表:77fbab5a984a0955bedde5c9e028b708&#34;&gt;哈希表&lt;/h2&gt;
+
+&lt;p&gt;之前看word2vec和line的实现代码，总会出现哈希表。这里总结一下哈希表的用处。&lt;/p&gt;
+
+&lt;p&gt;所谓哈希，其实就是一个映射函数y=f(key)，给定key时，可以得出y的值，希望独特的key对应独特的y。&lt;/p&gt;
+
+&lt;p&gt;一般使用的场景如下图：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://ocwpxekrq.bkt.clouddn.com/hash.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;（怕自己总是搞不清楚，所以干脆画了张图）&lt;/p&gt;
+
+&lt;p&gt;但不同关键字可能得到同一散列地址,这种现象称&lt;strong&gt;碰撞&lt;/strong&gt;。处理冲突的方法如下：&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;开放寻址法：线性探测再散列，二次探测再散列，伪随机数再散列&lt;/li&gt;
+&lt;li&gt;再散列法&lt;/li&gt;
+&lt;li&gt;链地址法&lt;/li&gt;
+&lt;li&gt;建立一个公共溢出区&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;code:77fbab5a984a0955bedde5c9e028b708&#34;&gt;Code&lt;/h2&gt;
+
+&lt;p&gt;下面是代码实现部分，借鉴了line开源代码的具体实现。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-c&#34;&gt;#include&amp;lt;stdlib.h&amp;gt;
+#include&amp;lt;string.h&amp;gt;
+struct Node {
+    double val;
+    char *key;
+}
+
+const int hash_table_size = 30000000;
+int *hash_table;
+struct Node *nodes;
+unsigned int Hash(char *key) {
+    unsigned int seed = 131;
+    unsigned int hash = 0;
+    while(*key) {
+        hash = hash * seed + (*key++);
+    }
+    return hash % hash_table_size;
+}
+void InitHashTable() {
+    hash_table = (int *)malloc(hash_table_size*sizeof(int));
+    for (int k = 0; k != hash_table_size; k++) hash_table[k] = -1;
+}
+void InsertHashTable(char *key, int value) {
+    int addr = Hash(key);
+    while(hash_table[addr] != -1) addr = (addr + 1) % hash_table_size;
+    hash_table[addr] = value;
+}
+int SearchHashTable(char *key) {
+    int addr = Hash(key);
+    while(1){
+        if(hash_table[addr] == -1) return -1;
+        if(!strcmp(key, node[hash_table[addr]].key)) return hash_table[addr];
+        addr = (addr + 1) % hash_table_size;
+    }
+    return -1;
+}
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>[tips]日常总结1</title>
+      <link>http://cherishzhang.github.io/post/daily_tips_1/</link>
+      <pubDate>Sat, 17 Dec 2016 00:00:00 +0000</pubDate>
+      
+      <guid>http://cherishzhang.github.io/post/daily_tips_1/</guid>
+      <description>
+
+&lt;h2 id=&#34;intro:48b8812e0e384a98adb6eae935b10abd&#34;&gt;Intro&lt;/h2&gt;
+
+&lt;p&gt;下面笔者会记录一下日常中学习到的小知识点，以备查看。当一些知识储备充足，会系统地再做整理。&lt;/p&gt;
+
+&lt;h2 id=&#34;12-17:48b8812e0e384a98adb6eae935b10abd&#34;&gt;12-17&lt;/h2&gt;
+
+&lt;h4 id=&#34;1-merge-join-concat-in-pandas-http-pandas-pydata-org-pandas-docs-stable-merging-html:48b8812e0e384a98adb6eae935b10abd&#34;&gt;1. &lt;a href=&#34;http://pandas.pydata.org/pandas-docs/stable/merging.html&#34;&gt;merge,join,concat in pandas&lt;/a&gt;&lt;/h4&gt;
+
+&lt;p&gt;之前接触过pandas，用的比较多的是merge，对于join的用法一直比较模糊。&lt;/p&gt;
+
+&lt;p&gt;在数据处理和特征挖掘中，表与表之间的连接是一个经常使用的操作。&lt;/p&gt;
+
+&lt;p&gt;函数原型如下：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;merge(left, right, how=&#39;inner&#39;, on=None, left_on=None,right_on=None, 
+left_index=False, right_index=False, sort=True, suffixes=(&#39;_x&#39;,&#39;_y&#39;), 
+copy=True, indicator=False)
+join(self,other,on=None,how=&#39;left&#39;,lsuffix=&#39;&#39;,rsuffix=&#39;&#39;, sort=False)
+concat(objs, axis=0, join=&#39;outer&#39;,join_axes=None, ignore_index=False,
+keys=None, levels=None, names=None, verify_integrity=False,copy=True)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;r&gt;merge - 通过键值拼接列&lt;/r&gt;&lt;/p&gt;
+
+&lt;p&gt;它类似于关系数据库中的join操作，可以根据一个或多个键将DataFrame中的行拼接起来。&lt;/p&gt;
+
+&lt;p&gt;下面对其中的几个参数做些说明：&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;on=None 指定拼接所用列名，如果两个对象的列名不统一，可以分别通过left_on和right_on指定。&lt;/li&gt;
+&lt;li&gt;left_index/right_index 用行索引做连接键时，指定为True&lt;/li&gt;
+&lt;li&gt;how 当两个表存在不重合的键时，结果的选取方式，&amp;rsquo;inner&amp;rsquo;-交集;&amp;lsquo;outer&amp;rsquo;-并集;&amp;lsquo;left&amp;rsquo;/&amp;lsquo;right&amp;rsquo;分别取一边。&lt;/li&gt;
+&lt;li&gt;suffixes=(&amp;rsquo;_x&amp;rsquo;,&amp;rsquo;_y&amp;rsquo;) 当左右表格存在除连接键外的同名列时，通过添加后缀的方式作区分。&lt;/li&gt;
+&lt;li&gt;多对多连接，结果为行的笛卡尔积。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;r&gt;join - 索引上的合并，拼接列&lt;/r&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;默认按索引合并，合并相同或相似的索引。&lt;/li&gt;
+&lt;li&gt;可以连接多个frame&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;r&gt;concat - 以轴连接多个对象&lt;/r&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;默认axis=0情况下，concat是将objs按照append的方式拼接起来&lt;/li&gt;
+&lt;li&gt;axis=1情况下与merge相同。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;12-18:48b8812e0e384a98adb6eae935b10abd&#34;&gt;12-18&lt;/h2&gt;
+
+&lt;h4 id=&#34;1-malloc-realloc-calloc:48b8812e0e384a98adb6eae935b10abd&#34;&gt;1. malloc, realloc, calloc&lt;/h4&gt;
+
+&lt;p&gt;在stdlib.h函数库中，它们的返回值是请求系统分配的地址，如果失败返回NULL。函数原型如下：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;void* malloc(unsigned size);
+void* calloc(size_t numElements, size_T sizeOfElement);
+void* realloc(void* ptr, unsigned newsize);
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ul&gt;
+&lt;li&gt;malloc 在内存的动态存储区中分配一块长度为size字节的连续区域，返回该区域的首地址。&lt;/li&gt;
+&lt;li&gt;calloc 在内存中申请numElements*sizeOfElement字节大小的连续地址空间。&lt;/li&gt;
+&lt;li&gt;realloc 给一个已经分配了地址的指针重新分配空间，参数ptr为原有的空间地址，newsize是重新申请的地址长度。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;区别：
+（1）malloc不能初始化所分配的内存空间，而calloc可以。
+（2）realloc可以对给定指针所指的空间进行扩大或者缩小，但原有内容保持不变。&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>[c&#43;&#43;] atoi函数</title>
+      <link>http://cherishzhang.github.io/post/cplus/atoi/</link>
+      <pubDate>Thu, 01 Dec 2016 00:00:00 +0000</pubDate>
+      
+      <guid>http://cherishzhang.github.io/post/cplus/atoi/</guid>
+      <description>
+
+&lt;h2 id=&#34;intro:3bc06ac4f925047d156733e1af084b5a&#34;&gt;Intro&lt;/h2&gt;
+
+&lt;p&gt;这是遇到过的一道面试题，在很多工程代码中也经常用到。该函数主要实现将字符串转化成整数。&lt;/p&gt;
+
+&lt;h2 id=&#34;code:3bc06ac4f925047d156733e1af084b5a&#34;&gt;Code&lt;/h2&gt;
+
+&lt;p&gt;一种最简单的方法，遍历字符串，然后依次解析每个字符。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;// Solution 1
+// A simple C++ program for implementation of atoi
+int atoi(const char *nptr){
+    int res = 0;
+    for(int i = 0; nptr[i] != &#39;\0&#39;; ++i)
+        res = res*10 + nptr[i] - &#39;0&#39;;
+     return res;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;下面考虑一些特殊情况（实际中的特殊情况要全部考虑在内，这很重要）。首先是如何解析负数。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;// Solution 2
+int atoi(const char *nptr){
+    int res = 0;
+    int sign =-1;
+    int i = 0;
+
+    if(nptr[0]== &#39;-&#39;){
+        sign = -1;
+        i++;
+     }
+    for(; nptr[i] != &#39;\0&#39;; ++i)
+        res = res*10 + nptr[i];
+    return res*sign;
+}
+ 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;在此基础上，考虑空字符和非法字符的情况。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;//Solution 3
+bool isNumericChar(char x){
+    return (x &amp;gt;= &#39;0&#39; &amp;amp;&amp;amp; x &amp;lt;= &#39;9&#39;) ? true: false;
+}
+int atoi(const char *nptr){
+    if(*nptr == NULL)
+        return 0;
+    int res = 0;
+    int sign = 1;
+    int i = 0;
+    
+    if(nptr[0] == &#39;-&#39;){
+        sign = -1;
+        i++;
+    }
+    for(; nptr[i] != &#39;\0&#39;; ++i){
+        if(isNumericChar(nptr[i]) == false)
+            return 0;
+         res = res*10 + nptr[i]-&#39;0&#39;;
+    }
+    return sign*res;
+}
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
     
     <item>
       <title>笔试/面试总结</title>
@@ -380,17 +607,34 @@ item-based: &lt;r&gt;准确性&lt;/r&gt;好，便于离线计算；但推荐缺�
 
 &lt;h3 id=&#34;rdd:1676227db8a33b6ba8c0a321eafd5577&#34;&gt;RDD&lt;/h3&gt;
 
-&lt;p&gt;RDD，全称为Resilient Distributed Datasets（弹性分布式数据集）。它是一个&lt;r&gt;容错&lt;/r&gt;且&lt;r&gt;并行&lt;/r&gt;的数据结构，可以让用户&lt;r&gt;显式&lt;/r&gt;地将数据存储到磁盘和内存中，并能控制数据的&lt;r&gt;分区&lt;/r&gt;。它只能基于在稳定物理存储中的数据集和其他已有的RDD上执行确定性操作(transformation)来创建。&lt;/p&gt;
+&lt;p&gt;RDD，全称为Resilient Distributed Datasets（弹性分布式数据集）。简单接触了spark后，萌发了想要深入且透彻的了解RDD到底是什么。&lt;/p&gt;
+
+&lt;p&gt;从英文解释来看，它应该是Dataset的集合，且是一个提供了许多操作接口的数据集合。和普通数据集的区别是：&lt;r&gt;实际数据分布存储在一批机器的内存或硬盘中&lt;/r&gt;。当然RDD还有容错和并行的功能。&lt;/p&gt;
+
+&lt;p&gt;下面摘录了一段对RDD的解释：&lt;/p&gt;
+
+&lt;p&gt;&lt;sg&gt;它是一个&lt;strong&gt;容错&lt;/strong&gt;且&lt;strong&gt;并行&lt;/strong&gt;的数据结构，可以让用户&lt;strong&gt;显式&lt;/strong&gt;地将数据存储到磁盘和内存中，并能控制数据的&lt;strong&gt;分区&lt;/strong&gt;。它只能基于在稳定物理存储中的数据集和其他已有的RDD上执行确定性操作(transformation)来创建。&lt;/sg&gt;&lt;/p&gt;
+
+&lt;p&gt;所以RDD的两个关键点为：带操作接口的数据集，分布式。&lt;/p&gt;
 
 &lt;p&gt;举个例子：&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;//用普通数组[1,2,...,9]创建RDD，数据分别在3个分区中
-val rdd1 = sc.parallelize(1 to 9, 3)
-//读取文件创建RDD，每一行就是RDD的一个元素
-val rdd2 = sc.textFile(&amp;quot;README.md&amp;quot;)
+&lt;pre&gt;&lt;code&gt;//读取文件创建RDD
+val rdd = sc.textFile(&amp;quot;README.md&amp;quot;).cache()
+val numAs = rdd.filter(line =&amp;gt; line.contains(&amp;quot;a&amp;quot;)).count()//包含a的行数
+val numBs = rdd.filter(line =&amp;gt; line.contains(&amp;quot;b&amp;quot;)).count()//包含b的行数
+println(&amp;quot;Lines with a: %s, Lines with b: %s&amp;quot;.format(numAs, numBs))
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;由此可见，RDD&lt;r&gt;本质&lt;/r&gt;是一个&lt;r&gt;只读的分区记录集合&lt;/r&gt;。一个RDD包含多个分区，每个分区是一个dataset片段。&lt;/p&gt;
+
+&lt;p&gt;前面提到了带操作接口的数据集，操作接口主要是RDD提供了对数据进行映射，归一等操作的API接口。这无疑方便了对分布式环境中的数据整合操作。操作分为两类：转换(transformations)和行动(actions)。前者根据原有的RDD创建一个新的RDD，后者则操作结果返回给driver。&lt;/p&gt;
+
+&lt;p&gt;以前总是不理解操作分成两类的原因，直接每次操作后都返回结果不可以么？解释是这样的，首先考虑到有些操作(如filter)过后，返回结果的数据量较大，而有些操作(如count)过后，返回的结果却很简洁。spark设计时，将转换操作设置为lazy的，即不会立即计算结果，只有遇到action，才会处理并返回结果。这样会使spark更高效。&lt;/p&gt;
+
+&lt;p&gt;转换类的操作有：map, filter, flatMap, mapPartitions, mapPartitionsWithIndex, sample, union, intersection, distinct, groupByKey, reduceByKey, aggregateByKey, sortByKey, join, cogroup, cartesian, pipe, coalesce, repartition。&lt;/p&gt;
+
+&lt;p&gt;行动类的操作有：reduce, collect, count, first, take, takeSample, takeOrdered, saveAsTextFile, saveAsSequenceFile, saveAsObjectFile&lt;/p&gt;
 
 &lt;p&gt;相关操作函数如下表：&lt;/p&gt;
 
@@ -482,7 +726,8 @@ val rdd3 = sc.parallelize(List(1,2),(3,4),(3,6)))
 &lt;/tbody&gt;
 &lt;/table&gt;
 
-&lt;p&gt;通常来讲，针对数据处理有几种常见模型，包括：&lt;r&gt;Iterative Algorithms&lt;/r&gt;,&lt;r&gt;Relational Queries&lt;/r&gt;,&lt;r&gt;MapReduce&lt;/r&gt;,&lt;r&gt;Stream Processing&lt;/r&gt;。例如Hadoop MapReduce采用了MapReduces模型，Storm则采用了Stream Processing模型。RDD混合了这四种模型，使得Spark可以应用于各种大数据处理场景。&lt;/p&gt;
+&lt;p&gt;([1-9]\d+|[2-9])
+通常来讲，针对数据处理有几种常见模型，包括：&lt;r&gt;Iterative Algorithms&lt;/r&gt;,&lt;r&gt;Relational Queries&lt;/r&gt;,&lt;r&gt;MapReduce&lt;/r&gt;,&lt;r&gt;Stream Processing&lt;/r&gt;。例如Hadoop MapReduce采用了MapReduces模型，Storm则采用了Stream Processing模型。RDD混合了这四种模型，使得Spark可以应用于各种大数据处理场景。&lt;/p&gt;
 
 &lt;p&gt;Spark将依赖分为narrow与wide。如果RDD的每个分区最多只能被一个Child RDD的一个分区使用，则称之为narrow dependency；若多个Child RDD分区都可以依赖，则称之为wide dependency。不同的操作依据其特性，可能会产生不同的依赖。例如map操作会产生narrow dependency，而join操作则产生wide dependency。&lt;/p&gt;
 
@@ -505,6 +750,8 @@ println(v)
 sc.parallelize(1 to 1000000).foreach(x =&amp;gt; accum+= 1)
 println(accum.name + &amp;quot;:&amp;quot; + accum.value)
 &lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;sparkcontext:1676227db8a33b6ba8c0a321eafd5577&#34;&gt;SparkContext&lt;/h3&gt;
 </description>
     </item>
     
@@ -1099,21 +1346,23 @@ numTrees: Int, featureSubsetStrategy: String):DecisionTreeMetadata =
 
 &lt;p&gt;&lt;r&gt;二分类/回归情况下&lt;/r&gt;：当作有序处理，即numBins(fi) = numCategories(fi)。&lt;/p&gt;
 
-&lt;p&gt;&lt;gr&gt;findSplitsBins&lt;/gr&gt;:
-这是DecisionTree.scala中一个方法，基于buildMetadata统计的划分点数目和分箱数，加上数据采样，确定每个特征的划分点值。&lt;/p&gt;
+&lt;h3&gt;findSplitsBins&lt;/h3&gt;
+
+&lt;p&gt;&lt;sg&gt;这是DecisionTree.scala中一个方法，基于buildMetadata统计的划分点数目和分箱数，加上数据采样，确定每个特征的划分点值。&lt;/sg&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;sg&gt;如果存在连续值特征，则对数据集进行无放回采样，采样个数为max(maxBins*maxBins, 10000)。接着进行分箱操作（见findSplitsBinsBySorting函数，findSplitsForContinuousFeature函数）。&lt;/sg&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;sg&gt;&lt;strong&gt;treeRDD,BaggedRDD&lt;/strong&gt;:
+treeRDD的类型是：RDD[TreePoint],treePoint类有两个属性：label和binnedFeatures。BaggedPoint类有两个属性datum和subsampleWeights(在各个采样后数据集中的权重，即出现次数)。
+&lt;/sg&gt;&lt;/p&gt;
 
 &lt;pre&gt;&lt;code&gt;def findSplitsBins(input:RDD[LabeledPoint],
 metadata:DecisionTreeMetadata): (Array[Array[Split]], Array[Array[Bin]]) =
 { ... }
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;如果存在连续值特征，则对数据集进行无放回采样，采样个数为max(maxBins*maxBins, 10000)。接着进行分箱操作（见findSplitsBinsBySorting函数，findSplitsForContinuousFeature函数）。&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;treeRDD,BaggedRDD&lt;/strong&gt;:
-treeRDD的类型是：RDD[TreePoint],treePoint类有两个属性：label和binnedFeatures。BaggedPoint类有两个属性datum和subsampleWeights(在各个采样后数据集中的权重，即出现次数)。&lt;/p&gt;
-
-&lt;p&gt;&lt;gr&gt;findBestSplits&lt;/gr&gt;:
-对于当前节点，计算准则函数下的信息增益，选择最优切分特征和最优切分点。&lt;/p&gt;
+&lt;p&gt;&lt;h3&gt;findBestSplits&lt;/h3&gt;
+&lt;sg&gt;对于当前节点，计算准则函数下的信息增益，选择最优切分特征和最优切分点。&lt;/sg&gt;&lt;/p&gt;
 
 &lt;p&gt;&lt;gr&gt;其他&lt;/gr&gt;:&lt;/p&gt;
 

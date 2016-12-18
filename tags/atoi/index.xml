@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Atoi on Learn and record</title>
+    <link>http://cherishzhang.github.io/tags/atoi/</link>
+    <description>Recent content in Atoi on Learn and record</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 01 Dec 2016 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://cherishzhang.github.io/tags/atoi/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>[c&#43;&#43;] atoi函数</title>
+      <link>http://cherishzhang.github.io/post/cplus/atoi/</link>
+      <pubDate>Thu, 01 Dec 2016 00:00:00 +0000</pubDate>
+      
+      <guid>http://cherishzhang.github.io/post/cplus/atoi/</guid>
+      <description>
+
+&lt;h2 id=&#34;intro:3bc06ac4f925047d156733e1af084b5a&#34;&gt;Intro&lt;/h2&gt;
+
+&lt;p&gt;这是遇到过的一道面试题，在很多工程代码中也经常用到。该函数主要实现将字符串转化成整数。&lt;/p&gt;
+
+&lt;h2 id=&#34;code:3bc06ac4f925047d156733e1af084b5a&#34;&gt;Code&lt;/h2&gt;
+
+&lt;p&gt;一种最简单的方法，遍历字符串，然后依次解析每个字符。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;// Solution 1
+// A simple C++ program for implementation of atoi
+int atoi(const char *nptr){
+    int res = 0;
+    for(int i = 0; nptr[i] != &#39;\0&#39;; ++i)
+        res = res*10 + nptr[i] - &#39;0&#39;;
+     return res;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;下面考虑一些特殊情况（实际中的特殊情况要全部考虑在内，这很重要）。首先是如何解析负数。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;// Solution 2
+int atoi(const char *nptr){
+    int res = 0;
+    int sign =-1;
+    int i = 0;
+
+    if(nptr[0]== &#39;-&#39;){
+        sign = -1;
+        i++;
+     }
+    for(; nptr[i] != &#39;\0&#39;; ++i)
+        res = res*10 + nptr[i];
+    return res*sign;
+}
+ 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;在此基础上，考虑空字符和非法字符的情况。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;//Solution 3
+bool isNumericChar(char x){
+    return (x &amp;gt;= &#39;0&#39; &amp;amp;&amp;amp; x &amp;lt;= &#39;9&#39;) ? true: false;
+}
+int atoi(const char *nptr){
+    if(*nptr == NULL)
+        return 0;
+    int res = 0;
+    int sign = 1;
+    int i = 0;
+    
+    if(nptr[0] == &#39;-&#39;){
+        sign = -1;
+        i++;
+    }
+    for(; nptr[i] != &#39;\0&#39;; ++i){
+        if(isNumericChar(nptr[i]) == false)
+            return 0;
+         res = res*10 + nptr[i]-&#39;0&#39;;
+    }
+    return sign*res;
+}
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>
