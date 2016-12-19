@@ -84,9 +84,20 @@ void* realloc(void* ptr, unsigned newsize);
 &lt;li&gt;realloc 给一个已经分配了地址的指针重新分配空间，参数ptr为原有的空间地址，newsize是重新申请的地址长度。&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;区别：
-（1）malloc不能初始化所分配的内存空间，而calloc可以。
-（2）realloc可以对给定指针所指的空间进行扩大或者缩小，但原有内容保持不变。&lt;/p&gt;
+&lt;p&gt;区别：&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;malloc不能初始化所分配的内存空间，而calloc可以。&lt;/li&gt;
+&lt;li&gt;realloc可以对给定指针所指的空间进行扩大或者缩小，但原有内容保持不变。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;12-19:48b8812e0e384a98adb6eae935b10abd&#34;&gt;12-19&lt;/h2&gt;
+
+&lt;h4 id=&#34;1-alia-table-别名表:48b8812e0e384a98adb6eae935b10abd&#34;&gt;1. Alia table(别名表)&lt;/h4&gt;
+
+&lt;h4 id=&#34;2-负采样:48b8812e0e384a98adb6eae935b10abd&#34;&gt;2. 负采样&lt;/h4&gt;
+
+&lt;h4 id=&#34;3-随机梯度下降:48b8812e0e384a98adb6eae935b10abd&#34;&gt;3. 随机梯度下降&lt;/h4&gt;
 </description>
     </item>
     

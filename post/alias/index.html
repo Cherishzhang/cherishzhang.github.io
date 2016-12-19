@@ -1,0 +1,307 @@
+
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+
+  
+  <meta charset="UTF-8">
+  <title>
+    Alias Table(别名表) | Learn and record
+  </title>
+
+
+  
+  <meta name="viewport" content="width=device-width,user-scalable=no,maximum-scale=1,initial-scale=1">
+
+  
+  <link rel="canonical" href="http://cherishzhang.github.io/post/alias/"/>
+
+  
+  <link rel="stylesheet" href="/css/sanitize.css">
+  <link rel="stylesheet" href="/css/responsive.css">
+  <link rel="stylesheet" href="/css/highlight_monokai.css">
+  <link rel="stylesheet" href="/css/theme.css">
+  <link rel="stylesheet" href="/css/custom.css">
+
+  
+  <link href="http://cherishzhang.github.io/index.xml" rel="alternate" type="application/rss+xml" title="Learn and record" />
+  <link href="http://cherishzhang.github.io/index.xml" rel="feed" type="application/rss+xml" title="Learn and record" />
+
+  
+  
+  <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=default"></script>
+  <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-84092408-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+</head>
+
+
+
+<body>
+<div class="container">
+
+  
+  <header role="banner">
+    <div class="row gutters">
+      <div id="site-title" class="col span_6">
+        <h1><a href="http://cherishzhang.github.io/">Learn and record</a></h1>
+        
+      </div>
+      
+      <img src="/images/avatar.jpg" width="64" height="64" style="margin-left:30px;">
+      
+      <div id="social" class="col span_4">
+        <ul>
+          <li><a href="http://cherishzhang.github.io/about" target="_blank">About me</a></li>
+          <li><a href="https://github.com/Cherishzhang" target="_blank">GitHub</a></li>
+          <li><a href="mailto:cherishzhang920508@gmail.com" target="_blank">Email</a></li>
+        </ul>
+      </div>
+  </header>
+
+
+  
+  <main id="single" role="main">
+    <div class="article-header">
+      <h1>Alias Table(别名表)</h1>
+      <div class="meta" >
+        Dec 19, 2016 &nbsp;
+        
+          #<a href="/tags/alias">alias</a>&nbsp;
+        
+      </div>
+    </div>
+    <article style="padding:30px; border: 2px solid;border-radius: 4px; border-color: #ddd;">
+      
+
+<h2 id="intro:3b3d2541cd37edc022b27d62280cdf2f">Intro</h2>
+
+<p><strong>天之道，损有余而补不足；人之道，损不足以奉有余。</strong> &mdash;-老子《道德经》</p>
+
+<p>大概意思是自然的规律是多的地方补不足的地方，比如水往低处流。而人道与此相反。</p>
+
+<p>下面就来说说这个神奇的算法。</p>
+
+<h2 id="采样:3b3d2541cd37edc022b27d62280cdf2f">采样</h2>
+
+<p>假设给定一个盒子，盒子中放有各种颜色的若干个相同大小的小球，对小球进行随机采样，即每次从盒子中摸出一个，记录颜色；放回，然后继续。。。</p>
+
+<p>那如何利用计算机模拟这一随机采样的过程呢？</p>
+
+<p>抽象成一个如下问题，给定一个离散值集合，对该集合中的数字随机采样，一个直观的方法是统计每个值出现的概率，计算对应的CDF(cumulative distribution function)，如下表：</p>
+
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>val</td>
+<td>1</td>
+<td>2</td>
+<td>3</td>
+<td>4</td>
+</tr>
+
+<tr>
+<td>prob</td>
+<td>0.1</td>
+<td>0.2</td>
+<td>0.3</td>
+<td>0.4</td>
+</tr>
+
+<tr>
+<td>cum</td>
+<td>0.1</td>
+<td>0.3</td>
+<td>0.6</td>
+<td>1.0</td>
+</tr>
+</tbody>
+</table>
+
+<p>令p=rand()产生一个0～1的随机值，然后看p落在CDF的哪个范围内，就取该值返回。如p=0.4，属于0.3~0.6，那么就取3作为采样值返回。通过二分查找，该取样的时间复杂度为O(logN)。</p>
+
+<h2 id="alias:3b3d2541cd37edc022b27d62280cdf2f">Alias</h2>
+
+<p>别名表的方法可以让采样在<r>O(1)</r>的时间复杂度内完成。适用于离散值较多的情景。</p>
+
+<p>采样值通过两次rand()来决定。</p>
+
+<ul>
+<li>第一轮 生成一个随机数，确定一个采样值</li>
+<li>第二轮 生成另一个随机数，根据alias表中的概率，判断选择该值还是其别名。</li>
+</ul>
+
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>val</td>
+<td>1</td>
+<td>2</td>
+<td>3</td>
+<td>4</td>
+</tr>
+
+<tr>
+<td>alias</td>
+<td>3</td>
+<td>4</td>
+<td>4</td>
+<td>-</td>
+</tr>
+
+<tr>
+<td>prob</td>
+<td>0.4</td>
+<td>0.8</td>
+<td>0.6</td>
+<td>1.0</td>
+</tr>
+</tbody>
+</table>
+
+<h2 id="代码实现:3b3d2541cd37edc022b27d62280cdf2f">代码实现</h2>
+
+<p>下面是借鉴的line中的部分代码：</p>
+
+<pre><code class="language-c++">double *prob;
+long long *alias;
+int num_edges;
+void InitAliasTable()
+{
+    prob = (double *)malloc(num_edges*sizeof(double));
+    alias = (long long *)malloc(num_edges*sizeof(long long));
+    if (alias == NULL || prob == NULL)
+    {
+        printf(&quot;Error: memory allocation failed!\n&quot;);
+        exit(1);
+    }
+
+    double *norm_prob = (double*)malloc(num_edges*sizeof(double));
+    long long *large_block = (long long*)malloc(num_edges*sizeof(long long));
+    long long *small_block = (long long*)malloc(num_edges*sizeof(long long));
+    if (norm_prob == NULL || large_block == NULL || small_block == NULL)
+    {
+        printf(&quot;Error: memory allocation failed!\n&quot;);
+        exit(1);
+    }
+
+    double sum = 0;
+    long long cur_small_block, cur_large_block;
+    long long num_small_block = 0, num_large_block = 0;
+
+    for (long long k = 0; k != num_edges; k++) 
+        sum += edge_weight[k];
+    for (long long k = 0; k != num_edges; k++) 
+        norm_prob[k] = edge_weight[k] * num_edges / sum;
+
+    for (long long k = num_edges - 1; k &gt;= 0; k--)
+    {
+        if (norm_prob[k]&lt;1)
+            small_block[num_small_block++] = k; //比随机采样要小的概率选中
+        else
+            large_block[num_large_block++] = k; //比随机采样要大的概率选中
+    }
+
+    while (num_small_block &amp;&amp; num_large_block) //损有余而补不足
+    {
+        cur_small_block = small_block[--num_small_block]; //不足
+        cur_large_block = large_block[--num_large_block]; //有余
+        prob[cur_small_block] = norm_prob[cur_small_block];
+        alias[cur_small_block] = cur_large_block;
+        norm_prob[cur_large_block] = norm_prob[cur_large_block] + norm_prob[cur_small_block] - 1;
+        if (norm_prob[cur_large_block] &lt; 1)
+            small_block[num_small_block++] = cur_large_block;
+        else
+            large_block[num_large_block++] = cur_large_block;
+    }
+
+    while (num_large_block) prob[large_block[--num_large_block]] = 1;
+    while (num_small_block) prob[small_block[--num_small_block]] = 1;
+
+    free(norm_prob);
+    free(small_block);
+    free(large_block);
+}
+
+long long SampleAnEdge(double rand_value1, double rand_value2)
+{
+    long long k = (long long)num_edges * rand_value1;
+    return rand_value2 &lt; prob[k] ? k : alias[k];
+}
+</code></pre>
+
+
+      
+    </article>
+  </main>
+
+  <nav class="pagination-single">
+    
+      <span class="previous">&larr; <a href="http://cherishzhang.github.io/post/hash/" rel="prev">哈希总结及简单实现</a></span>
+    
+    
+  </nav>
+  
+ <aside><div id="disqus_thread"></div></aside>
+
+<script type="text/javascript">
+     
+    var disqus_shortname = 'http-cherishzhang-github-io';
+
+     
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+
+
+
+
+  
+  <footer role="contentinfo">
+    <div style="text-align:center;">
+      
+    </div>
+  </footer>
+
+
+</div>
+
+<script src="/js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+
+</body>
+</html>
+

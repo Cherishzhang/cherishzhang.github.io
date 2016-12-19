@@ -6,8 +6,194 @@
     <description>Recent content in Posts on Learn and record</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 18 Dec 2016 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 19 Dec 2016 00:00:00 +0000</lastBuildDate>
     <atom:link href="http://cherishzhang.github.io/post/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Alias Table(别名表)</title>
+      <link>http://cherishzhang.github.io/post/alias/</link>
+      <pubDate>Mon, 19 Dec 2016 00:00:00 +0000</pubDate>
+      
+      <guid>http://cherishzhang.github.io/post/alias/</guid>
+      <description>
+
+&lt;h2 id=&#34;intro:3b3d2541cd37edc022b27d62280cdf2f&#34;&gt;Intro&lt;/h2&gt;
+
+&lt;p&gt;&lt;strong&gt;天之道，损有余而补不足；人之道，损不足以奉有余。&lt;/strong&gt; &amp;mdash;-老子《道德经》&lt;/p&gt;
+
+&lt;p&gt;大概意思是自然的规律是多的地方补不足的地方，比如水往低处流。而人道与此相反。&lt;/p&gt;
+
+&lt;p&gt;下面就来说说这个神奇的算法。&lt;/p&gt;
+
+&lt;h2 id=&#34;采样:3b3d2541cd37edc022b27d62280cdf2f&#34;&gt;采样&lt;/h2&gt;
+
+&lt;p&gt;假设给定一个盒子，盒子中放有各种颜色的若干个相同大小的小球，对小球进行随机采样，即每次从盒子中摸出一个，记录颜色；放回，然后继续。。。&lt;/p&gt;
+
+&lt;p&gt;那如何利用计算机模拟这一随机采样的过程呢？&lt;/p&gt;
+
+&lt;p&gt;抽象成一个如下问题，给定一个离散值集合，对该集合中的数字随机采样，一个直观的方法是统计每个值出现的概率，计算对应的CDF(cumulative distribution function)，如下表：&lt;/p&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;&lt;/th&gt;
+&lt;th&gt;&lt;/th&gt;
+&lt;th&gt;&lt;/th&gt;
+&lt;th&gt;&lt;/th&gt;
+&lt;th&gt;&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;val&lt;/td&gt;
+&lt;td&gt;1&lt;/td&gt;
+&lt;td&gt;2&lt;/td&gt;
+&lt;td&gt;3&lt;/td&gt;
+&lt;td&gt;4&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;prob&lt;/td&gt;
+&lt;td&gt;0.1&lt;/td&gt;
+&lt;td&gt;0.2&lt;/td&gt;
+&lt;td&gt;0.3&lt;/td&gt;
+&lt;td&gt;0.4&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;cum&lt;/td&gt;
+&lt;td&gt;0.1&lt;/td&gt;
+&lt;td&gt;0.3&lt;/td&gt;
+&lt;td&gt;0.6&lt;/td&gt;
+&lt;td&gt;1.0&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;令p=rand()产生一个0～1的随机值，然后看p落在CDF的哪个范围内，就取该值返回。如p=0.4，属于0.3~0.6，那么就取3作为采样值返回。通过二分查找，该取样的时间复杂度为O(logN)。&lt;/p&gt;
+
+&lt;h2 id=&#34;alias:3b3d2541cd37edc022b27d62280cdf2f&#34;&gt;Alias&lt;/h2&gt;
+
+&lt;p&gt;别名表的方法可以让采样在&lt;r&gt;O(1)&lt;/r&gt;的时间复杂度内完成。适用于离散值较多的情景。&lt;/p&gt;
+
+&lt;p&gt;采样值通过两次rand()来决定。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;第一轮 生成一个随机数，确定一个采样值&lt;/li&gt;
+&lt;li&gt;第二轮 生成另一个随机数，根据alias表中的概率，判断选择该值还是其别名。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;&lt;/th&gt;
+&lt;th&gt;&lt;/th&gt;
+&lt;th&gt;&lt;/th&gt;
+&lt;th&gt;&lt;/th&gt;
+&lt;th&gt;&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;val&lt;/td&gt;
+&lt;td&gt;1&lt;/td&gt;
+&lt;td&gt;2&lt;/td&gt;
+&lt;td&gt;3&lt;/td&gt;
+&lt;td&gt;4&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;alias&lt;/td&gt;
+&lt;td&gt;3&lt;/td&gt;
+&lt;td&gt;4&lt;/td&gt;
+&lt;td&gt;4&lt;/td&gt;
+&lt;td&gt;-&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;prob&lt;/td&gt;
+&lt;td&gt;0.4&lt;/td&gt;
+&lt;td&gt;0.8&lt;/td&gt;
+&lt;td&gt;0.6&lt;/td&gt;
+&lt;td&gt;1.0&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;h2 id=&#34;代码实现:3b3d2541cd37edc022b27d62280cdf2f&#34;&gt;代码实现&lt;/h2&gt;
+
+&lt;p&gt;下面是借鉴的line中的部分代码：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-c++&#34;&gt;double *prob;
+long long *alias;
+int num_edges;
+void InitAliasTable()
+{
+    prob = (double *)malloc(num_edges*sizeof(double));
+    alias = (long long *)malloc(num_edges*sizeof(long long));
+    if (alias == NULL || prob == NULL)
+    {
+        printf(&amp;quot;Error: memory allocation failed!\n&amp;quot;);
+        exit(1);
+    }
+
+    double *norm_prob = (double*)malloc(num_edges*sizeof(double));
+    long long *large_block = (long long*)malloc(num_edges*sizeof(long long));
+    long long *small_block = (long long*)malloc(num_edges*sizeof(long long));
+    if (norm_prob == NULL || large_block == NULL || small_block == NULL)
+    {
+        printf(&amp;quot;Error: memory allocation failed!\n&amp;quot;);
+        exit(1);
+    }
+
+    double sum = 0;
+    long long cur_small_block, cur_large_block;
+    long long num_small_block = 0, num_large_block = 0;
+
+    for (long long k = 0; k != num_edges; k++) 
+        sum += edge_weight[k];
+    for (long long k = 0; k != num_edges; k++) 
+        norm_prob[k] = edge_weight[k] * num_edges / sum;
+
+    for (long long k = num_edges - 1; k &amp;gt;= 0; k--)
+    {
+        if (norm_prob[k]&amp;lt;1)
+            small_block[num_small_block++] = k; //比随机采样要小的概率选中
+        else
+            large_block[num_large_block++] = k; //比随机采样要大的概率选中
+    }
+
+    while (num_small_block &amp;amp;&amp;amp; num_large_block) //损有余而补不足
+    {
+        cur_small_block = small_block[--num_small_block]; //不足
+        cur_large_block = large_block[--num_large_block]; //有余
+        prob[cur_small_block] = norm_prob[cur_small_block];
+        alias[cur_small_block] = cur_large_block;
+        norm_prob[cur_large_block] = norm_prob[cur_large_block] + norm_prob[cur_small_block] - 1;
+        if (norm_prob[cur_large_block] &amp;lt; 1)
+            small_block[num_small_block++] = cur_large_block;
+        else
+            large_block[num_large_block++] = cur_large_block;
+    }
+
+    while (num_large_block) prob[large_block[--num_large_block]] = 1;
+    while (num_small_block) prob[small_block[--num_small_block]] = 1;
+
+    free(norm_prob);
+    free(small_block);
+    free(large_block);
+}
+
+long long SampleAnEdge(double rand_value1, double rand_value2)
+{
+    long long k = (long long)num_edges * rand_value1;
+    return rand_value2 &amp;lt; prob[k] ? k : alias[k];
+}
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
     
     <item>
       <title>哈希总结及简单实现</title>
@@ -157,9 +343,20 @@ void* realloc(void* ptr, unsigned newsize);
 &lt;li&gt;realloc 给一个已经分配了地址的指针重新分配空间，参数ptr为原有的空间地址，newsize是重新申请的地址长度。&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;区别：
-（1）malloc不能初始化所分配的内存空间，而calloc可以。
-（2）realloc可以对给定指针所指的空间进行扩大或者缩小，但原有内容保持不变。&lt;/p&gt;
+&lt;p&gt;区别：&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;malloc不能初始化所分配的内存空间，而calloc可以。&lt;/li&gt;
+&lt;li&gt;realloc可以对给定指针所指的空间进行扩大或者缩小，但原有内容保持不变。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;12-19:48b8812e0e384a98adb6eae935b10abd&#34;&gt;12-19&lt;/h2&gt;
+
+&lt;h4 id=&#34;1-alia-table-别名表:48b8812e0e384a98adb6eae935b10abd&#34;&gt;1. Alia table(别名表)&lt;/h4&gt;
+
+&lt;h4 id=&#34;2-负采样:48b8812e0e384a98adb6eae935b10abd&#34;&gt;2. 负采样&lt;/h4&gt;
+
+&lt;h4 id=&#34;3-随机梯度下降:48b8812e0e384a98adb6eae935b10abd&#34;&gt;3. 随机梯度下降&lt;/h4&gt;
 </description>
     </item>
     
