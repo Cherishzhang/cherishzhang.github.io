@@ -31,7 +31,8 @@
 
 &lt;p&gt;那如何利用计算机模拟这一随机采样的过程呢？&lt;/p&gt;
 
-&lt;p&gt;抽象成一个如下问题，给定一个离散值集合，对该集合中的数字随机采样，一个直观的方法是统计每个值出现的概率，计算对应的CDF(cumulative distribution function)，如下表：&lt;/p&gt;
+&lt;p&gt;抽象成一个如下问题，给定如下一个集合
+[a:1,b:2,c:3,d:4]，对该集合中的字母按其权重采样，一个直观的方法是对权重值加和，统计每个字母所占比例，计算对应的CDF(cumulative distribution function)，如下表：&lt;/p&gt;
 
 &lt;table&gt;
 &lt;thead&gt;
@@ -47,10 +48,10 @@
 &lt;tbody&gt;
 &lt;tr&gt;
 &lt;td&gt;val&lt;/td&gt;
-&lt;td&gt;1&lt;/td&gt;
-&lt;td&gt;2&lt;/td&gt;
-&lt;td&gt;3&lt;/td&gt;
-&lt;td&gt;4&lt;/td&gt;
+&lt;td&gt;a:1&lt;/td&gt;
+&lt;td&gt;b:2&lt;/td&gt;
+&lt;td&gt;c:3&lt;/td&gt;
+&lt;td&gt;d:4&lt;/td&gt;
 &lt;/tr&gt;
 
 &lt;tr&gt;
@@ -71,7 +72,7 @@
 &lt;/tbody&gt;
 &lt;/table&gt;
 
-&lt;p&gt;令p=rand()产生一个0～1的随机值，然后看p落在CDF的哪个范围内，就取该值返回。如p=0.4，属于0.3~0.6，那么就取3作为采样值返回。通过二分查找，该取样的时间复杂度为O(logN)。&lt;/p&gt;
+&lt;p&gt;令p=rand()产生一个0～1的随机值，然后看p落在CDF的哪个范围内，就取该值返回。如p=0.4，属于0.3~0.6，那么就取c作为采样值返回。通过二分查找，该取样的时间复杂度为O(logN)。&lt;/p&gt;
 
 &lt;h2 id=&#34;alias:3b3d2541cd37edc022b27d62280cdf2f&#34;&gt;Alias&lt;/h2&gt;
 
@@ -98,10 +99,10 @@
 &lt;tbody&gt;
 &lt;tr&gt;
 &lt;td&gt;val&lt;/td&gt;
-&lt;td&gt;1&lt;/td&gt;
-&lt;td&gt;2&lt;/td&gt;
-&lt;td&gt;3&lt;/td&gt;
-&lt;td&gt;4&lt;/td&gt;
+&lt;td&gt;a:1&lt;/td&gt;
+&lt;td&gt;b:2&lt;/td&gt;
+&lt;td&gt;c:3&lt;/td&gt;
+&lt;td&gt;d:4&lt;/td&gt;
 &lt;/tr&gt;
 
 &lt;tr&gt;
@@ -121,6 +122,10 @@
 &lt;/tr&gt;
 &lt;/tbody&gt;
 &lt;/table&gt;
+
+&lt;p&gt;图解：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://ocwpxekrq.bkt.clouddn.com/alias.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
 
 &lt;h2 id=&#34;代码实现:3b3d2541cd37edc022b27d62280cdf2f&#34;&gt;代码实现&lt;/h2&gt;
 
@@ -152,9 +157,9 @@ void InitAliasTable()
     long long cur_small_block, cur_large_block;
     long long num_small_block = 0, num_large_block = 0;
 
-    for (long long k = 0; k != num_edges; k++) 
+    for (long long k = 0; k != num_edges; k++)
         sum += edge_weight[k];
-    for (long long k = 0; k != num_edges; k++) 
+    for (long long k = 0; k != num_edges; k++)
         norm_prob[k] = edge_weight[k] * num_edges / sum;
 
     for (long long k = num_edges - 1; k &amp;gt;= 0; k--)

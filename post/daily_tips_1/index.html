@@ -95,8 +95,8 @@
 
 <p>函数原型如下：</p>
 
-<pre><code class="language-python">merge(left, right, how='inner', on=None, left_on=None,right_on=None, 
-left_index=False, right_index=False, sort=True, suffixes=('_x','_y'), 
+<pre><code class="language-python">merge(left, right, how='inner', on=None, left_on=None,right_on=None,
+left_index=False, right_index=False, sort=True, suffixes=('_x','_y'),
 copy=True, indicator=False)
 join(self,other,on=None,how='left',lsuffix='',rsuffix='', sort=False)
 concat(objs, axis=0, join='outer',join_axes=None, ignore_index=False,
@@ -155,13 +155,24 @@ void* realloc(void* ptr, unsigned newsize);
 <li>realloc可以对给定指针所指的空间进行扩大或者缩小，但原有内容保持不变。</li>
 </ul>
 
-<h2 id="12-19:48b8812e0e384a98adb6eae935b10abd">12-19</h2>
+<h2 id="12-25:48b8812e0e384a98adb6eae935b10abd">12-25</h2>
 
-<h4 id="1-alia-table-别名表:48b8812e0e384a98adb6eae935b10abd">1. Alia table(别名表)</h4>
+<h4 id="1-histogram:48b8812e0e384a98adb6eae935b10abd">1. histogram</h4>
 
-<h4 id="2-负采样:48b8812e0e384a98adb6eae935b10abd">2. 负采样</h4>
+<pre><code class="language-python">##Compute the histogram of a set of data
+numpy.histogram(a, bins=10, range=None, normed=False, weights=None, density=None)
+</code></pre>
 
-<h4 id="3-随机梯度下降:48b8812e0e384a98adb6eae935b10abd">3. 随机梯度下降</h4>
+<p>hitogram对数组a进行直方图统计，将数组a的取值范围分为bins个区间，并统计a中的每个值落入各个区间中的次数。</p>
+
+<pre><code class="language-python">##examples
+import numpy as np
+import matplotlib.pyplot as plt
+np.histogram([1,2,3,1,2,4], bins=[0,1,2,3])
+plt.hist([1,2,3,1,2,4], bins=3)
+plt.title(&quot;Histogram with 3 bins&quot;)
+plt.show()
+</code></pre>
 
 
       

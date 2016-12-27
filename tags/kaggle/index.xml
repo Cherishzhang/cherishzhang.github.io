@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Kaggle on Learn and record</title>
+    <link>http://cherishzhang.github.io/tags/kaggle/</link>
+    <description>Recent content in Kaggle on Learn and record</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 22 Dec 2016 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://cherishzhang.github.io/tags/kaggle/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>概率分布函数</title>
+      <link>http://cherishzhang.github.io/post/probability_distribution/</link>
+      <pubDate>Thu, 22 Dec 2016 00:00:00 +0000</pubDate>
+      
+      <guid>http://cherishzhang.github.io/post/probability_distribution/</guid>
+      <description>
+
+&lt;h2 id=&#34;intro:5218043356d7a0fea7d0b5c3b9f7ba2b&#34;&gt;Intro&lt;/h2&gt;
+
+&lt;p&gt;&amp;ldquo;Jingle bells, jingle bells, jingle all the way&amp;hellip;.&amp;rdquo;&lt;/p&gt;
+
+&lt;p&gt;传说北极圈住着一个老人，会在圣诞节前夜为好孩子专门送上礼物。&lt;/p&gt;
+
+&lt;p&gt;但今年他貌似遇到了些问题。what? &lt;r&gt; %&amp;gt;_&amp;lt;% &lt;/r&gt;&lt;/p&gt;
+
+&lt;p&gt;这是kaggle上&lt;a href=&#34;https://www.kaggle.com/c/santas-uncertain-bags&#34;&gt;一个赛题&lt;/a&gt;的背景，由于精灵误操作数据库，导致所有礼物对应的重量信息丢失了。在不能重新称重所有礼物的前提下，如何估计礼物重量，从而将礼物更合适地装入包裹中。&lt;/p&gt;
+
+&lt;h2 id=&#34;概率分布:5218043356d7a0fea7d0b5c3b9f7ba2b&#34;&gt;概率分布&lt;/h2&gt;
+
+&lt;p&gt;已知礼物(gift)分为&lt;r&gt;9类&lt;/r&gt;，共&lt;r&gt;1000个包裹&lt;/r&gt;(bag)，每个包裹要满足&lt;r&gt;三个条件&lt;/r&gt;:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;每个包裹的总重量不超过50磅，超过的话，该包裹不计入总数&lt;/li&gt;
+&lt;li&gt;每个礼物只能使用一次&lt;/li&gt;
+&lt;li&gt;每个包裹必须有3个或3个以上的礼物&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;虽然丢失了礼物的重量信息，但幸运的是，已知每类礼物重量的概率分布。可以根据已知的概率分布来推算每个礼物的重量。&lt;/p&gt;
+
+&lt;p&gt;具体如下表：&lt;/p&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;type&lt;/th&gt;
+&lt;th&gt;num&lt;/th&gt;
+&lt;th&gt;distribution&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;horse&lt;/td&gt;
+&lt;td&gt;1000&lt;/td&gt;
+&lt;td&gt;\( N(5, 2) \)&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;ball&lt;/td&gt;
+&lt;td&gt;1100&lt;/td&gt;
+&lt;td&gt;\( 1 + N(1,0.3) \)&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;bike&lt;/td&gt;
+&lt;td&gt;500&lt;/td&gt;
+&lt;td&gt;\( N(20,10) \)&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;train&lt;/td&gt;
+&lt;td&gt;1000&lt;/td&gt;
+&lt;td&gt;\( N(10,5) \)&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;coal&lt;/td&gt;
+&lt;td&gt;166&lt;/td&gt;
+&lt;td&gt;\(47 * beta(0.5,0.5) \)&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;book&lt;/td&gt;
+&lt;td&gt;1200&lt;/td&gt;
+&lt;td&gt;\(chisquare(2) \)&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;doll&lt;/td&gt;
+&lt;td&gt;1000&lt;/td&gt;
+&lt;td&gt;\(gamma(5,1) \)&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;block&lt;/td&gt;
+&lt;td&gt;1000&lt;/td&gt;
+&lt;td&gt;\(triangular(5,10,20)\)&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;gloves&lt;/td&gt;
+&lt;td&gt;200&lt;/td&gt;
+&lt;td&gt;3.0 + rand(0,1) if rand(0,1) &amp;lt; 0.3 else rand(0,1)&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;下面介绍一下几个概率分布函数。&lt;/p&gt;
+
+&lt;h4 id=&#34;1-正态分布-normal-distribution:5218043356d7a0fea7d0b5c3b9f7ba2b&#34;&gt;1. 正态分布(Normal distribution)&lt;/h4&gt;
+
+&lt;p&gt;又名高斯分布。正态曲线呈钟型，两头低，中间高，左右对称，又称之为钟型曲线。&lt;/p&gt;
+
+&lt;p&gt;若随机变量X服从一个数学期望为\( \mu \)(位置)、方差为\( \sigma^2 \)(幅度)的正态分布，记为\( N(\mu, \sigma^2) \)。该图形有3个特征，集中性(均数位于中央)；对称性；均匀变动性。&lt;/p&gt;
+
+&lt;h4 id=&#34;2-二项分布-binomial-distribution:5218043356d7a0fea7d0b5c3b9f7ba2b&#34;&gt;2. 二项分布(Binomial distribution)&lt;/h4&gt;
+
+&lt;p&gt;重复n次&lt;r&gt;独立&lt;/r&gt;的伯努利实验，每次实验只有两种可能的结果，其发生与否互相对立且独立。当实验次数为1时，二项分布服从0-1分布。&lt;/p&gt;
+
+&lt;p&gt;举个例子，抛硬币正面向上的概率为0.5，抛N次，正面朝上发生K次的概率是服从二项分布的。&lt;/p&gt;
+
+&lt;h4 id=&#34;3-贝塔分布-beta-distribution:5218043356d7a0fea7d0b5c3b9f7ba2b&#34;&gt;3. 贝塔分布(Beta distribution)&lt;/h4&gt;
+
+&lt;p&gt;可以看作一个概率的概率分布。&lt;/p&gt;
+
+&lt;p&gt;对于抛硬币，可以很准确知道正面朝上(系统成功)的概率为0.5，但通常情况下，系统成功的概率p是未知的。&lt;/p&gt;
+
+&lt;p&gt;为了&lt;r&gt;测试系统成功的概率p&lt;/r&gt;，进行n次实验，统计成功次数为k，于是很直观计算出p=k/n。但由于系统成功的概率是未知的，计算出的p只是真实概率的一个最佳估计。这时p也是一个随机变量，它符合beta分布。&lt;/p&gt;
+
+&lt;h4 id=&#34;4-卡方分布-chi-square-distribution:5218043356d7a0fea7d0b5c3b9f7ba2b&#34;&gt;4. 卡方分布(chi-square distribution)&lt;/h4&gt;
+
+&lt;p&gt;若n个相互独立的随机变量，均服从&lt;r&gt;标准正态分布&lt;/r&gt;，则这n个服从标准正态分布的随机变量的平方和构成一新的随机变量，其分布规律称为卡方分布。&lt;/p&gt;
+
+&lt;p&gt;卡方分布是由正态分布构造而成的一个新的分布。当n很大时，近似为正态分布。&lt;/p&gt;
+
+&lt;h4 id=&#34;5-gamma分布:5218043356d7a0fea7d0b5c3b9f7ba2b&#34;&gt;5. Gamma分布&lt;/h4&gt;
+
+&lt;p&gt;\(\alpha\)表示事件发生的次数，\(\beta\)表示该事件发生一次的概率，那么gamma分布代表这一事件发生\(\alpha\)次所需要时间的分布。&lt;/p&gt;
+
+&lt;h4 id=&#34;6-三角分布:5218043356d7a0fea7d0b5c3b9f7ba2b&#34;&gt;6. 三角分布&lt;/h4&gt;
+
+&lt;p&gt;如其名，其概率密度函数是一个三角形状的。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;numpy.random.triangular(left, mode, right)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;r&gt;left&lt;/r&gt;，&lt;r&gt;right&lt;/r&gt;分别为左右边界，&lt;r&gt;mode&lt;/r&gt;是峰顶。&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>
