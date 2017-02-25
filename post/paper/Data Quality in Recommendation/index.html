@@ -1,99 +1,79 @@
-
 <!DOCTYPE html>
 <html lang="en-us">
 <head>
+<meta charset="utf-8">
+<meta name="generator" content="Hugo 0.18.1" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link href="http://fonts.googleapis.com/css?family=Roboto:400,700" rel="stylesheet" type="text/css">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/github.min.css">
+<link rel="stylesheet" href="/css/normalize.css">
+<link rel="stylesheet" href="/css/skeleton.css">
+<link rel="stylesheet" href="/css/custom.css">
+<link rel="alternate" href="/index.xml" type="application/rss+xml" title="Learn and record">
+<script type="text/javascript"
+  src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
-  
-  <meta charset="UTF-8">
-  <title>
-    Data Quality in Recommendation | Learn and record
-  </title>
-
-
-  
-  <meta name="viewport" content="width=device-width,user-scalable=no,maximum-scale=1,initial-scale=1">
-
-  
-  <link rel="canonical" href="http://cherishzhang.github.io/post/paper/Data%20Quality%20in%20Recommendation/"/>
-
-  
-  <link rel="stylesheet" href="/css/sanitize.css">
-  <link rel="stylesheet" href="/css/responsive.css">
-  <link rel="stylesheet" href="/css/highlight_monokai.css">
-  <link rel="stylesheet" href="/css/theme.css">
-  <link rel="stylesheet" href="/css/custom.css">
-
-  
-  <link href="http://cherishzhang.github.io/index.xml" rel="alternate" type="application/rss+xml" title="Learn and record" />
-  <link href="http://cherishzhang.github.io/index.xml" rel="feed" type="application/rss+xml" title="Learn and record" />
-
-  
-  
-  <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=default"></script>
-  <script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-
-  ga('create', 'UA-84092408-1', 'auto');
-  ga('send', 'pageview');
-
+<link rel="stylesheet" href="/css/solarized-dark.css">
+<script src="/js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath: [['$','$'], ['\\(','\\)']],
+    displayMath: [['$$','$$'], ['\[','\]']],
+    processEscapes: true,
+    processEnvironments: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+    TeX: { equationNumbers: { autoNumber: "AMS" },
+         extensions: ["AMSmath.js", "AMSsymbols.js"] }
+  }
+});
 </script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    
+    
+    
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i = 0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+});
+</script>
+
+<title>Data Quality in Recommendation - Learn and record</title>
 </head>
-
-
-
 <body>
+
 <div class="container">
 
-  
-  <header role="banner">
-    <div class="row gutters">
-      <div id="site-title" class="col span_6">
-        <h1><a href="http://cherishzhang.github.io/">Learn and record</a></h1>
-        
-      </div>
-      
-      <img src="/images/avatar.jpg" width="64" height="64" style="margin-left:30px;">
-      
-      <div id="social" class="col span_4">
-        <ul>
-          <li><a href="http://cherishzhang.github.io/about" target="_blank">About me</a></li>
-          <li><a href="https://github.com/Cherishzhang" target="_blank">GitHub</a></li>
-          <li><a href="mailto:cherishzhang920508@gmail.com" target="_blank">Email</a></li>
-        </ul>
-      </div>
-  </header>
+	<header role="banner">
+		<div class="header-logo">
+			<a href="/"><img src="/images/logo.jpg" width="60" height="60"></a>
+		</div>
+		
+	</header>
 
 
-  
-  <main id="single" role="main">
-    <div class="article-header">
-      <h1>Data Quality in Recommendation</h1>
-      <div class="meta" >
-        Mar 16, 2016 &nbsp;
-        
-          #<a href="/tags/paper">paper</a>&nbsp;
-        
-          #<a href="/tags/rec">rec</a>&nbsp;
-        
-      </div>
-    </div>
-    <article style="padding:30px; border: 2px solid;border-radius: 4px; border-color: #ddd;">
-      
+	<main role="main">
+		<article itemscope itemtype="http://schema.org/BlogPosting">
+			<h1 class="entry-title" itemprop="headline">Data Quality in Recommendation</h1>
+			<span class="entry-meta"><time itemprop="datePublished" datetime="2016-03-16">March 16, 2016</time></span>
+			<section itemprop="entry-text">
+				
 
 <p>论文名称：<a href="http://dl.acm.org/citation.cfm?id=2799670&amp;preflayout=tabs">Data Quality Matters in Recommender Systems, RecSys &lsquo;15</a></p>
 
-<h2 id="摘要:c7e7f190dc4ad9c3cea8a960f18951d1">摘要</h2>
+<h2 id="摘要">摘要</h2>
 
 <p><r>数据质量好坏</r>在信息系统中是一个很重要的因素，但在推荐系统中考虑得却不是很多。比较常用的方法是ad-hoc式的清洗，如，去除数据集中的噪声和不可靠的记录。显露出的缺点是,没有结合数据集本身的特性。</p>
 
 <p>论文中的主要贡献是考虑推荐系统中两个核心的数据质量问题：<strong><r>sparsity</r></strong> 和 <strong><r>redundancy</r></strong>，并设计了数据集相关的<r>阈值模型</r>和<r>采样等级模型</r>，然后在一系列的公开数据集上做了验证试验。</p>
 
-<h2 id="具体方法:c7e7f190dc4ad9c3cea8a960f18951d1">具体方法</h2>
+<h2 id="具体方法">具体方法</h2>
 
-<h3 id="关于数据的稀疏性:c7e7f190dc4ad9c3cea8a960f18951d1">关于数据的稀疏性</h3>
+<h3 id="关于数据的稀疏性">关于数据的稀疏性</h3>
 
 <blockquote>
 <p>阈值模型(Threshold model)</p>
@@ -133,7 +113,7 @@
 
 <p>通过计算，\({NTE}_d\)和\({AR}_d\)之间的相关度为-0.54。这表明IT的误差越小，推荐模型的准确率越高。</p>
 
-<h4 id="关于数据的冗余性:c7e7f190dc4ad9c3cea8a960f18951d1"><strong>关于数据的冗余性</strong></h4>
+<h4 id="关于数据的冗余性"><strong>关于数据的冗余性</strong></h4>
 
 <blockquote>
 <p>模型</p>
@@ -162,7 +142,7 @@
 
 <p>采用19个专业数据集，9-1比例分训练集和测试集，10折交叉验证。实验主要验证了模型的合理性。</p>
 
-<h3 id="我的思考:c7e7f190dc4ad9c3cea8a960f18951d1"><strong>我的思考</strong></h3>
+<h3 id="我的思考"><strong>我的思考</strong></h3>
 
 <ol>
 <li>这篇论文提出了两个模型公式，并完成了实验验证。优点是模型公式与数据集本身的特性相关，不干涉推荐系统的建模过程。</li>
@@ -170,53 +150,28 @@
 <li>考虑其他的评测指标，如覆盖率和多样性；同时，模型中还可以结合物品的内容属性和用户的位置属性。</li>
 </ol>
 
-
-      
-    </article>
-  </main>
-
-  <nav class="pagination-single">
-    
-      <span class="previous">&larr; <a href="http://cherishzhang.github.io/post/kaggle/Telstra/" rel="prev">Telstra Network Disruptions</a></span>
-    
-    
-      <span class="next"><a href="http://cherishzhang.github.io/post/ml/boosting/" rel="next">[ml] Boosting</a> &rarr;</span>
-    
-  </nav>
-  
- <aside><div id="disqus_thread"></div></aside>
-
-<script type="text/javascript">
-     
-    var disqus_shortname = 'http-cherishzhang-github-io';
-
-     
-    (function() {
-        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-    })();
-</script>
-<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+			</section>
+		</article>
+	</main>
 
 
-
-
-  
-  <footer role="contentinfo">
-    <div style="text-align:center;">
-      
-    </div>
-  </footer>
-
+	<footer role="contentinfo">
+		<div class="hr"></div>
+		<div class="footer-link">
+			<a href="mailto:mailto:cherishzhang920508@gmail.com" target="_blank">Email</a></span>
+			
+			
+			<a href="https://github.com/Cherishzhang" target="_blank">GitHub</a></span>
+		</div>
+		<div class="copyright">Copyright &copy; </div>
+	</footer>
 
 </div>
 
-<script src="/js/highlight.pack.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/highlight.min.js"></script>
 <script>hljs.initHighlightingOnLoad();</script>
-
-
 
 </body>
 </html>
-

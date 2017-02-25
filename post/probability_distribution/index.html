@@ -1,93 +1,69 @@
-
 <!DOCTYPE html>
 <html lang="en-us">
 <head>
+<meta charset="utf-8">
+<meta name="generator" content="Hugo 0.18.1" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link href="http://fonts.googleapis.com/css?family=Roboto:400,700" rel="stylesheet" type="text/css">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/github.min.css">
+<link rel="stylesheet" href="/css/normalize.css">
+<link rel="stylesheet" href="/css/skeleton.css">
+<link rel="stylesheet" href="/css/custom.css">
+<link rel="alternate" href="/index.xml" type="application/rss+xml" title="Learn and record">
+<script type="text/javascript"
+  src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
-  
-  <meta charset="UTF-8">
-  <title>
-    概率分布函数 | Learn and record
-  </title>
-
-
-  
-  <meta name="viewport" content="width=device-width,user-scalable=no,maximum-scale=1,initial-scale=1">
-
-  
-  <link rel="canonical" href="http://cherishzhang.github.io/post/probability_distribution/"/>
-
-  
-  <link rel="stylesheet" href="/css/sanitize.css">
-  <link rel="stylesheet" href="/css/responsive.css">
-  <link rel="stylesheet" href="/css/highlight_monokai.css">
-  <link rel="stylesheet" href="/css/theme.css">
-  <link rel="stylesheet" href="/css/custom.css">
-
-  
-  <link href="http://cherishzhang.github.io/index.xml" rel="alternate" type="application/rss+xml" title="Learn and record" />
-  <link href="http://cherishzhang.github.io/index.xml" rel="feed" type="application/rss+xml" title="Learn and record" />
-
-  
-  
-  <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=default"></script>
-  <script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-
-  ga('create', 'UA-84092408-1', 'auto');
-  ga('send', 'pageview');
-
+<link rel="stylesheet" href="/css/solarized-dark.css">
+<script src="/js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath: [['$','$'], ['\\(','\\)']],
+    displayMath: [['$$','$$'], ['\[','\]']],
+    processEscapes: true,
+    processEnvironments: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+    TeX: { equationNumbers: { autoNumber: "AMS" },
+         extensions: ["AMSmath.js", "AMSsymbols.js"] }
+  }
+});
 </script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    
+    
+    
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i = 0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+});
+</script>
+
+<title>概率分布函数 - Learn and record</title>
 </head>
-
-
-
 <body>
+
 <div class="container">
 
-  
-  <header role="banner">
-    <div class="row gutters">
-      <div id="site-title" class="col span_6">
-        <h1><a href="http://cherishzhang.github.io/">Learn and record</a></h1>
-        
-      </div>
-      
-      <img src="/images/avatar.jpg" width="64" height="64" style="margin-left:30px;">
-      
-      <div id="social" class="col span_4">
-        <ul>
-          <li><a href="http://cherishzhang.github.io/about" target="_blank">About me</a></li>
-          <li><a href="https://github.com/Cherishzhang" target="_blank">GitHub</a></li>
-          <li><a href="mailto:cherishzhang920508@gmail.com" target="_blank">Email</a></li>
-        </ul>
-      </div>
-  </header>
+	<header role="banner">
+		<div class="header-logo">
+			<a href="/"><img src="/images/logo.jpg" width="60" height="60"></a>
+		</div>
+		
+	</header>
 
 
-  
-  <main id="single" role="main">
-    <div class="article-header">
-      <h1>概率分布函数</h1>
-      <div class="meta" >
-        Dec 22, 2016 &nbsp;
-        
-          #<a href="/tags/probability">probability</a>&nbsp;
-        
-          #<a href="/tags/distribution">distribution</a>&nbsp;
-        
-          #<a href="/tags/kaggle">kaggle</a>&nbsp;
-        
-          #<a href="/tags/santas-uncertain-bags">santas&#39; uncertain bags</a>&nbsp;
-        
-      </div>
-    </div>
-    <article style="padding:30px; border: 2px solid;border-radius: 4px; border-color: #ddd;">
-      
+	<main role="main">
+		<article itemscope itemtype="http://schema.org/BlogPosting">
+			<h1 class="entry-title" itemprop="headline">概率分布函数</h1>
+			<span class="entry-meta"><time itemprop="datePublished" datetime="2016-12-22">December 22, 2016</time></span>
+			<section itemprop="entry-text">
+				
 
-<h2 id="intro:5218043356d7a0fea7d0b5c3b9f7ba2b">Intro</h2>
+<h2 id="intro">Intro</h2>
 
 <p>&ldquo;Jingle bells, jingle bells, jingle all the way&hellip;.&rdquo;</p>
 
@@ -97,7 +73,7 @@
 
 <p>这是kaggle上<a href="https://www.kaggle.com/c/santas-uncertain-bags">一个赛题</a>的背景，由于精灵误操作数据库，导致所有礼物对应的重量信息丢失了。在不能重新称重所有礼物的前提下，如何估计礼物重量，从而将礼物更合适地装入包裹中。</p>
 
-<h2 id="概率分布:5218043356d7a0fea7d0b5c3b9f7ba2b">概率分布</h2>
+<h2 id="概率分布">概率分布</h2>
 
 <p>已知礼物(gift)分为<r>9类</r>，共<r>1000个包裹</r>(bag)，每个包裹要满足<r>三个条件</r>:</p>
 
@@ -179,19 +155,19 @@
 
 <p>下面介绍一下几个概率分布函数。</p>
 
-<h4 id="1-正态分布-normal-distribution:5218043356d7a0fea7d0b5c3b9f7ba2b">1. 正态分布(Normal distribution)</h4>
+<h4 id="1-正态分布-normal-distribution">1. 正态分布(Normal distribution)</h4>
 
 <p>又名高斯分布。正态曲线呈钟型，两头低，中间高，左右对称，又称之为钟型曲线。</p>
 
 <p>若随机变量X服从一个数学期望为\( \mu \)(位置)、方差为\( \sigma^2 \)(幅度)的正态分布，记为\( N(\mu, \sigma^2) \)。该图形有3个特征，集中性(均数位于中央)；对称性；均匀变动性。</p>
 
-<h4 id="2-二项分布-binomial-distribution:5218043356d7a0fea7d0b5c3b9f7ba2b">2. 二项分布(Binomial distribution)</h4>
+<h4 id="2-二项分布-binomial-distribution">2. 二项分布(Binomial distribution)</h4>
 
 <p>重复n次<r>独立</r>的伯努利实验，每次实验只有两种可能的结果，其发生与否互相对立且独立。当实验次数为1时，二项分布服从0-1分布。</p>
 
 <p>举个例子，抛硬币正面向上的概率为0.5，抛N次，正面朝上发生K次的概率是服从二项分布的。</p>
 
-<h4 id="3-贝塔分布-beta-distribution:5218043356d7a0fea7d0b5c3b9f7ba2b">3. 贝塔分布(Beta distribution)</h4>
+<h4 id="3-贝塔分布-beta-distribution">3. 贝塔分布(Beta distribution)</h4>
 
 <p>可以看作一个概率的概率分布。</p>
 
@@ -199,17 +175,17 @@
 
 <p>为了<r>测试系统成功的概率p</r>，进行n次实验，统计成功次数为k，于是很直观计算出p=k/n。但由于系统成功的概率是未知的，计算出的p只是真实概率的一个最佳估计。这时p也是一个随机变量，它符合beta分布。</p>
 
-<h4 id="4-卡方分布-chi-square-distribution:5218043356d7a0fea7d0b5c3b9f7ba2b">4. 卡方分布(chi-square distribution)</h4>
+<h4 id="4-卡方分布-chi-square-distribution">4. 卡方分布(chi-square distribution)</h4>
 
 <p>若n个相互独立的随机变量，均服从<r>标准正态分布</r>，则这n个服从标准正态分布的随机变量的平方和构成一新的随机变量，其分布规律称为卡方分布。</p>
 
 <p>卡方分布是由正态分布构造而成的一个新的分布。当n很大时，近似为正态分布。</p>
 
-<h4 id="5-gamma分布:5218043356d7a0fea7d0b5c3b9f7ba2b">5. Gamma分布</h4>
+<h4 id="5-gamma分布">5. Gamma分布</h4>
 
 <p>\(\alpha\)表示事件发生的次数，\(\beta\)表示该事件发生一次的概率，那么gamma分布代表这一事件发生\(\alpha\)次所需要时间的分布。</p>
 
-<h4 id="6-三角分布:5218043356d7a0fea7d0b5c3b9f7ba2b">6. 三角分布</h4>
+<h4 id="6-三角分布">6. 三角分布</h4>
 
 <p>如其名，其概率密度函数是一个三角形状的。</p>
 
@@ -218,51 +194,28 @@
 
 <p><r>left</r>，<r>right</r>分别为左右边界，<r>mode</r>是峰顶。</p>
 
-
-      
-    </article>
-  </main>
-
-  <nav class="pagination-single">
-    
-      <span class="previous">&larr; <a href="http://cherishzhang.github.io/post/alias/" rel="prev">Alias Table(别名表)</a></span>
-    
-    
-  </nav>
-  
- <aside><div id="disqus_thread"></div></aside>
-
-<script type="text/javascript">
-     
-    var disqus_shortname = 'http-cherishzhang-github-io';
-
-     
-    (function() {
-        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-    })();
-</script>
-<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+			</section>
+		</article>
+	</main>
 
 
-
-
-  
-  <footer role="contentinfo">
-    <div style="text-align:center;">
-      
-    </div>
-  </footer>
-
+	<footer role="contentinfo">
+		<div class="hr"></div>
+		<div class="footer-link">
+			<a href="mailto:mailto:cherishzhang920508@gmail.com" target="_blank">Email</a></span>
+			
+			
+			<a href="https://github.com/Cherishzhang" target="_blank">GitHub</a></span>
+		</div>
+		<div class="copyright">Copyright &copy; </div>
+	</footer>
 
 </div>
 
-<script src="/js/highlight.pack.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/highlight.min.js"></script>
 <script>hljs.initHighlightingOnLoad();</script>
-
-
 
 </body>
 </html>
-

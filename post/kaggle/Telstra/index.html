@@ -1,85 +1,69 @@
-
 <!DOCTYPE html>
 <html lang="en-us">
 <head>
+<meta charset="utf-8">
+<meta name="generator" content="Hugo 0.18.1" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link href="http://fonts.googleapis.com/css?family=Roboto:400,700" rel="stylesheet" type="text/css">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/github.min.css">
+<link rel="stylesheet" href="/css/normalize.css">
+<link rel="stylesheet" href="/css/skeleton.css">
+<link rel="stylesheet" href="/css/custom.css">
+<link rel="alternate" href="/index.xml" type="application/rss+xml" title="Learn and record">
+<script type="text/javascript"
+  src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
-  
-  <meta charset="UTF-8">
-  <title>
-    Telstra Network Disruptions | Learn and record
-  </title>
-
-
-  
-  <meta name="viewport" content="width=device-width,user-scalable=no,maximum-scale=1,initial-scale=1">
-
-  
-  <link rel="canonical" href="http://cherishzhang.github.io/post/kaggle/Telstra/"/>
-
-  
-  <link rel="stylesheet" href="/css/sanitize.css">
-  <link rel="stylesheet" href="/css/responsive.css">
-  <link rel="stylesheet" href="/css/highlight_monokai.css">
-  <link rel="stylesheet" href="/css/theme.css">
-  <link rel="stylesheet" href="/css/custom.css">
-
-  
-  <link href="http://cherishzhang.github.io/index.xml" rel="alternate" type="application/rss+xml" title="Learn and record" />
-  <link href="http://cherishzhang.github.io/index.xml" rel="feed" type="application/rss+xml" title="Learn and record" />
-
-  
-  
-  <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=default"></script>
-  <script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-
-  ga('create', 'UA-84092408-1', 'auto');
-  ga('send', 'pageview');
-
+<link rel="stylesheet" href="/css/solarized-dark.css">
+<script src="/js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath: [['$','$'], ['\\(','\\)']],
+    displayMath: [['$$','$$'], ['\[','\]']],
+    processEscapes: true,
+    processEnvironments: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+    TeX: { equationNumbers: { autoNumber: "AMS" },
+         extensions: ["AMSmath.js", "AMSsymbols.js"] }
+  }
+});
 </script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    
+    
+    
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i = 0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+});
+</script>
+
+<title>Telstra Network Disruptions - Learn and record</title>
 </head>
-
-
-
 <body>
+
 <div class="container">
 
-  
-  <header role="banner">
-    <div class="row gutters">
-      <div id="site-title" class="col span_6">
-        <h1><a href="http://cherishzhang.github.io/">Learn and record</a></h1>
-        
-      </div>
-      
-      <img src="/images/avatar.jpg" width="64" height="64" style="margin-left:30px;">
-      
-      <div id="social" class="col span_4">
-        <ul>
-          <li><a href="http://cherishzhang.github.io/about" target="_blank">About me</a></li>
-          <li><a href="https://github.com/Cherishzhang" target="_blank">GitHub</a></li>
-          <li><a href="mailto:cherishzhang920508@gmail.com" target="_blank">Email</a></li>
-        </ul>
-      </div>
-  </header>
+	<header role="banner">
+		<div class="header-logo">
+			<a href="/"><img src="/images/logo.jpg" width="60" height="60"></a>
+		</div>
+		
+	</header>
 
 
-  
-  <main id="single" role="main">
-    <div class="article-header">
-      <h1>Telstra Network Disruptions</h1>
-      <div class="meta" >
-        Mar 2, 2016 &nbsp;
-        
-      </div>
-    </div>
-    <article style="padding:30px; border: 2px solid;border-radius: 4px; border-color: #ddd;">
-      
+	<main role="main">
+		<article itemscope itemtype="http://schema.org/BlogPosting">
+			<h1 class="entry-title" itemprop="headline">Telstra Network Disruptions</h1>
+			<span class="entry-meta"><time itemprop="datePublished" datetime="2016-03-02">March 02, 2016</time></span>
+			<section itemprop="entry-text">
+				
 
-<h2 id="1-overview:43e8ca42a888262ca3ed3923385c58f2"><strong>1. Overview</strong></h2>
+<h2 id="1-overview"><strong>1. Overview</strong></h2>
 
 <p>The goal of the <a href="https://www.kaggle.com/c/telstra-recruiting-network/">problem</a> is to predict Telstr network&rsquo;s fault severity at a time at a particular location based on the <em>log data</em> available.</p>
 
@@ -87,7 +71,7 @@
 
 <p>My final score is <em>0.44917(72 of 974)</em> in private leaderboard. Here are my <a href="https://github.com/Cherishzhang/kaggle/tree/master/Telstra">code</a>, and I will record my solution.</p>
 
-<h2 id="2-feature-engineer:43e8ca42a888262ca3ed3923385c58f2"><strong>2. Feature Engineer</strong></h2>
+<h2 id="2-feature-engineer"><strong>2. Feature Engineer</strong></h2>
 
 <p>Selecting and designing good features is an important area in machine learning, which is called <em>feature engineering</em>.</p>
 
@@ -101,16 +85,16 @@ There are about 1200 locations, some are only in the test set. The correlation b
 It is the order of the same location in the severity file which follows the order of fault occurrence.It&rsquo;s called <em>Intra-location order</em>.<br />
 It really did a big help to the final score which improved almost 0.06. To each record, I compute the target(<em>fault_severity</em>) probabilities from the previous same location records, and used the <em>previous-target_probabilities</em> as a feature to build the model.</p>
 
-<h2 id="3-build-models-and-ensembling:43e8ca42a888262ca3ed3923385c58f2"><strong>3. Build models and Ensembling</strong></h2>
+<h2 id="3-build-models-and-ensembling"><strong>3. Build models and Ensembling</strong></h2>
 
 <p>I tried many models, decision tree, random forests, svm and xgboost. The xgboost model is performed well.
 On ensembling, I just average the random forest and xgboost result as the final result.</p>
 
-<h2 id="4-what-i-learned-from-other-kagglers:43e8ca42a888262ca3ed3923385c58f2"><strong>4. What I learned from other kagglers</strong></h2>
+<h2 id="4-what-i-learned-from-other-kagglers"><strong>4. What I learned from other kagglers</strong></h2>
 
 <p>On the platform, kagglers are willing to share their ideas. Here are some valuable ideas on the <a href="https://www.kaggle.com/c/telstra-recruiting-network/forums/t/19239/it-s-been-fun-post-your-code-github-links-here-after-the-competition">Competition Forum</a>.</p>
 
-<h3 id="some-useful-tips-on-feature-engineering:43e8ca42a888262ca3ed3923385c58f2">Some useful tips on feature engineering</h3>
+<h3 id="some-useful-tips-on-feature-engineering">Some useful tips on feature engineering</h3>
 
 <p>It&rsquo;s the most important step in machine learning whatever models you used.</p>
 
@@ -139,54 +123,33 @@ and &ldquo;pattern of resource&rdquo;</li>
 &gt;b.Converting location, log_feature into numbers and generating count, mean, sum, etc. features (feature set A)<br />
 &gt;c.Feature B was generated by shifting A forward by 1 row<br />
 &gt;d.Feature C was generated by shifting B backward by 1 row<br />
-&gt;Combining A, B, and C and training xgb, RF, GBM models. My final model is an ensemble model of these models.<br /></li>
+&gt;Combining A, B, and C and training xgb, RF, GBM models. My final model is an ensemble model of these models.<br />
+<br />
+<br /></li>
 </ol>
 
-
-      
-    </article>
-  </main>
-
-  <nav class="pagination-single">
-    
-    
-      <span class="next"><a href="http://cherishzhang.github.io/post/paper/Data%20Quality%20in%20Recommendation/" rel="next">Data Quality in Recommendation</a> &rarr;</span>
-    
-  </nav>
-  
- <aside><div id="disqus_thread"></div></aside>
-
-<script type="text/javascript">
-     
-    var disqus_shortname = 'http-cherishzhang-github-io';
-
-     
-    (function() {
-        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-    })();
-</script>
-<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+			</section>
+		</article>
+	</main>
 
 
-
-
-  
-  <footer role="contentinfo">
-    <div style="text-align:center;">
-      
-    </div>
-  </footer>
-
+	<footer role="contentinfo">
+		<div class="hr"></div>
+		<div class="footer-link">
+			<a href="mailto:mailto:cherishzhang920508@gmail.com" target="_blank">Email</a></span>
+			
+			
+			<a href="https://github.com/Cherishzhang" target="_blank">GitHub</a></span>
+		</div>
+		<div class="copyright">Copyright &copy; </div>
+	</footer>
 
 </div>
 
-<script src="/js/highlight.pack.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/highlight.min.js"></script>
 <script>hljs.initHighlightingOnLoad();</script>
-
-
 
 </body>
 </html>
-

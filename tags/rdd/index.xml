@@ -2,11 +2,10 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Rdd on Learn and record</title>
-    <link>http://cherishzhang.github.io/tags/rdd/</link>
+    <link>http://cherishzhang.github.io/tags/rdd/index.xml</link>
     <description>Recent content in Rdd on Learn and record</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 20 Aug 2016 00:00:00 +0000</lastBuildDate>
     <atom:link href="http://cherishzhang.github.io/tags/rdd/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
@@ -17,7 +16,7 @@
       <guid>http://cherishzhang.github.io/post/spark/sparkRDD/</guid>
       <description>
 
-&lt;h3 id=&#34;rdd:1676227db8a33b6ba8c0a321eafd5577&#34;&gt;RDD&lt;/h3&gt;
+&lt;h3 id=&#34;rdd&#34;&gt;RDD&lt;/h3&gt;
 
 &lt;p&gt;RDD，全称为Resilient Distributed Datasets（弹性分布式数据集）。简单接触了spark后，萌发了想要深入且透彻的了解RDD到底是什么。&lt;/p&gt;
 
@@ -147,7 +146,7 @@ val rdd3 = sc.parallelize(List(1,2),(3,4),(3,6)))
 
 &lt;p&gt;上图说明了narrow和wide之间的区别。 narrow dependencies可以支持在同一个cluster node上以管道形式执行多条命令，而且它的失败恢复更有效，只需要重新计算丢失的parent partition即可；wide dependencies需要所有的父分区都是可用的，牵涉到RDD各级的多个Parent Partitions。&lt;/p&gt;
 
-&lt;h3 id=&#34;共享变量:1676227db8a33b6ba8c0a321eafd5577&#34;&gt;共享变量&lt;/h3&gt;
+&lt;h3 id=&#34;共享变量&#34;&gt;共享变量&lt;/h3&gt;
 
 &lt;p&gt;&lt;r&gt;broadcast&lt;/r&gt;变量：只读的共享变量 每个节点上都有一个拷贝。&lt;/p&gt;
 
@@ -163,7 +162,7 @@ sc.parallelize(1 to 1000000).foreach(x =&amp;gt; accum+= 1)
 println(accum.name + &amp;quot;:&amp;quot; + accum.value)
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;h3 id=&#34;sparkcontext:1676227db8a33b6ba8c0a321eafd5577&#34;&gt;SparkContext&lt;/h3&gt;
+&lt;h3 id=&#34;sparkcontext&#34;&gt;SparkContext&lt;/h3&gt;
 </description>
     </item>
     

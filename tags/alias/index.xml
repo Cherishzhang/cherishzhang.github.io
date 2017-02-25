@@ -2,11 +2,10 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Alias on Learn and record</title>
-    <link>http://cherishzhang.github.io/tags/alias/</link>
+    <link>http://cherishzhang.github.io/tags/alias/index.xml</link>
     <description>Recent content in Alias on Learn and record</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 19 Dec 2016 00:00:00 +0000</lastBuildDate>
     <atom:link href="http://cherishzhang.github.io/tags/alias/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
@@ -17,7 +16,7 @@
       <guid>http://cherishzhang.github.io/post/alias/</guid>
       <description>
 
-&lt;h2 id=&#34;intro:3b3d2541cd37edc022b27d62280cdf2f&#34;&gt;Intro&lt;/h2&gt;
+&lt;h2 id=&#34;intro&#34;&gt;Intro&lt;/h2&gt;
 
 &lt;p&gt;&lt;strong&gt;天之道，损有余而补不足；人之道，损不足以奉有余。&lt;/strong&gt; &amp;mdash;-老子《道德经》&lt;/p&gt;
 
@@ -25,7 +24,7 @@
 
 &lt;p&gt;下面就来说说这个神奇的算法。&lt;/p&gt;
 
-&lt;h2 id=&#34;采样:3b3d2541cd37edc022b27d62280cdf2f&#34;&gt;采样&lt;/h2&gt;
+&lt;h2 id=&#34;采样&#34;&gt;采样&lt;/h2&gt;
 
 &lt;p&gt;假设给定一个盒子，盒子中放有各种颜色的若干个相同大小的小球，对小球进行随机采样，即每次从盒子中摸出一个，记录颜色；放回，然后继续。。。&lt;/p&gt;
 
@@ -74,7 +73,7 @@
 
 &lt;p&gt;令p=rand()产生一个0～1的随机值，然后看p落在CDF的哪个范围内，就取该值返回。如p=0.4，属于0.3~0.6，那么就取c作为采样值返回。通过二分查找，该取样的时间复杂度为O(logN)。&lt;/p&gt;
 
-&lt;h2 id=&#34;alias:3b3d2541cd37edc022b27d62280cdf2f&#34;&gt;Alias&lt;/h2&gt;
+&lt;h2 id=&#34;alias&#34;&gt;Alias&lt;/h2&gt;
 
 &lt;p&gt;别名表的方法可以让采样在&lt;r&gt;O(1)&lt;/r&gt;的时间复杂度内完成。适用于离散值较多的情景。&lt;/p&gt;
 
@@ -127,7 +126,7 @@
 
 &lt;p&gt;&lt;img src=&#34;http://ocwpxekrq.bkt.clouddn.com/alias.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
 
-&lt;h2 id=&#34;代码实现:3b3d2541cd37edc022b27d62280cdf2f&#34;&gt;代码实现&lt;/h2&gt;
+&lt;h2 id=&#34;代码实现&#34;&gt;代码实现&lt;/h2&gt;
 
 &lt;p&gt;下面是借鉴的line中的部分代码：&lt;/p&gt;
 

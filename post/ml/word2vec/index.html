@@ -1,97 +1,77 @@
-
 <!DOCTYPE html>
 <html lang="en-us">
 <head>
+<meta charset="utf-8">
+<meta name="generator" content="Hugo 0.18.1" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link href="http://fonts.googleapis.com/css?family=Roboto:400,700" rel="stylesheet" type="text/css">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/github.min.css">
+<link rel="stylesheet" href="/css/normalize.css">
+<link rel="stylesheet" href="/css/skeleton.css">
+<link rel="stylesheet" href="/css/custom.css">
+<link rel="alternate" href="/index.xml" type="application/rss+xml" title="Learn and record">
+<script type="text/javascript"
+  src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
-  
-  <meta charset="UTF-8">
-  <title>
-    [ml] word2vec模型和源码解析 | Learn and record
-  </title>
-
-
-  
-  <meta name="viewport" content="width=device-width,user-scalable=no,maximum-scale=1,initial-scale=1">
-
-  
-  <link rel="canonical" href="http://cherishzhang.github.io/post/ml/word2vec/"/>
-
-  
-  <link rel="stylesheet" href="/css/sanitize.css">
-  <link rel="stylesheet" href="/css/responsive.css">
-  <link rel="stylesheet" href="/css/highlight_monokai.css">
-  <link rel="stylesheet" href="/css/theme.css">
-  <link rel="stylesheet" href="/css/custom.css">
-
-  
-  <link href="http://cherishzhang.github.io/index.xml" rel="alternate" type="application/rss+xml" title="Learn and record" />
-  <link href="http://cherishzhang.github.io/index.xml" rel="feed" type="application/rss+xml" title="Learn and record" />
-
-  
-  
-  <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=default"></script>
-  <script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-
-  ga('create', 'UA-84092408-1', 'auto');
-  ga('send', 'pageview');
-
+<link rel="stylesheet" href="/css/solarized-dark.css">
+<script src="/js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath: [['$','$'], ['\\(','\\)']],
+    displayMath: [['$$','$$'], ['\[','\]']],
+    processEscapes: true,
+    processEnvironments: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+    TeX: { equationNumbers: { autoNumber: "AMS" },
+         extensions: ["AMSmath.js", "AMSsymbols.js"] }
+  }
+});
 </script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    
+    
+    
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i = 0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+});
+</script>
+
+<title>[ml] word2vec模型和源码解析 - Learn and record</title>
 </head>
-
-
-
 <body>
+
 <div class="container">
 
-  
-  <header role="banner">
-    <div class="row gutters">
-      <div id="site-title" class="col span_6">
-        <h1><a href="http://cherishzhang.github.io/">Learn and record</a></h1>
-        
-      </div>
-      
-      <img src="/images/avatar.jpg" width="64" height="64" style="margin-left:30px;">
-      
-      <div id="social" class="col span_4">
-        <ul>
-          <li><a href="http://cherishzhang.github.io/about" target="_blank">About me</a></li>
-          <li><a href="https://github.com/Cherishzhang" target="_blank">GitHub</a></li>
-          <li><a href="mailto:cherishzhang920508@gmail.com" target="_blank">Email</a></li>
-        </ul>
-      </div>
-  </header>
+	<header role="banner">
+		<div class="header-logo">
+			<a href="/"><img src="/images/logo.jpg" width="60" height="60"></a>
+		</div>
+		
+	</header>
 
 
-  
-  <main id="single" role="main">
-    <div class="article-header">
-      <h1>[ml] word2vec模型和源码解析</h1>
-      <div class="meta" >
-        Aug 5, 2016 &nbsp;
-        
-          #<a href="/tags/nlp">nlp</a>&nbsp;
-        
-          #<a href="/tags/network">network</a>&nbsp;
-        
-      </div>
-    </div>
-    <article style="padding:30px; border: 2px solid;border-radius: 4px; border-color: #ddd;">
-      
+	<main role="main">
+		<article itemscope itemtype="http://schema.org/BlogPosting">
+			<h1 class="entry-title" itemprop="headline">[ml] word2vec模型和源码解析</h1>
+			<span class="entry-meta"><time itemprop="datePublished" datetime="2016-08-05">August 05, 2016</time></span>
+			<section itemprop="entry-text">
+				
 
-<h2 id="词向量:d45865320239d7818255e82b856775aa">词向量</h2>
+<h2 id="词向量">词向量</h2>
 
 <p>一种简单直观的词表示方法是<r>One-hot</r>编码，用N位对N个词编码，每个词对应的N维向量中，只有一维为0。这种方式的缺陷是<r>词汇鸿沟</r>，即词与词之间相互孤立，忽略了它们之间的联系。而word2vec中的词向量是一种distributed representation，它的<r>特点</r>是<strong>利用距离刻画词之间的相似性</strong>。</p>
 
-<h2 id="统计语言模型:d45865320239d7818255e82b856775aa">统计语言模型</h2>
+<h2 id="统计语言模型">统计语言模型</h2>
 
 <p>统计语言模型是用来计算一个句子的概率的<r>概率模型</r>，经典的有HAL,LSA,COALS等。通常它基于一个语料库来构建。</p>
 
-<h3 id="句子的概率:d45865320239d7818255e82b856775aa">句子的概率</h3>
+<h3 id="句子的概率">句子的概率</h3>
 
 <p>给定一个由T个词\(w_1,w_2,&hellip;,w_T\)按顺序构成的句子，根据Bayes，计算该句子的概率p(W)</p>
 
@@ -99,7 +79,7 @@
 
 <p>其中等式中的各个因子（条件概率）就是语言模型的<strong>参数</strong>，常用的语言模型都是在近似求p(W)。如果给定一个词典大小为N的语料库，考虑长度为T的任意句子，理论上有\(N^T\)种可能组合，而每个句子需要计算T个参数，总共需要计算<r>\(T*N^T\)</r>个参数。无论是计算或保存，都需要很大开销。</p>
 
-<h3 id="n-gram模型:d45865320239d7818255e82b856775aa">n-gram模型</h3>
+<h3 id="n-gram模型">n-gram模型</h3>
 
 <p>针对参数繁多，该模型做了一个简化的假定，即一个词出现的概率<strong>只与</strong>它前面的n-1个词相关。实际中最多采用<r>n=3</r>的三元模型。</p>
 
@@ -109,7 +89,7 @@
 
 <p>n-gram模型的缺陷是无法建模更远的关系，语料的不足使得无法训练更高阶的语言模型；而且无法建模出词之间的相似度。</p>
 
-<h3 id="最大似然:d45865320239d7818255e82b856775aa">最大似然</h3>
+<h3 id="最大似然">最大似然</h3>
 
 <p>对句子模型的另一种转化是利用机器学习，构造一个目标函数，并最大似然该函数。优化目标求得最优参数，利用最优参数预测未知句子的概率。<strong><r>目标函数</r></strong>一般为: $$\prod_{w \in C} p(w|Context(w))$$</p>
 
@@ -117,7 +97,7 @@
 
 <p>$$p(w|Context(w)) = F(w,Context(w),\theta)$$</p>
 
-<h2 id="神经概率语言模型:d45865320239d7818255e82b856775aa">神经概率语言模型</h2>
+<h2 id="神经概率语言模型">神经概率语言模型</h2>
 
 <p>Bengio(03) - 《A Neural Probabilistic Language Model》</p>
 
@@ -141,13 +121,13 @@
 主要是针对多分类问题，归一化输出概率值。</p>
 </blockquote>
 
-<h2 id="word2vec核心:d45865320239d7818255e82b856775aa">Word2vec核心</h2>
+<h2 id="word2vec核心">Word2vec核心</h2>
 
 <p>word2vec中用到了两个重要模型: <r>CBOW</r>和<r>Skip-gram</r>，对于这两个模型，分别都给出了基于<r>Hierarchical Softmax</r>和<r>Negative Sampling</r>两套框架的实现。而word2vec的高效具体体现在这两个策略上。</p>
 
 <p>CBOW和Skip-gram包括三层：<r>输入层</r>，<r>投影层</r>，<r>输出层</r>。前者是已知词的上下文预测当前词，后者是通过当前词预测上下文。</p>
 
-<h3 id="1-cbow:d45865320239d7818255e82b856775aa">1. CBOW</h3>
+<h3 id="1-cbow">1. CBOW</h3>
 
 <p>CBOW = Continuous Bag-of-Words, 目标函数为：</p>
 
@@ -155,7 +135,7 @@
 
 <p>其中T表示整个词典的大小，模型的目标是<r>最大化</r>这个目标函数值。\(w_t\)表示词典中的一个词，即通过和\(w_t\)相邻的窗口大小为k的词来预测\(w_t\)出现的概率。其中\(\tau(w_1,w_2,&hellip;,w_k)\)函数表示以\(w_i(i&lt;=i&lt;=k)\)为参数进行某种运算。在Word2vec里，这种运算是向量加和运算。即<r>把窗口相邻的所有词的向量加和</r>。</p>
 
-<h4 id="hierarchical-softmax:d45865320239d7818255e82b856775aa">Hierarchical Softmax</h4>
+<h4 id="hierarchical-softmax">Hierarchical Softmax</h4>
 
 <p><img src="http://ocwpxekrq.bkt.clouddn.com/word2vec-hs-cbow.png" alt="" /></p>
 
@@ -204,7 +184,7 @@ $$F = \sum_{w \in C} log p(w|Context(w)) = \sum_{w \in C} log \prod\limits_{j=2}
 
 <p>================================================================</p>
 
-<h4 id="negative-sampling:d45865320239d7818255e82b856775aa">Negative Sampling</h4>
+<h4 id="negative-sampling">Negative Sampling</h4>
 
 <p>huffman树中从根节点到叶子节点路径上的各个中间结点，分为正负两类，构造好huffman树后，每个词w对应的采样样本（中间结点）也就确定。训练的目标是最大化似然函数值。由此衍生出，用简单的<r>随机负采样</r>代替复杂的huffman树。已知词w的上下文，预测词w，可将w看作正样本，负样本的抽样策略为<r>带权采样</r>，即被选中的概率与词频成正比。模型训练的<r>目标</r>是<strong>最大化正样本的概率同时最小化负样本的概率</strong>。</p>
 
@@ -243,11 +223,11 @@ $$  =  L^w(u) X_w - \sigma(\theta^u X_w^T) X_w $$</p>
 
 <p>根据\(\theta^u\)和\(X_w\)的<r>对称性</r>，w上下文中的每个词向量的<r>更新公式</r>为：</p>
 
-<h1 id="v-tilde-w-v-tilde-w-sum-limits-u-in-w-cup-neg-w-eta-l-w-u-sigma-theta-u-x-w-t-theta-u-tilde-w-in-context-w:d45865320239d7818255e82b856775aa">$$v(\tilde{w}) := v(\tilde{w}) + \sum\limits_{u \in w \cup NEG(w)} \eta (L^w(u) - \sigma(\theta^u X_w^T))\theta^u, \tilde{w} \in Context(w)$$</h1>
+<h1 id="v-tilde-w-v-tilde-w-sum-limits-u-in-w-cup-neg-w-eta-l-w-u-sigma-theta-u-x-w-t-theta-u-tilde-w-in-context-w">$$v(\tilde{w}) := v(\tilde{w}) + \sum\limits_{u \in w \cup NEG(w)} \eta (L^w(u) - \sigma(\theta^u X_w^T))\theta^u, \tilde{w} \in Context(w)$$</h1>
 
-<h3 id="2-skip-gram:d45865320239d7818255e82b856775aa">2. SKIP-GRAM</h3>
+<h3 id="2-skip-gram">2. SKIP-GRAM</h3>
 
-<h4 id="hierarchical-softmax-1:d45865320239d7818255e82b856775aa">Hierarchical Softmax</h4>
+<h4 id="hierarchical-softmax-1">Hierarchical Softmax</h4>
 
 <p>与CBOW不同是，输入层只有一个词向量w。</p>
 
@@ -257,7 +237,7 @@ $$  =  L^w(u) X_w - \sigma(\theta^u X_w^T) X_w $$</p>
 
 <p>$$ p(Context(w)|w) = \prod\limits_{u \in Context(w)} p(u|w) $$，其他推导类似CBOW。</p>
 
-<h4 id="negative-sampling-1:d45865320239d7818255e82b856775aa">Negative Sampling</h4>
+<h4 id="negative-sampling-1">Negative Sampling</h4>
 
 <p>已知词w，预测词w的上下文，则针对上下文中的每个词，将该词看作正样本，选取一定数量的负样本。目标函数为：</p>
 
@@ -266,9 +246,9 @@ $$ = \sum\limits_{w \in C} \sum\limits_{u \in Context(w)} \sum\limits_{z \in u \
 
 <p>公式中对于一个样本(w, Context(w)), 对Context(w)中的每个词，都做了一次负采样。而word2vec源码对此作了改动，只对词w进行了|Context(w)|次负采样。</p>
 
-<h2 id="c源码阅读:d45865320239d7818255e82b856775aa">c源码阅读</h2>
+<h2 id="c源码阅读">c源码阅读</h2>
 
-<h3 id="命令行参数:d45865320239d7818255e82b856775aa">命令行参数</h3>
+<h3 id="命令行参数">命令行参数</h3>
 
 <table>
 <thead>
@@ -361,7 +341,7 @@ $$ = \sum\limits_{w \in C} \sum\limits_{u \in Context(w)} \sum\limits_{z \in u \
 </tbody>
 </table>
 
-<h3 id="数据结构:d45865320239d7818255e82b856775aa">数据结构</h3>
+<h3 id="数据结构">数据结构</h3>
 
 <p>每个词用结构体<r>vocab_word</r>保存信息:</p>
 
@@ -381,9 +361,9 @@ $$ = \sum\limits_{w \in C} \sum\limits_{u \in Context(w)} \sum\limits_{z \in u \
 vocab_hash = (int *)calloc(vocab_hash_size, sizeof(int));
 </code></pre>
 
-<h3 id="模型实现:d45865320239d7818255e82b856775aa">模型实现</h3>
+<h3 id="模型实现">模型实现</h3>
 
-<h4 id="1-关于net:d45865320239d7818255e82b856775aa">1. 关于Net</h4>
+<h4 id="1-关于net">1. 关于Net</h4>
 
 <p>对于hs来说，参数主要有<r>词向量</r>(syn0)，<r>huffman树中间结点的辅助向量</r>(syn1)；对于skip-gram来说，参数主要有<r>词向量</r>(syn0),<r>负采样中每个词的辅助向量</r>(syn1neg)。</p>
 
@@ -391,19 +371,19 @@ vocab_hash = (int *)calloc(vocab_hash_size, sizeof(int));
 
 <p>代码中Hierarchical Softmax和Negative Sampling可以同时训练。neu1代表\(X_w\),即输入词向量加和后的向量；neu1e代表\(e\)，即huffman树每一条路径（从根到叶子节点）梯度更新的求和，用来更新相应的词向量。</p>
 
-<h4 id="2-sigmoid函数值计算:d45865320239d7818255e82b856775aa">2. sigmoid函数值计算</h4>
+<h4 id="2-sigmoid函数值计算">2. sigmoid函数值计算</h4>
 
 <p>建模过程中用到<r>逻辑回归</r>做二分类问题，需要计算sigmod函数值。程序中采用的<r>近似计算</r>的方法，将区间<r>(-6,-6)</r>等分成若干份(1000)，事先将每个结点处的函数值保存起来，对于某个x，判断x的范围，如果小于-6，返回0；如果大于6；返回1；否则对x取整查表，返回对应值。</p>
 
 <p><em>sigmoid函数中涉及指数运算，指数运算利用幂级数展开式实现，如果展开项数过多，则计算比较耗时。</em></p>
 
-<h4 id="3-词频和窗口:d45865320239d7818255e82b856775aa">3. 词频和窗口</h4>
+<h4 id="3-词频和窗口">3. 词频和窗口</h4>
 
 <p>删除小于阈值(min_count)的低频词，对高频词采用<r>subsampling</r>，可以提高训练速度和词向量精度。具体做法：给定一个阈值t，对于词w，以\(prob(w) = 1-(\sqrt{(\frac{t}{f(w)})} + \frac{t}{f(w)})\)的概率舍弃。</p>
 
 <p>模型训练以行为单位进行，对于一个给定行，包含T个词，每个词为一个训练样本，对于某个词w，定义context(w)为：设置一个窗口阈值参数window(5)，每次构造context(w)时，生成一个随机数\(c \in [1, window]\)，w前后各取c个词构成context。</p>
 
-<h4 id="4-创建huffman树:d45865320239d7818255e82b856775aa">4. 创建huffman树</h4>
+<h4 id="4-创建huffman树">4. 创建huffman树</h4>
 
 <p><img src="http://ocwpxekrq.bkt.clouddn.com/huffman.png" alt="" /></p>
 
@@ -413,7 +393,7 @@ vocab_hash = (int *)calloc(vocab_hash_size, sizeof(int));
 
 <p>详见<r>CreateBinaryTree</r>函数。</p>
 
-<h4 id="5-负采样:d45865320239d7818255e82b856775aa">5. 负采样</h4>
+<h4 id="5-负采样">5. 负采样</h4>
 
 <p>假设词典中的每个词w对应一个线段l(w),其长度为：</p>
 
@@ -423,7 +403,7 @@ vocab_hash = (int *)calloc(vocab_hash_size, sizeof(int));
 
 <p>详见<r>InitUnigramTable</r>函数。</p>
 
-<h4 id="6-学习率-eta:d45865320239d7818255e82b856775aa">6. 学习率\(\eta\)</h4>
+<h4 id="6-学习率-eta">6. 学习率\(\eta\)</h4>
 
 <p>学习率采用<r>自适应</r>的方法，具体为：预先设置一个初始学习率(0.025)，每处理完固定数目(10000)个词，对学习率进行一次调整。</p>
 
@@ -431,7 +411,7 @@ vocab_hash = (int *)calloc(vocab_hash_size, sizeof(int));
 
 <p>随着训练的进行\(\eta\)会逐渐变小，当小于阈值\(\eta_{min}\)时，\(\eta = \eta_{min}\)</p>
 
-<h4 id="7-多线程并行:d45865320239d7818255e82b856775aa">7. 多线程并行</h4>
+<h4 id="7-多线程并行">7. 多线程并行</h4>
 
 <p>整个工作流程是：首先读取语料库中词表并统计词频，做一些模型初始化工作，然后多线程训练word2vec，判断classes，如果为0，则保存词向量；反之，对得到的词向量进行K-means聚类，聚类个数为classes，并保存聚类结果。</p>
 
@@ -446,9 +426,9 @@ fseek(fi, file_size / (long long)num_threads * (long long)id, SEEK_SET);
 
 <p>并行的<r>关键</r>在于<strong>如何分割好并行的任务和如何达成任务之间的良好通信</strong>。word2vec根据<r>线程数将语料划分成若干份</r>，每个线程负责语料库的一部分，但训练的神经网络、词向量和哈夫曼树是共享的。首先根据文件指针读取一个句子，用一个数组保存下句子中的每个词；然后根据命令行参数，选择训练CBOW或Skip-gram，其中每个模型都可以采用hs或negative的框架训练。</p>
 
-<h2 id="spark-mllib-1-6-实现:d45865320239d7818255e82b856775aa">Spark MLlib 1.6 实现</h2>
+<h2 id="spark-mllib-1-6-实现">Spark MLlib 1.6 实现</h2>
 
-<h3 id="可调参数:d45865320239d7818255e82b856775aa">可调参数</h3>
+<h3 id="可调参数">可调参数</h3>
 
 <table>
 <thead>
@@ -498,7 +478,7 @@ fseek(fi, file_size / (long long)num_threads * (long long)id, SEEK_SET);
 
 <p>主要实现了基于hierarchical softmax框架下的skip-gram模型。</p>
 
-<h3 id="广播:d45865320239d7818255e82b856775aa">广播</h3>
+<h3 id="广播">广播</h3>
 
 <p>对于sigmod函数值表格，词信息数组，词的hash表三个变量，通过广播机制，变成全局变量。</p>
 
@@ -508,11 +488,11 @@ val bcVocab = sc.broadcast(vocab)
 val bcVocabHash = sc.broadcast(vocabHash)
 </code></pre>
 
-<h3 id="分布式:d45865320239d7818255e82b856775aa">分布式</h3>
+<h3 id="分布式">分布式</h3>
 
 <p>根据语料集文件，读取文件中的全部句子，将句子按分区数分发。</p>
 
-<h2 id="参考链接:d45865320239d7818255e82b856775aa">参考链接</h2>
+<h2 id="参考链接">参考链接</h2>
 
 <p><a href="http://www.cnblogs.com/peghoty/p/3857839.html">word2vec 中的数学原理详解</a></p>
 
@@ -520,53 +500,28 @@ val bcVocabHash = sc.broadcast(vocabHash)
 
 <p><a href="https://papers.nips.cc/paper/5021-distributed-representations-of-words-and-phrases-and-their-compositionality.pdf">论文：Distributed Representations of Words and Phrases and their Compositionality</a></p>
 
-
-      
-    </article>
-  </main>
-
-  <nav class="pagination-single">
-    
-      <span class="previous">&larr; <a href="http://cherishzhang.github.io/post/ml/decision_tree/" rel="prev">[ml] Decision Tree模型</a></span>
-    
-    
-      <span class="next"><a href="http://cherishzhang.github.io/about/" rel="next">About Me</a> &rarr;</span>
-    
-  </nav>
-  
- <aside><div id="disqus_thread"></div></aside>
-
-<script type="text/javascript">
-     
-    var disqus_shortname = 'http-cherishzhang-github-io';
-
-     
-    (function() {
-        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-    })();
-</script>
-<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+			</section>
+		</article>
+	</main>
 
 
-
-
-  
-  <footer role="contentinfo">
-    <div style="text-align:center;">
-      
-    </div>
-  </footer>
-
+	<footer role="contentinfo">
+		<div class="hr"></div>
+		<div class="footer-link">
+			<a href="mailto:mailto:cherishzhang920508@gmail.com" target="_blank">Email</a></span>
+			
+			
+			<a href="https://github.com/Cherishzhang" target="_blank">GitHub</a></span>
+		</div>
+		<div class="copyright">Copyright &copy; </div>
+	</footer>
 
 </div>
 
-<script src="/js/highlight.pack.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/highlight.min.js"></script>
 <script>hljs.initHighlightingOnLoad();</script>
-
-
 
 </body>
 </html>
-

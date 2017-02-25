@@ -2,11 +2,10 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Paper on Learn and record</title>
-    <link>http://cherishzhang.github.io/tags/paper/</link>
+    <link>http://cherishzhang.github.io/tags/paper/index.xml</link>
     <description>Recent content in Paper on Learn and record</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 16 Mar 2016 00:00:00 +0000</lastBuildDate>
     <atom:link href="http://cherishzhang.github.io/tags/paper/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
@@ -19,15 +18,15 @@
 
 &lt;p&gt;论文名称：&lt;a href=&#34;http://dl.acm.org/citation.cfm?id=2799670&amp;amp;preflayout=tabs&#34;&gt;Data Quality Matters in Recommender Systems, RecSys &amp;lsquo;15&lt;/a&gt;&lt;/p&gt;
 
-&lt;h2 id=&#34;摘要:c7e7f190dc4ad9c3cea8a960f18951d1&#34;&gt;摘要&lt;/h2&gt;
+&lt;h2 id=&#34;摘要&#34;&gt;摘要&lt;/h2&gt;
 
 &lt;p&gt;&lt;r&gt;数据质量好坏&lt;/r&gt;在信息系统中是一个很重要的因素，但在推荐系统中考虑得却不是很多。比较常用的方法是ad-hoc式的清洗，如，去除数据集中的噪声和不可靠的记录。显露出的缺点是,没有结合数据集本身的特性。&lt;/p&gt;
 
 &lt;p&gt;论文中的主要贡献是考虑推荐系统中两个核心的数据质量问题：&lt;strong&gt;&lt;r&gt;sparsity&lt;/r&gt;&lt;/strong&gt; 和 &lt;strong&gt;&lt;r&gt;redundancy&lt;/r&gt;&lt;/strong&gt;，并设计了数据集相关的&lt;r&gt;阈值模型&lt;/r&gt;和&lt;r&gt;采样等级模型&lt;/r&gt;，然后在一系列的公开数据集上做了验证试验。&lt;/p&gt;
 
-&lt;h2 id=&#34;具体方法:c7e7f190dc4ad9c3cea8a960f18951d1&#34;&gt;具体方法&lt;/h2&gt;
+&lt;h2 id=&#34;具体方法&#34;&gt;具体方法&lt;/h2&gt;
 
-&lt;h3 id=&#34;关于数据的稀疏性:c7e7f190dc4ad9c3cea8a960f18951d1&#34;&gt;关于数据的稀疏性&lt;/h3&gt;
+&lt;h3 id=&#34;关于数据的稀疏性&#34;&gt;关于数据的稀疏性&lt;/h3&gt;
 
 &lt;blockquote&gt;
 &lt;p&gt;阈值模型(Threshold model)&lt;/p&gt;
@@ -67,7 +66,7 @@
 
 &lt;p&gt;通过计算，\({NTE}_d\)和\({AR}_d\)之间的相关度为-0.54。这表明IT的误差越小，推荐模型的准确率越高。&lt;/p&gt;
 
-&lt;h4 id=&#34;关于数据的冗余性:c7e7f190dc4ad9c3cea8a960f18951d1&#34;&gt;&lt;strong&gt;关于数据的冗余性&lt;/strong&gt;&lt;/h4&gt;
+&lt;h4 id=&#34;关于数据的冗余性&#34;&gt;&lt;strong&gt;关于数据的冗余性&lt;/strong&gt;&lt;/h4&gt;
 
 &lt;blockquote&gt;
 &lt;p&gt;模型&lt;/p&gt;
@@ -96,7 +95,7 @@
 
 &lt;p&gt;采用19个专业数据集，9-1比例分训练集和测试集，10折交叉验证。实验主要验证了模型的合理性。&lt;/p&gt;
 
-&lt;h3 id=&#34;我的思考:c7e7f190dc4ad9c3cea8a960f18951d1&#34;&gt;&lt;strong&gt;我的思考&lt;/strong&gt;&lt;/h3&gt;
+&lt;h3 id=&#34;我的思考&#34;&gt;&lt;strong&gt;我的思考&lt;/strong&gt;&lt;/h3&gt;
 
 &lt;ol&gt;
 &lt;li&gt;这篇论文提出了两个模型公式，并完成了实验验证。优点是模型公式与数据集本身的特性相关，不干涉推荐系统的建模过程。&lt;/li&gt;

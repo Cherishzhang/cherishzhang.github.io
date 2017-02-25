@@ -2,11 +2,10 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Rec on Learn and record</title>
-    <link>http://cherishzhang.github.io/tags/rec/</link>
+    <link>http://cherishzhang.github.io/tags/rec/index.xml</link>
     <description>Recent content in Rec on Learn and record</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 08 Sep 2016 00:00:00 +0000</lastBuildDate>
     <atom:link href="http://cherishzhang.github.io/tags/rec/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
@@ -21,7 +20,7 @@
 
 &lt;p&gt;推荐系统的核心问题是&lt;strong&gt;&lt;r&gt;如何评估一个用户(user)对一个物品(item)的评分(喜欢程度)&lt;/r&gt;&lt;/strong&gt;。&lt;/p&gt;
 
-&lt;h2 id=&#34;场景和指标:0ddb80b7e0dcbf864c099ae18a623ad9&#34;&gt;场景和指标&lt;/h2&gt;
+&lt;h2 id=&#34;场景和指标&#34;&gt;场景和指标&lt;/h2&gt;
 
 &lt;p&gt;推荐系统主要用来解决信息过量负载(&lt;r&gt;information overload&lt;/r&gt;)的问题，可以应用&lt;strong&gt;&lt;r&gt;多种场景&lt;/r&gt;&lt;/strong&gt;中。如:&lt;/p&gt;
 
@@ -112,7 +111,7 @@
 &lt;li&gt;&lt;p&gt;算法迭代&lt;/p&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;h2 id=&#34;非个性化-推荐-热度排行-popularity:0ddb80b7e0dcbf864c099ae18a623ad9&#34;&gt;&lt;strong&gt;非个性化&lt;/strong&gt;推荐：热度排行(Popularity)&lt;/h2&gt;
+&lt;h2 id=&#34;非个性化-推荐-热度排行-popularity&#34;&gt;&lt;strong&gt;非个性化&lt;/strong&gt;推荐：热度排行(Popularity)&lt;/h2&gt;
 
 &lt;p&gt;排行榜算法&lt;r&gt;主要分为&lt;/r&gt;：&lt;/p&gt;
 
@@ -120,7 +119,7 @@
 
 &lt;p&gt;这个方法容易实现，可以解决&lt;r&gt;新用户的冷启动&lt;/r&gt;问题。但无法对用户做出个性化推荐。通常情况下，可以先对新用户做热度排行推荐，然后根据用户的互动历史，做个性化推荐。&lt;/p&gt;
 
-&lt;h2 id=&#34;协同过滤-collaborative-filtering:0ddb80b7e0dcbf864c099ae18a623ad9&#34;&gt;&lt;strong&gt;协同过滤&lt;/strong&gt;(Collaborative Filtering)&lt;/h2&gt;
+&lt;h2 id=&#34;协同过滤-collaborative-filtering&#34;&gt;&lt;strong&gt;协同过滤&lt;/strong&gt;(Collaborative Filtering)&lt;/h2&gt;
 
 &lt;p&gt;它的来源很简单，即朋友之间会互相推荐自己喜爱的产品。基本组成元素有：&lt;r&gt;评分矩阵&lt;/r&gt;和&lt;r&gt;相似度度量&lt;/r&gt;。&lt;/p&gt;
 
@@ -133,7 +132,7 @@
 &lt;/ul&gt;
 
 &lt;blockquote&gt;
-&lt;h4 id=&#34;user-based:0ddb80b7e0dcbf864c099ae18a623ad9&#34;&gt;User-based&lt;/h4&gt;
+&lt;h4 id=&#34;user-based&#34;&gt;User-based&lt;/h4&gt;
 
 &lt;blockquote&gt;
 &lt;p&gt;计算目标用户的(前k个)相似用户(相似度度量：Pearson,Jaccard,cosine)&lt;/p&gt;
@@ -145,7 +144,7 @@
 &lt;p&gt;将剩余物品按照预测评分排序，返回top-N物品&lt;/p&gt;
 &lt;/blockquote&gt;
 
-&lt;h4 id=&#34;item-based:0ddb80b7e0dcbf864c099ae18a623ad9&#34;&gt;Item-based&lt;/h4&gt;
+&lt;h4 id=&#34;item-based&#34;&gt;Item-based&lt;/h4&gt;
 
 &lt;blockquote&gt;
 &lt;p&gt;计算item之间的两两相似性&lt;/p&gt;
@@ -167,7 +166,7 @@ item-based: &lt;r&gt;准确性&lt;/r&gt;好，便于离线计算；但推荐缺�
 &lt;p&gt;优点：模型通用性好，实现简单。&lt;/br&gt;
 缺点：&lt;r&gt;冷启动&lt;/r&gt;问题，&lt;r&gt;数据稀疏性&lt;/r&gt;；假定“过去的行为决定现在”，没有考虑&lt;r&gt;具体情景&lt;/r&gt;的差异；&lt;r&gt;热门倾向性&lt;/r&gt;(Popularity Bias)，很难推荐出小众偏好。&lt;/p&gt;
 
-&lt;h4 id=&#34;关联规则:0ddb80b7e0dcbf864c099ae18a623ad9&#34;&gt;关联规则&lt;/h4&gt;
+&lt;h4 id=&#34;关联规则&#34;&gt;关联规则&lt;/h4&gt;
 
 &lt;p&gt;基于物品之间的&lt;r&gt;共现性&lt;/r&gt;挖掘频繁项，应用场景为：买了又买，看了又看。主要有A-priori和FP-growth两种算法。&lt;/p&gt;
 
@@ -181,7 +180,7 @@ item-based: &lt;r&gt;准确性&lt;/r&gt;好，便于离线计算；但推荐缺�
 
 &lt;p&gt;&lt;em&gt;ps: 辛普森悖论，两组数据分别讨论时满足某种性质，一旦合并考虑，却可能导致相反的结论。&lt;r&gt;主要原因&lt;/r&gt;是数据的不同分组之间基数差异很大（通常一个组相对于其他组来说数量占绝对优势）。一个&lt;r&gt;结论&lt;/r&gt;：分析数据时合理地将数据分组很重要。&lt;/em&gt;&lt;/p&gt;
 
-&lt;h4 id=&#34;聚类-clustering:0ddb80b7e0dcbf864c099ae18a623ad9&#34;&gt;聚类(Clustering)&lt;/h4&gt;
+&lt;h4 id=&#34;聚类-clustering&#34;&gt;聚类(Clustering)&lt;/h4&gt;
 
 &lt;p&gt;可以对用户按爱好分群，商品按相似度聚类。常用的算法有：&lt;/p&gt;
 
@@ -193,25 +192,25 @@ item-based: &lt;r&gt;准确性&lt;/r&gt;好，便于离线计算；但推荐缺�
 
 &lt;p&gt;聚类可以一定程度上解决&lt;strong&gt;数据稀疏性问题&lt;/strong&gt;，但精准度往往不如协同过滤好。&lt;/p&gt;
 
-&lt;h4 id=&#34;分类-回归:0ddb80b7e0dcbf864c099ae18a623ad9&#34;&gt;分类/回归&lt;/h4&gt;
+&lt;h4 id=&#34;分类-回归&#34;&gt;分类/回归&lt;/h4&gt;
 
 &lt;p&gt;它的基本思想是把&lt;r&gt;评分预测&lt;/r&gt;看作一个多分类(回归)问题。常用的分类器有LR,Navie Bayes，把item的特征向量作为模型的输入。&lt;/p&gt;
 
 &lt;p&gt;比较通用，可以和其他方法组合，提高预测的准确性；需要大量训练数据，防止过拟合现象。&lt;/p&gt;
 
-&lt;h4 id=&#34;svd:0ddb80b7e0dcbf864c099ae18a623ad9&#34;&gt;SVD&lt;/h4&gt;
+&lt;h4 id=&#34;svd&#34;&gt;SVD&lt;/h4&gt;
 
 &lt;p&gt;它的原理是将(用户,物品)的评分矩阵R，分解成三个矩阵U,S,V。SVD本身要求矩阵必须是稠密矩阵，而评分矩阵非常稀疏；此外，SVD的计算复杂度很高。&lt;/p&gt;
 
 &lt;p&gt;于是，就出现了关于SVD的一系列变形，如FunkSVD,BiasSVD,SVD++。具体可参见开源算法包&lt;r&gt;svdfeture&lt;/r&gt;。&lt;/p&gt;
 
-&lt;h4 id=&#34;item的向量化:0ddb80b7e0dcbf864c099ae18a623ad9&#34;&gt;Item的向量化&lt;/h4&gt;
+&lt;h4 id=&#34;item的向量化&#34;&gt;Item的向量化&lt;/h4&gt;
 
 &lt;p&gt;向量化的目的是将Item进行知识、概念层次上的表达。常用方法有pLSA,LDA,&lt;a href=&#34;http://cherishzhang.github.io/post/word2vec/&#34;&gt;Word2Vec&lt;/a&gt;。&lt;/p&gt;
 
 &lt;p&gt;向量化时大多基于行为数据，&lt;r&gt;行为少的item向量化效果不好&lt;/r&gt;。&lt;/p&gt;
 
-&lt;h4 id=&#34;玻尔兹曼机:0ddb80b7e0dcbf864c099ae18a623ad9&#34;&gt;玻尔兹曼机&lt;/h4&gt;
+&lt;h4 id=&#34;玻尔兹曼机&#34;&gt;玻尔兹曼机&lt;/h4&gt;
 
 &lt;p&gt;Boltzmann机：两层神经网络(无输出层)；对称、全连接；每个神经元有0/1(激活/未激活)两种状态，某个时刻的状态是随机的，由一定概率确定。&lt;/p&gt;
 
@@ -219,13 +218,13 @@ item-based: &lt;r&gt;准确性&lt;/r&gt;好，便于离线计算；但推荐缺�
 
 &lt;p&gt;如何对(user,item)进行建模？一个用户一个RBM，共享隐层，权重W和偏置b。&lt;/p&gt;
 
-&lt;h4 id=&#34;图模型:0ddb80b7e0dcbf864c099ae18a623ad9&#34;&gt;图模型&lt;/h4&gt;
+&lt;h4 id=&#34;图模型&#34;&gt;图模型&lt;/h4&gt;
 
 &lt;p&gt;多用于社交网络中人与人的关系挖掘。方法有SimRank,SimRank++,Markov模型。&lt;/p&gt;
 
 &lt;p&gt;借助图的结构的传导性，可以发现协同过滤发现不了的弱相似性，给推荐带来一定的惊喜性。但该模型仍面临数据稀疏性和冷启动问题。&lt;/p&gt;
 
-&lt;h2 id=&#34;基于-内容-content-based:0ddb80b7e0dcbf864c099ae18a623ad9&#34;&gt;基于&lt;strong&gt;内容&lt;/strong&gt;(Content-based)&lt;/h2&gt;
+&lt;h2 id=&#34;基于-内容-content-based&#34;&gt;基于&lt;strong&gt;内容&lt;/strong&gt;(Content-based)&lt;/h2&gt;
 
 &lt;p&gt;内容包括：&lt;r&gt;文本描述&lt;/r&gt;（通常用NLP技术挖掘关键词）、&lt;r&gt;Item属性&lt;/r&gt;(如电影的主题，职位的行业)、&lt;r&gt;Item特征&lt;/r&gt;(如语音信号表示、图像向量表示)&lt;/p&gt;
 
@@ -277,7 +276,7 @@ item-based: &lt;r&gt;准确性&lt;/r&gt;好，便于离线计算；但推荐缺�
 &lt;/tbody&gt;
 &lt;/table&gt;
 
-&lt;h2 id=&#34;混合-方法-hybrid-approaches:0ddb80b7e0dcbf864c099ae18a623ad9&#34;&gt;&lt;strong&gt;混合&lt;/strong&gt;方法(Hybrid Approaches)&lt;/h2&gt;
+&lt;h2 id=&#34;混合-方法-hybrid-approaches&#34;&gt;&lt;strong&gt;混合&lt;/strong&gt;方法(Hybrid Approaches)&lt;/h2&gt;
 
 &lt;p&gt;通常比单个算法好，需要在不同算法之间、理论效果和实际可行性之间权衡。&lt;/p&gt;
 
@@ -322,27 +321,27 @@ item-based: &lt;r&gt;准确性&lt;/r&gt;好，便于离线计算；但推荐缺�
 &lt;/tbody&gt;
 &lt;/table&gt;
 
-&lt;h2 id=&#34;一些新进展:0ddb80b7e0dcbf864c099ae18a623ad9&#34;&gt;一些新进展&lt;/h2&gt;
+&lt;h2 id=&#34;一些新进展&#34;&gt;一些新进展&lt;/h2&gt;
 
-&lt;h3 id=&#34;learning-to-rank:0ddb80b7e0dcbf864c099ae18a623ad9&#34;&gt;Learning to rank&lt;/h3&gt;
+&lt;h3 id=&#34;learning-to-rank&#34;&gt;Learning to rank&lt;/h3&gt;
 
 &lt;p&gt;将排序看做一个ML问题，评价准则为NDCG(normalized discounted cumulative gain)或MRR(mean reciprocal rank)。算法分为三类：Pointwise, Pairwise, Listwise。&lt;/p&gt;
 
-&lt;h3 id=&#34;页面整体优化-page-optimization:0ddb80b7e0dcbf864c099ae18a623ad9&#34;&gt;页面整体优化(Page Optimization)&lt;/h3&gt;
+&lt;h3 id=&#34;页面整体优化-page-optimization&#34;&gt;页面整体优化(Page Optimization)&lt;/h3&gt;
 
 &lt;p&gt;关于用户注意力建模的一篇文章Modeling User Attention and Interaction on the Web。&lt;/p&gt;
 
-&lt;h3 id=&#34;情景推荐-context-aware:0ddb80b7e0dcbf864c099ae18a623ad9&#34;&gt;情景推荐(Context-aware)&lt;/h3&gt;
+&lt;h3 id=&#34;情景推荐-context-aware&#34;&gt;情景推荐(Context-aware)&lt;/h3&gt;
 
 &lt;p&gt;针对不同推荐场景，情景也有所不同。看电影，是周末还是工作日？订餐，餐厅距离？网购，用户心情？母婴：孩子年龄？&lt;/p&gt;
 
 &lt;p&gt;算法主要有&lt;r&gt;张量分解(Tensor Factorization)&lt;/r&gt;，&lt;r&gt;分解机(Factorization Machine)&lt;/r&gt;。其中后者的效果更好。&lt;/p&gt;
 
-&lt;h3 id=&#34;深度学习:0ddb80b7e0dcbf864c099ae18a623ad9&#34;&gt;深度学习&lt;/h3&gt;
+&lt;h3 id=&#34;深度学习&#34;&gt;深度学习&lt;/h3&gt;
 
 &lt;p&gt;主要用到的有卷积神经网络(CNN)和循环神经网络(RNN)。&lt;/p&gt;
 
-&lt;h2 id=&#34;参考链接:0ddb80b7e0dcbf864c099ae18a623ad9&#34;&gt;参考链接&lt;/h2&gt;
+&lt;h2 id=&#34;参考链接&#34;&gt;参考链接&lt;/h2&gt;
 
 &lt;p&gt;&lt;a href=&#34;http://mp.weixin.qq.com/s?__biz=MzIzOTU0NTQ0MA==&amp;amp;mid=2247483811&amp;amp;idx=1&amp;amp;sn=fc3ee4ddfc4a8d6014a4cd90cdb5983c&#34;&gt;常用推荐算法&lt;/a&gt;&lt;/p&gt;
 
@@ -360,15 +359,15 @@ item-based: &lt;r&gt;准确性&lt;/r&gt;好，便于离线计算；但推荐缺�
 
 &lt;p&gt;论文名称：&lt;a href=&#34;http://dl.acm.org/citation.cfm?id=2799670&amp;amp;preflayout=tabs&#34;&gt;Data Quality Matters in Recommender Systems, RecSys &amp;lsquo;15&lt;/a&gt;&lt;/p&gt;
 
-&lt;h2 id=&#34;摘要:c7e7f190dc4ad9c3cea8a960f18951d1&#34;&gt;摘要&lt;/h2&gt;
+&lt;h2 id=&#34;摘要&#34;&gt;摘要&lt;/h2&gt;
 
 &lt;p&gt;&lt;r&gt;数据质量好坏&lt;/r&gt;在信息系统中是一个很重要的因素，但在推荐系统中考虑得却不是很多。比较常用的方法是ad-hoc式的清洗，如，去除数据集中的噪声和不可靠的记录。显露出的缺点是,没有结合数据集本身的特性。&lt;/p&gt;
 
 &lt;p&gt;论文中的主要贡献是考虑推荐系统中两个核心的数据质量问题：&lt;strong&gt;&lt;r&gt;sparsity&lt;/r&gt;&lt;/strong&gt; 和 &lt;strong&gt;&lt;r&gt;redundancy&lt;/r&gt;&lt;/strong&gt;，并设计了数据集相关的&lt;r&gt;阈值模型&lt;/r&gt;和&lt;r&gt;采样等级模型&lt;/r&gt;，然后在一系列的公开数据集上做了验证试验。&lt;/p&gt;
 
-&lt;h2 id=&#34;具体方法:c7e7f190dc4ad9c3cea8a960f18951d1&#34;&gt;具体方法&lt;/h2&gt;
+&lt;h2 id=&#34;具体方法&#34;&gt;具体方法&lt;/h2&gt;
 
-&lt;h3 id=&#34;关于数据的稀疏性:c7e7f190dc4ad9c3cea8a960f18951d1&#34;&gt;关于数据的稀疏性&lt;/h3&gt;
+&lt;h3 id=&#34;关于数据的稀疏性&#34;&gt;关于数据的稀疏性&lt;/h3&gt;
 
 &lt;blockquote&gt;
 &lt;p&gt;阈值模型(Threshold model)&lt;/p&gt;
@@ -408,7 +407,7 @@ item-based: &lt;r&gt;准确性&lt;/r&gt;好，便于离线计算；但推荐缺�
 
 &lt;p&gt;通过计算，\({NTE}_d\)和\({AR}_d\)之间的相关度为-0.54。这表明IT的误差越小，推荐模型的准确率越高。&lt;/p&gt;
 
-&lt;h4 id=&#34;关于数据的冗余性:c7e7f190dc4ad9c3cea8a960f18951d1&#34;&gt;&lt;strong&gt;关于数据的冗余性&lt;/strong&gt;&lt;/h4&gt;
+&lt;h4 id=&#34;关于数据的冗余性&#34;&gt;&lt;strong&gt;关于数据的冗余性&lt;/strong&gt;&lt;/h4&gt;
 
 &lt;blockquote&gt;
 &lt;p&gt;模型&lt;/p&gt;
@@ -437,7 +436,7 @@ item-based: &lt;r&gt;准确性&lt;/r&gt;好，便于离线计算；但推荐缺�
 
 &lt;p&gt;采用19个专业数据集，9-1比例分训练集和测试集，10折交叉验证。实验主要验证了模型的合理性。&lt;/p&gt;
 
-&lt;h3 id=&#34;我的思考:c7e7f190dc4ad9c3cea8a960f18951d1&#34;&gt;&lt;strong&gt;我的思考&lt;/strong&gt;&lt;/h3&gt;
+&lt;h3 id=&#34;我的思考&#34;&gt;&lt;strong&gt;我的思考&lt;/strong&gt;&lt;/h3&gt;
 
 &lt;ol&gt;
 &lt;li&gt;这篇论文提出了两个模型公式，并完成了实验验证。优点是模型公式与数据集本身的特性相关，不干涉推荐系统的建模过程。&lt;/li&gt;

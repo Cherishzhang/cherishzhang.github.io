@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+<meta charset="utf-8">
+<meta name="generator" content="Hugo 0.18.1" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link href="http://fonts.googleapis.com/css?family=Roboto:400,700" rel="stylesheet" type="text/css">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/github.min.css">
+<link rel="stylesheet" href="/css/normalize.css">
+<link rel="stylesheet" href="/css/skeleton.css">
+<link rel="stylesheet" href="/css/custom.css">
+<link rel="alternate" href="/index.xml" type="application/rss+xml" title="Learn and record">
+<script type="text/javascript"
+  src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+<link rel="stylesheet" href="/css/solarized-dark.css">
+<script src="/js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath: [['$','$'], ['\\(','\\)']],
+    displayMath: [['$$','$$'], ['\[','\]']],
+    processEscapes: true,
+    processEnvironments: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+    TeX: { equationNumbers: { autoNumber: "AMS" },
+         extensions: ["AMSmath.js", "AMSsymbols.js"] }
+  }
+});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    
+    
+    
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i = 0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+});
+</script>
+
+<title>[ml] Stacking - Learn and record</title>
+</head>
+<body>
+
+<div class="container">
+
+	<header role="banner">
+		<div class="header-logo">
+			<a href="/"><img src="/images/logo.jpg" width="60" height="60"></a>
+		</div>
+		
+	</header>
+
+
+	<main role="main">
+		<article itemscope itemtype="http://schema.org/BlogPosting">
+			<h1 class="entry-title" itemprop="headline">[ml] Stacking</h1>
+			<span class="entry-meta"><time itemprop="datePublished" datetime="2017-02-24">February 24, 2017</time></span>
+			<section itemprop="entry-text">
+				
+
+<h2 id="intro">Intro</h2>
+
+<p>机器学习比赛中常常会用到的一个技巧：stacking，它通过组合不同的预测模型来提高最终结果的准确率。下面内容主要是阅读<a href="https://burakhimmetoglu.com/2016/12/01/stacking-models-for-improved-predictions/">文章</a>后，总结学习到的一些东西。</p>
+
+<h2 id="example">Example</h2>
+
+<p>以kaggle上<a href="https://www.kaggle.com/c/house-prices-advanced-regression-techniques">房屋价格预测</a>为例，该挑战给出了有关房屋的多维特征，目标是通过构建模型，预测房屋的价格。stacking的可行做法如下：</p>
+
+<blockquote>
+<p>将训练集随机分成10 folds，留最后一份作为验证集(holdout data for validation)。前9份在level 1中使用；</p>
+
+<p>level 1: 选取XGBoost, neural network, support vector regression这三个模型，对于每个模型M，交叉验证的方式产生一个预测结果（用8份训练模型，1份预测结果）。</p>
+
+<p>level 2: 每个模型产生了一个9 folds大小的预测结果，将它们当成训练的feature，训练一个线性模型，并在最后一份数据上面做验证。</p>
+</blockquote>
+
+<h2 id="some-points">Some points</h2>
+
+<ul>
+<li><strong>out-of-example</strong></li>
+</ul>
+
+<p>第一层level中，通过交叉验证的方式构造第二层level中的输入训练集。第二层level中，用初始化预留的最后一折数据做模型验证。</p>
+
+<p>假设不按照如上方法，而是在level 1时，使用全部的训练数据对模型进行参数拟合，将预测结果用于level 2时，就会出现过拟合的问题，导致偏差增大（预测结果会偏向M个模型中效果最好的一个）。</p>
+
+<p>stacking方法通过使用out-of-example预测，有可能使level 2的预测结果好于level 1中的各个单模型。</p>
+
+<p>具体流程，如下图：
+<img src="http://ocwpxekrq.bkt.clouddn.com/stacking.png" alt=" " title="stacking" /></p>
+
+<ul>
+<li><strong>work for small/medium dataset</strong></li>
+</ul>
+
+<p>stacking适合中小规模数据集</p>
+
+<ul>
+<li><strong>detail</strong></li>
+</ul>
+
+<p>重复10次，将训练集划分10-folds。这会产生10个level 2的预测结果，可以对该结果集取平均。</p>
+
+<p>一旦确定stacking可以提高预测结果的精度，将整个流程再次运行一次。此时不再保留第 N folds作为holdout data。用N-1 folds训练模型，得到剩余1折的预测结果。集齐训练集的全部预测结果，作为level 2的输入，训练模型，输出最终测试集的结果。</p>
+
+<h2 id="ref">Ref</h2>
+
+<p>1.<a href="https://burakhimmetoglu.com/2016/12/01/stacking-models-for-improved-predictions/">Stacking models for improved predictions</a></p>
+
+<p>2.<a href="http://mlwave.com/kaggle-ensembling-guide/">KAGGLE ENSEMBLING GUIDE</a></p>
+
+<p>3.<a href="https://cran.r-project.org/web/packages/caretEnsemble/vignettes/caretEnsemble-intro.html">A Brief Introduction to caretEnsemble</a></p>
+
+			</section>
+		</article>
+	</main>
+
+
+	<footer role="contentinfo">
+		<div class="hr"></div>
+		<div class="footer-link">
+			<a href="mailto:mailto:cherishzhang920508@gmail.com" target="_blank">Email</a></span>
+			
+			
+			<a href="https://github.com/Cherishzhang" target="_blank">GitHub</a></span>
+		</div>
+		<div class="copyright">Copyright &copy; </div>
+	</footer>
+
+</div>
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+</body>
+</html>
