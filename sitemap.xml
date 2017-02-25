@@ -81,12 +81,6 @@
   </url>
   
   <url>
-    <loc>http://cherishzhang.github.io/tags/-stacking--regresssion--prediction--kaggle/</loc>
-    <lastmod>2017-02-24T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
     <loc>http://cherishzhang.github.io/tags/algorithm/</loc>
     <lastmod>2016-09-08T00:00:00+00:00</lastmod>
     <priority>0</priority>
@@ -142,7 +136,7 @@
   
   <url>
     <loc>http://cherishzhang.github.io/tags/kaggle/</loc>
-    <lastmod>2016-12-22T00:00:00+00:00</lastmod>
+    <lastmod>2017-02-24T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -183,6 +177,12 @@
   </url>
   
   <url>
+    <loc>http://cherishzhang.github.io/tags/prediction/</loc>
+    <lastmod>2017-02-24T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>http://cherishzhang.github.io/tags/probability/</loc>
     <lastmod>2016-12-22T00:00:00+00:00</lastmod>
     <priority>0</priority>
@@ -201,6 +201,12 @@
   </url>
   
   <url>
+    <loc>http://cherishzhang.github.io/tags/regresssion/</loc>
+    <lastmod>2017-02-24T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>http://cherishzhang.github.io/tags/reviews/</loc>
     <lastmod>2016-09-25T00:00:00+00:00</lastmod>
     <priority>0</priority>
@@ -215,6 +221,12 @@
   <url>
     <loc>http://cherishzhang.github.io/tags/spark/</loc>
     <lastmod>2016-08-20T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://cherishzhang.github.io/tags/stacking/</loc>
+    <lastmod>2017-02-24T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
