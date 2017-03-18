@@ -6,8 +6,79 @@
     <description>Recent content on Learn and record</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 24 Feb 2017 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Fri, 03 Mar 2017 00:00:00 +0000</lastBuildDate>
     <atom:link href="http://cherishzhang.github.io/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>[ml] GloVe模型理解</title>
+      <link>http://cherishzhang.github.io/post/ml/glove/</link>
+      <pubDate>Fri, 03 Mar 2017 00:00:00 +0000</pubDate>
+      
+      <guid>http://cherishzhang.github.io/post/ml/glove/</guid>
+      <description>
+
+&lt;p&gt;一篇初学者的论文阅读笔记。尽量通俗易懂，尽量不加公式。&lt;/p&gt;
+
+&lt;h2 id=&#34;写在前面的例子&#34;&gt;写在前面的例子&lt;/h2&gt;
+
+&lt;p&gt;首先，是一个分析词之间共现概率的例子：&lt;/p&gt;
+
+&lt;p&gt;考虑词i和词j是某个特定领域（如：热力学）的词，比如i=&lt;r&gt;ice&lt;/r&gt;, j=&lt;r&gt;steam&lt;/r&gt;。这里还会用到一个词k，分析\(ratio = \frac{P_{ik}}{P_{jk}} \)的情况：&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;词k和ice有关，和steam无关，如k=&lt;r&gt;solid&lt;/r&gt;。那么\( ratio \)的值会很大。&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;词k和steam有关，和ice无关，如k=&lt;r&gt;gas&lt;/r&gt;。那么\( ratio \)的值会很小。&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;词k和ice, steam均相关/均不相关，如k=&lt;r&gt;water/fashion&lt;/r&gt;。那么\( ratio \)的值会趋于1。&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;这个例子想说明什么呢？ 下面是论文中的原话:&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;Compared to the raw probabilities, the ratio is better able to distinguish relevant words (solid and gas) from irrelevant words (water and fashion) and it is also better able to discriminate between the two relevant words.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;翻译一下，大概是，和原始概率值相比，&lt;strong&gt;ratio可以更好的区分相关词(solid, gas)和不相关词(water和fashion)&lt;/strong&gt;。&lt;/p&gt;
+
+&lt;p&gt;比起单纯分析两个词共现概率的值大小，共现概率的比更能说明词与词之间的相关程度。打个不恰当的比方，没有对比就没有伤害。&lt;/p&gt;
+
+&lt;h2 id=&#34;关于模型&#34;&gt;关于模型&lt;/h2&gt;
+
+&lt;p&gt;这也就因此引出了本文的正题。&lt;/p&gt;
+
+&lt;p&gt;作为一个标杆性质的模型，word2vec可谓是集万千宠爱于一身。embedding的思想也被用于机器学习能涉及的各个领域。&lt;/p&gt;
+
+&lt;p&gt;Word2Vec呢，通过滑动窗口，利用词之间的共现，训练词的向量表示。而glove捕捉的是全局信息，所谓全局，就是例子中ratio的引入。&lt;/p&gt;
+
+&lt;p&gt;模型的核心， 即&lt;r&gt;损失函数&lt;/r&gt; J：&lt;/p&gt;
+
+&lt;p&gt;$$ J = \sum_{i,j=1}^V f(X_{ij}) (w_i^T \tilde{w_j} + b_i + \tilde{b_j} - logX_{ij})^2 $$&lt;/p&gt;
+
+&lt;p&gt;看上去，与矩阵分解的损失函数有些类似。关于推导过程，这里就不做过多赘述（可阅读论文相关段落）。以笔者的理解，简单的概况如下：&lt;/p&gt;
+
+&lt;p&gt;从一个未知的F函数（即ratio）入手，&lt;/p&gt;
+
+&lt;p&gt;$$ F(w_i,w_j, \tilde{w_k}) = \frac{P_{ik}}{P_{jk}} $$&lt;/p&gt;
+
+&lt;p&gt;发现函数F在一些限制条件（向量线性关系的保持，对称性）下，可以被定义成一种唯一的形式。&lt;/p&gt;
+
+&lt;p&gt;$$ F(w_i^T\tilde{w_k}) = \frac{X_{ik}}{X_{i}} $$&lt;/p&gt;
+
+&lt;p&gt;其中F = exp， 可以推导出：\( w_i^T\tilde{w_k} + b_i + \tilde{b_k} = log(X_{ik}) \)&lt;/p&gt;
+
+&lt;p&gt;加入权重因子的考虑，这也就如愿得到了上面的损失函数。&lt;/p&gt;
+
+&lt;p&gt;&lt;r&gt;权重因子&lt;/r&gt;：使低频的词共现，高频的词共现都能不被overweighted。文中给出了如下的定义：&lt;/p&gt;
+
+&lt;p&gt;$$
+f(x)=\begin {cases}
+(x/x_{max})^\alpha, &amp;amp; x&amp;lt;x_{max} \\
+1, &amp;amp; x\geq{x_{max}}
+\end {cases}
+$$&lt;/p&gt;
+</description>
+    </item>
     
     <item>
       <title>[ml] Stacking</title>
@@ -2069,81 +2140,6 @@ $$f_{M(x)} = \sum_{m=1}^M T(x; \Theta_m)$$
 &lt;li&gt;这篇论文提出了两个模型公式，并完成了实验验证。优点是模型公式与数据集本身的特性相关，不干涉推荐系统的建模过程。&lt;/li&gt;
 &lt;li&gt;遗留下的问题：数据的稀疏性和冗余性只针对MF推荐模型，还可以扩展到与其他推荐模型相结合。&lt;/li&gt;
 &lt;li&gt;考虑其他的评测指标，如覆盖率和多样性；同时，模型中还可以结合物品的内容属性和用户的位置属性。&lt;/li&gt;
-&lt;/ol&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>Telstra Network Disruptions</title>
-      <link>http://cherishzhang.github.io/post/kaggle/Telstra/</link>
-      <pubDate>Wed, 02 Mar 2016 21:03:56 +0800</pubDate>
-      
-      <guid>http://cherishzhang.github.io/post/kaggle/Telstra/</guid>
-      <description>
-
-&lt;h2 id=&#34;1-overview&#34;&gt;&lt;strong&gt;1. Overview&lt;/strong&gt;&lt;/h2&gt;
-
-&lt;p&gt;The goal of the &lt;a href=&#34;https://www.kaggle.com/c/telstra-recruiting-network/&#34;&gt;problem&lt;/a&gt; is to predict Telstr network&amp;rsquo;s fault severity at a time at a particular location based on the &lt;em&gt;log data&lt;/em&gt; available.&lt;/p&gt;
-
-&lt;p&gt;The target has 3 categories:0,1,2. It&amp;rsquo;s a multiclass classification problems.Different types of features are extracted from log files and other sources: event_type.csv, log_feature.csv, resource_type.csv,severity_type.csv.&lt;/p&gt;
-
-&lt;p&gt;My final score is &lt;em&gt;0.44917(72 of 974)&lt;/em&gt; in private leaderboard. Here are my &lt;a href=&#34;https://github.com/Cherishzhang/kaggle/tree/master/Telstra&#34;&gt;code&lt;/a&gt;, and I will record my solution.&lt;/p&gt;
-
-&lt;h2 id=&#34;2-feature-engineer&#34;&gt;&lt;strong&gt;2. Feature Engineer&lt;/strong&gt;&lt;/h2&gt;
-
-&lt;p&gt;Selecting and designing good features is an important area in machine learning, which is called &lt;em&gt;feature engineering&lt;/em&gt;.&lt;/p&gt;
-
-&lt;p&gt;At First, I just merge all files on Id. Here are five type of features. they are location, severity_type, resource_type, event_type, log_feature.
-location and severity_type are just one-to-one variables, and others are many_to_one variables.
-There are about 1200 locations, some are only in the test set. The correlation between location variable and target is 0.27, it gave me a hint that neighbouring locations may be similar in the network&amp;rsquo;s fault severity problem. I used one_hot encode to solve the many_to_one features. So there are about 400+ features in the initial stage.&lt;/p&gt;
-
-&lt;p&gt;I read a paper about how to preprocess high-cardinality Categorical attributes in classification and regression problems, but it seemed to bring little help. I will tried it again after the competition.&lt;/p&gt;
-
-&lt;p&gt;On the forum, there are a heated discussion about the magic feature. I spent much of my time to find it.
-It is the order of the same location in the severity file which follows the order of fault occurrence.It&amp;rsquo;s called &lt;em&gt;Intra-location order&lt;/em&gt;.&lt;br /&gt;
-It really did a big help to the final score which improved almost 0.06. To each record, I compute the target(&lt;em&gt;fault_severity&lt;/em&gt;) probabilities from the previous same location records, and used the &lt;em&gt;previous-target_probabilities&lt;/em&gt; as a feature to build the model.&lt;/p&gt;
-
-&lt;h2 id=&#34;3-build-models-and-ensembling&#34;&gt;&lt;strong&gt;3. Build models and Ensembling&lt;/strong&gt;&lt;/h2&gt;
-
-&lt;p&gt;I tried many models, decision tree, random forests, svm and xgboost. The xgboost model is performed well.
-On ensembling, I just average the random forest and xgboost result as the final result.&lt;/p&gt;
-
-&lt;h2 id=&#34;4-what-i-learned-from-other-kagglers&#34;&gt;&lt;strong&gt;4. What I learned from other kagglers&lt;/strong&gt;&lt;/h2&gt;
-
-&lt;p&gt;On the platform, kagglers are willing to share their ideas. Here are some valuable ideas on the &lt;a href=&#34;https://www.kaggle.com/c/telstra-recruiting-network/forums/t/19239/it-s-been-fun-post-your-code-github-links-here-after-the-competition&#34;&gt;Competition Forum&lt;/a&gt;.&lt;/p&gt;
-
-&lt;h3 id=&#34;some-useful-tips-on-feature-engineering&#34;&gt;Some useful tips on feature engineering&lt;/h3&gt;
-
-&lt;p&gt;It&amp;rsquo;s the most important step in machine learning whatever models you used.&lt;/p&gt;
-
-&lt;ol&gt;
-&lt;li&gt;About location&lt;br /&gt;
-&lt;em&gt;Similar location numbers have similar fault severity.(Treat the location as numeric.)&lt;/em&gt;
-&lt;em&gt;Don&amp;rsquo;t one-hot-encode the location, Tree-based classifiers are not good at handling huge sparse feature matrix.&lt;/em&gt;
-&lt;em&gt;Frequency of LogType_203 = 0 &amp;amp; LogType_203 &amp;gt;0 per location&lt;/em&gt;
-&lt;em&gt;The records in log data are arranged in the order of time.(the magic feature)&lt;/em&gt; Here are two ways to encode
-the information, One is for each location, use the row number, which starts from 1 to the total number of rows for that locaiton. The other
-is to normalize it between 0 and 1.
-&lt;em&gt;percentile transformation of location counts&lt;/em&gt;&lt;/li&gt;
-&lt;li&gt;About log feature&lt;br /&gt;
-&lt;em&gt;Pattern of log feature&lt;/em&gt;
-&amp;ldquo;one hot&amp;rdquo; encoding for all log features with volume &amp;gt; 0, for all rows.
-Each &amp;ldquo;one hot&amp;rdquo; encoded pattern treated as a string.
-Assigned integer ID to each to each string, used as feature.
-The log transform for the count of &amp;ldquo;pattern of log feature&amp;rdquo;, the log transform for counts as &amp;ldquo;pattern of event&amp;rdquo;
-and &amp;ldquo;pattern of resource&amp;rdquo;&lt;/li&gt;
-&lt;li&gt;Common categorical variables&lt;br /&gt;
-&lt;em&gt;For high-cardinality categorical variables, frequency works well.(Add the frequency of each location in both train and test set.)&lt;/em&gt;
-&lt;em&gt;Summary statistics to reduce one-to-many relationship to one-to-one, and two-way or more-way interaction among multiple variables.&lt;/em&gt;
-&lt;em&gt;Meta features(using Logistic regression to fit sparse matrix as predictors, then ensemble the model).&lt;/em&gt;&lt;/li&gt;
-&lt;li&gt;A useful solution&lt;br /&gt;
-&amp;gt;a.The order of id on log_feature was frozen.&lt;br /&gt;
-&amp;gt;b.Converting location, log_feature into numbers and generating count, mean, sum, etc. features (feature set A)&lt;br /&gt;
-&amp;gt;c.Feature B was generated by shifting A forward by 1 row&lt;br /&gt;
-&amp;gt;d.Feature C was generated by shifting B backward by 1 row&lt;br /&gt;
-&amp;gt;Combining A, B, and C and training xgb, RF, GBM models. My final model is an ensemble model of these models.&lt;br /&gt;
-&lt;br /&gt;
-&lt;br /&gt;&lt;/li&gt;
 &lt;/ol&gt;
 </description>
     </item>

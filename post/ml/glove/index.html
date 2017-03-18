@@ -1,0 +1,196 @@
+
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+
+  
+  <meta charset="UTF-8">
+  <title>
+    [ml] GloVe模型理解 | Learn and record
+  </title>
+
+
+  
+  <meta name="viewport" content="width=device-width,user-scalable=no,maximum-scale=1,initial-scale=1">
+
+  
+  <link rel="canonical" href="http://cherishzhang.github.io/post/ml/glove/"/>
+
+  
+  <link rel="stylesheet" href="/css/sanitize.css">
+  <link rel="stylesheet" href="/css/responsive.css">
+  <link rel="stylesheet" href="/css/highlight_monokai.css">
+  <link rel="stylesheet" href="/css/theme.css">
+  <link rel="stylesheet" href="/css/custom.css">
+
+  
+  <link href="http://cherishzhang.github.io/index.xml" rel="alternate" type="application/rss+xml" title="Learn and record" />
+  <link href="http://cherishzhang.github.io/index.xml" rel="feed" type="application/rss+xml" title="Learn and record" />
+
+  
+  
+  <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=default"></script>
+  <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-84092408-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+</head>
+
+
+
+<body>
+<div class="container">
+
+  
+  <header role="banner">
+    <div class="row gutters">
+      <div id="site-title" class="col span_6">
+        <h1><a href="http://cherishzhang.github.io/">Learn and record</a></h1>
+        
+      </div>
+      
+      <img src="/images/avatar.jpg" width="64" height="64" style="margin-left:30px;">
+      
+      <div id="social" class="col span_4">
+        <ul>
+          <li><a href="http://cherishzhang.github.io/about" target="_blank">About me</a></li>
+          <li><a href="https://github.com/Cherishzhang" target="_blank">GitHub</a></li>
+          <li><a href="mailto:cherishzhang920508@gmail.com" target="_blank">Email</a></li>
+        </ul>
+      </div>
+  </header>
+
+
+  
+  <main id="single" role="main">
+    <div class="article-header">
+      <h1>[ml] GloVe模型理解</h1>
+      <div class="meta" >
+        Mar 3, 2017 &nbsp;
+        
+          #<a href="/tags/nlp">nlp</a>&nbsp;
+        
+          #<a href="/tags/network">network</a>&nbsp;
+        
+          #<a href="/tags/glove">glove</a>&nbsp;
+        
+      </div>
+    </div>
+    <article style="padding:30px; border: 2px solid;border-radius: 4px; border-color: #ddd;">
+      
+
+<p>一篇初学者的论文阅读笔记。尽量通俗易懂，尽量不加公式。</p>
+
+<h2 id="写在前面的例子">写在前面的例子</h2>
+
+<p>首先，是一个分析词之间共现概率的例子：</p>
+
+<p>考虑词i和词j是某个特定领域（如：热力学）的词，比如i=<r>ice</r>, j=<r>steam</r>。这里还会用到一个词k，分析\(ratio = \frac{P_{ik}}{P_{jk}} \)的情况：</p>
+
+<ol>
+<li><p>词k和ice有关，和steam无关，如k=<r>solid</r>。那么\( ratio \)的值会很大。</p></li>
+
+<li><p>词k和steam有关，和ice无关，如k=<r>gas</r>。那么\( ratio \)的值会很小。</p></li>
+
+<li><p>词k和ice, steam均相关/均不相关，如k=<r>water/fashion</r>。那么\( ratio \)的值会趋于1。</p></li>
+</ol>
+
+<p>这个例子想说明什么呢？ 下面是论文中的原话:</p>
+
+<blockquote>
+<p>Compared to the raw probabilities, the ratio is better able to distinguish relevant words (solid and gas) from irrelevant words (water and fashion) and it is also better able to discriminate between the two relevant words.</p>
+</blockquote>
+
+<p>翻译一下，大概是，和原始概率值相比，<strong>ratio可以更好的区分相关词(solid, gas)和不相关词(water和fashion)</strong>。</p>
+
+<p>比起单纯分析两个词共现概率的值大小，共现概率的比更能说明词与词之间的相关程度。打个不恰当的比方，没有对比就没有伤害。</p>
+
+<h2 id="关于模型">关于模型</h2>
+
+<p>这也就因此引出了本文的正题。</p>
+
+<p>作为一个标杆性质的模型，word2vec可谓是集万千宠爱于一身。embedding的思想也被用于机器学习能涉及的各个领域。</p>
+
+<p>Word2Vec呢，通过滑动窗口，利用词之间的共现，训练词的向量表示。而glove捕捉的是全局信息，所谓全局，就是例子中ratio的引入。</p>
+
+<p>模型的核心， 即<r>损失函数</r> J：</p>
+
+<p>$$ J = \sum_{i,j=1}^V f(X_{ij}) (w_i^T \tilde{w_j} + b_i + \tilde{b_j} - logX_{ij})^2 $$</p>
+
+<p>看上去，与矩阵分解的损失函数有些类似。关于推导过程，这里就不做过多赘述（可阅读论文相关段落）。以笔者的理解，简单的概况如下：</p>
+
+<p>从一个未知的F函数（即ratio）入手，</p>
+
+<p>$$ F(w_i,w_j, \tilde{w_k}) = \frac{P_{ik}}{P_{jk}} $$</p>
+
+<p>发现函数F在一些限制条件（向量线性关系的保持，对称性）下，可以被定义成一种唯一的形式。</p>
+
+<p>$$ F(w_i^T\tilde{w_k}) = \frac{X_{ik}}{X_{i}} $$</p>
+
+<p>其中F = exp， 可以推导出：\( w_i^T\tilde{w_k} + b_i + \tilde{b_k} = log(X_{ik}) \)</p>
+
+<p>加入权重因子的考虑，这也就如愿得到了上面的损失函数。</p>
+
+<p><r>权重因子</r>：使低频的词共现，高频的词共现都能不被overweighted。文中给出了如下的定义：</p>
+
+<p>$$
+f(x)=\begin {cases}
+(x/x_{max})^\alpha, &amp; x&lt;x_{max} \\
+1, &amp; x\geq{x_{max}}
+\end {cases}
+$$</p>
+
+
+      
+    </article>
+  </main>
+
+  <nav class="pagination-single">
+    
+      <span class="previous">&larr; <a href="http://cherishzhang.github.io/post/ml/stacking/" rel="prev">[ml] Stacking</a></span>
+    
+    
+  </nav>
+  
+ <aside><div id="disqus_thread"></div></aside>
+
+<script type="text/javascript">
+     
+    var disqus_shortname = 'http-cherishzhang-github-io';
+
+     
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+
+
+
+
+  
+  <footer role="contentinfo">
+    <div style="text-align:center;">
+      
+    </div>
+  </footer>
+
+
+</div>
+
+<script src="/js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+
+</body>
+</html>
+
