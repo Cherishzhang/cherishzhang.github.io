@@ -2,19 +2,19 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Network on Learn and record</title>
-    <link>http://cheriszhang.github.io/tags/network/</link>
+    <link>http://cherishzhang.github.io/tags/network/</link>
     <description>Recent content in Network on Learn and record</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Fri, 03 Mar 2017 00:00:00 +0000</lastBuildDate>
-    <atom:link href="http://cheriszhang.github.io/tags/network/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://cherishzhang.github.io/tags/network/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
       <title>[ml] GloVe模型理解</title>
-      <link>http://cheriszhang.github.io/post/ml/glove/</link>
+      <link>http://cherishzhang.github.io/post/ml/glove/</link>
       <pubDate>Fri, 03 Mar 2017 00:00:00 +0000</pubDate>
       
-      <guid>http://cheriszhang.github.io/post/ml/glove/</guid>
+      <guid>http://cherishzhang.github.io/post/ml/glove/</guid>
       <description>
 
 &lt;p&gt;一篇初学者的论文阅读笔记。尽量通俗易懂，尽量不加公式。&lt;/p&gt;
@@ -82,10 +82,10 @@ $$&lt;/p&gt;
     
     <item>
       <title>[ml] word2vec模型和源码解析</title>
-      <link>http://cheriszhang.github.io/post/ml/word2vec/</link>
+      <link>http://cherishzhang.github.io/post/ml/word2vec/</link>
       <pubDate>Fri, 05 Aug 2016 00:00:00 +0000</pubDate>
       
-      <guid>http://cheriszhang.github.io/post/ml/word2vec/</guid>
+      <guid>http://cherishzhang.github.io/post/ml/word2vec/</guid>
       <description>
 
 &lt;h2 id=&#34;词向量:d45865320239d7818255e82b856775aa&#34;&gt;词向量&lt;/h2&gt;

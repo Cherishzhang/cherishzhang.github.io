@@ -2,19 +2,19 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Rec on Learn and record</title>
-    <link>http://cheriszhang.github.io/tags/rec/</link>
+    <link>http://cherishzhang.github.io/tags/rec/</link>
     <description>Recent content in Rec on Learn and record</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Thu, 08 Sep 2016 00:00:00 +0000</lastBuildDate>
-    <atom:link href="http://cheriszhang.github.io/tags/rec/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://cherishzhang.github.io/tags/rec/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
       <title>[rec] 推荐系统总结</title>
-      <link>http://cheriszhang.github.io/post/rec/recommender/</link>
+      <link>http://cherishzhang.github.io/post/rec/recommender/</link>
       <pubDate>Thu, 08 Sep 2016 00:00:00 +0000</pubDate>
       
-      <guid>http://cheriszhang.github.io/post/rec/recommender/</guid>
+      <guid>http://cherishzhang.github.io/post/rec/recommender/</guid>
       <description>
 
 &lt;p&gt;本文是对推荐系统相关知识的一个梳理和总结。主要是参考阿里的一篇技术分享ppt。&lt;/p&gt;
@@ -352,10 +352,10 @@ item-based: &lt;r&gt;准确性&lt;/r&gt;好，便于离线计算；但推荐缺�
     
     <item>
       <title>Data Quality in Recommendation</title>
-      <link>http://cheriszhang.github.io/post/paper/Data%20Quality%20in%20Recommendation/</link>
+      <link>http://cherishzhang.github.io/post/paper/Data%20Quality%20in%20Recommendation/</link>
       <pubDate>Wed, 16 Mar 2016 00:00:00 +0000</pubDate>
       
-      <guid>http://cheriszhang.github.io/post/paper/Data%20Quality%20in%20Recommendation/</guid>
+      <guid>http://cherishzhang.github.io/post/paper/Data%20Quality%20in%20Recommendation/</guid>
       <description>
 
 &lt;p&gt;论文名称：&lt;a href=&#34;http://dl.acm.org/citation.cfm?id=2799670&amp;amp;preflayout=tabs&#34;&gt;Data Quality Matters in Recommender Systems, RecSys &amp;lsquo;15&lt;/a&gt;&lt;/p&gt;

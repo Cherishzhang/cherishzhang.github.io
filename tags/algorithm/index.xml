@@ -2,19 +2,19 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Algorithm on Learn and record</title>
-    <link>http://cheriszhang.github.io/tags/algorithm/</link>
+    <link>http://cherishzhang.github.io/tags/algorithm/</link>
     <description>Recent content in Algorithm on Learn and record</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Thu, 08 Sep 2016 00:00:00 +0000</lastBuildDate>
-    <atom:link href="http://cheriszhang.github.io/tags/algorithm/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://cherishzhang.github.io/tags/algorithm/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
       <title>[rec] 推荐系统总结</title>
-      <link>http://cheriszhang.github.io/post/rec/recommender/</link>
+      <link>http://cherishzhang.github.io/post/rec/recommender/</link>
       <pubDate>Thu, 08 Sep 2016 00:00:00 +0000</pubDate>
       
-      <guid>http://cheriszhang.github.io/post/rec/recommender/</guid>
+      <guid>http://cherishzhang.github.io/post/rec/recommender/</guid>
       <description>
 
 &lt;p&gt;本文是对推荐系统相关知识的一个梳理和总结。主要是参考阿里的一篇技术分享ppt。&lt;/p&gt;

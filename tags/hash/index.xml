@@ -2,19 +2,19 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Hash on Learn and record</title>
-    <link>http://cheriszhang.github.io/tags/hash/</link>
+    <link>http://cherishzhang.github.io/tags/hash/</link>
     <description>Recent content in Hash on Learn and record</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Sun, 18 Dec 2016 00:00:00 +0000</lastBuildDate>
-    <atom:link href="http://cheriszhang.github.io/tags/hash/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://cherishzhang.github.io/tags/hash/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
       <title>哈希总结及简单实现</title>
-      <link>http://cheriszhang.github.io/post/hash/</link>
+      <link>http://cherishzhang.github.io/post/hash/</link>
       <pubDate>Sun, 18 Dec 2016 00:00:00 +0000</pubDate>
       
-      <guid>http://cheriszhang.github.io/post/hash/</guid>
+      <guid>http://cherishzhang.github.io/post/hash/</guid>
       <description>
 
 &lt;h2 id=&#34;哈希表:77fbab5a984a0955bedde5c9e028b708&#34;&gt;哈希表&lt;/h2&gt;

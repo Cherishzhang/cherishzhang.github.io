@@ -2,19 +2,19 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Posts on Learn and record</title>
-    <link>http://cheriszhang.github.io/post/</link>
+    <link>http://cherishzhang.github.io/post/</link>
     <description>Recent content in Posts on Learn and record</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Fri, 03 Mar 2017 00:00:00 +0000</lastBuildDate>
-    <atom:link href="http://cheriszhang.github.io/post/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://cherishzhang.github.io/post/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
       <title>[ml] GloVe模型理解</title>
-      <link>http://cheriszhang.github.io/post/ml/glove/</link>
+      <link>http://cherishzhang.github.io/post/ml/glove/</link>
       <pubDate>Fri, 03 Mar 2017 00:00:00 +0000</pubDate>
       
-      <guid>http://cheriszhang.github.io/post/ml/glove/</guid>
+      <guid>http://cherishzhang.github.io/post/ml/glove/</guid>
       <description>
 
 &lt;p&gt;一篇初学者的论文阅读笔记。尽量通俗易懂，尽量不加公式。&lt;/p&gt;
@@ -82,10 +82,10 @@ $$&lt;/p&gt;
     
     <item>
       <title>[ml] Stacking</title>
-      <link>http://cheriszhang.github.io/post/ml/stacking/</link>
+      <link>http://cherishzhang.github.io/post/ml/stacking/</link>
       <pubDate>Fri, 24 Feb 2017 00:00:00 +0000</pubDate>
       
-      <guid>http://cheriszhang.github.io/post/ml/stacking/</guid>
+      <guid>http://cherishzhang.github.io/post/ml/stacking/</guid>
       <description>
 
 &lt;h2 id=&#34;intro:5d2f1f98b2cffb7fb28a28b223ce8215&#34;&gt;Intro&lt;/h2&gt;
@@ -145,10 +145,10 @@ $$&lt;/p&gt;
     
     <item>
       <title>概率分布函数</title>
-      <link>http://cheriszhang.github.io/post/probability_distribution/</link>
+      <link>http://cherishzhang.github.io/post/probability_distribution/</link>
       <pubDate>Thu, 22 Dec 2016 00:00:00 +0000</pubDate>
       
-      <guid>http://cheriszhang.github.io/post/probability_distribution/</guid>
+      <guid>http://cherishzhang.github.io/post/probability_distribution/</guid>
       <description>
 
 &lt;h2 id=&#34;intro:5218043356d7a0fea7d0b5c3b9f7ba2b&#34;&gt;Intro&lt;/h2&gt;
@@ -286,10 +286,10 @@ $$&lt;/p&gt;
     
     <item>
       <title>Alias Table(别名表)</title>
-      <link>http://cheriszhang.github.io/post/alias/</link>
+      <link>http://cherishzhang.github.io/post/alias/</link>
       <pubDate>Mon, 19 Dec 2016 00:00:00 +0000</pubDate>
       
-      <guid>http://cheriszhang.github.io/post/alias/</guid>
+      <guid>http://cherishzhang.github.io/post/alias/</guid>
       <description>
 
 &lt;h2 id=&#34;intro:3b3d2541cd37edc022b27d62280cdf2f&#34;&gt;Intro&lt;/h2&gt;
@@ -477,10 +477,10 @@ long long SampleAnEdge(double rand_value1, double rand_value2)
     
     <item>
       <title>哈希总结及简单实现</title>
-      <link>http://cheriszhang.github.io/post/hash/</link>
+      <link>http://cherishzhang.github.io/post/hash/</link>
       <pubDate>Sun, 18 Dec 2016 00:00:00 +0000</pubDate>
       
-      <guid>http://cheriszhang.github.io/post/hash/</guid>
+      <guid>http://cherishzhang.github.io/post/hash/</guid>
       <description>
 
 &lt;h2 id=&#34;哈希表:77fbab5a984a0955bedde5c9e028b708&#34;&gt;哈希表&lt;/h2&gt;
@@ -550,10 +550,10 @@ int SearchHashTable(char *key) {
     
     <item>
       <title>[tips]日常总结1</title>
-      <link>http://cheriszhang.github.io/post/daily_tips_1/</link>
+      <link>http://cherishzhang.github.io/post/daily_tips_1/</link>
       <pubDate>Sat, 17 Dec 2016 00:00:00 +0000</pubDate>
       
-      <guid>http://cheriszhang.github.io/post/daily_tips_1/</guid>
+      <guid>http://cherishzhang.github.io/post/daily_tips_1/</guid>
       <description>
 
 &lt;h2 id=&#34;intro:48b8812e0e384a98adb6eae935b10abd&#34;&gt;Intro&lt;/h2&gt;
@@ -653,10 +653,10 @@ plt.show()
     
     <item>
       <title>[c&#43;&#43;] atoi函数</title>
-      <link>http://cheriszhang.github.io/post/cplus/atoi/</link>
+      <link>http://cherishzhang.github.io/post/cplus/atoi/</link>
       <pubDate>Thu, 01 Dec 2016 00:00:00 +0000</pubDate>
       
-      <guid>http://cheriszhang.github.io/post/cplus/atoi/</guid>
+      <guid>http://cherishzhang.github.io/post/cplus/atoi/</guid>
       <description>
 
 &lt;h2 id=&#34;intro:3bc06ac4f925047d156733e1af084b5a&#34;&gt;Intro&lt;/h2&gt;
@@ -726,10 +726,10 @@ int atoi(const char *nptr){
     
     <item>
       <title>笔试/面试总结</title>
-      <link>http://cheriszhang.github.io/post/interviews/list/</link>
+      <link>http://cherishzhang.github.io/post/interviews/list/</link>
       <pubDate>Sun, 25 Sep 2016 00:00:00 +0000</pubDate>
       
-      <guid>http://cheriszhang.github.io/post/interviews/list/</guid>
+      <guid>http://cherishzhang.github.io/post/interviews/list/</guid>
       <description>&lt;p&gt;关于笔试/面试基本知识点总结：&lt;/p&gt;
 
 &lt;ol&gt;
@@ -746,10 +746,10 @@ int atoi(const char *nptr){
     
     <item>
       <title>[rec] 推荐系统总结</title>
-      <link>http://cheriszhang.github.io/post/rec/recommender/</link>
+      <link>http://cherishzhang.github.io/post/rec/recommender/</link>
       <pubDate>Thu, 08 Sep 2016 00:00:00 +0000</pubDate>
       
-      <guid>http://cheriszhang.github.io/post/rec/recommender/</guid>
+      <guid>http://cherishzhang.github.io/post/rec/recommender/</guid>
       <description>
 
 &lt;p&gt;本文是对推荐系统相关知识的一个梳理和总结。主要是参考阿里的一篇技术分享ppt。&lt;/p&gt;
@@ -1087,10 +1087,10 @@ item-based: &lt;r&gt;准确性&lt;/r&gt;好，便于离线计算；但推荐缺�
     
     <item>
       <title>Spark之RDD</title>
-      <link>http://cheriszhang.github.io/post/spark/sparkRDD/</link>
+      <link>http://cherishzhang.github.io/post/spark/sparkRDD/</link>
       <pubDate>Sat, 20 Aug 2016 00:00:00 +0000</pubDate>
       
-      <guid>http://cheriszhang.github.io/post/spark/sparkRDD/</guid>
+      <guid>http://cherishzhang.github.io/post/spark/sparkRDD/</guid>
       <description>
 
 &lt;h3 id=&#34;rdd:1676227db8a33b6ba8c0a321eafd5577&#34;&gt;RDD&lt;/h3&gt;
@@ -1245,10 +1245,10 @@ println(accum.name + &amp;quot;:&amp;quot; + accum.value)
     
     <item>
       <title>[ml] word2vec模型和源码解析</title>
-      <link>http://cheriszhang.github.io/post/ml/word2vec/</link>
+      <link>http://cherishzhang.github.io/post/ml/word2vec/</link>
       <pubDate>Fri, 05 Aug 2016 00:00:00 +0000</pubDate>
       
-      <guid>http://cheriszhang.github.io/post/ml/word2vec/</guid>
+      <guid>http://cherishzhang.github.io/post/ml/word2vec/</guid>
       <description>
 
 &lt;h2 id=&#34;词向量:d45865320239d7818255e82b856775aa&#34;&gt;词向量&lt;/h2&gt;
@@ -1692,10 +1692,10 @@ val bcVocabHash = sc.broadcast(vocabHash)
     
     <item>
       <title>[ml] Decision Tree模型</title>
-      <link>http://cheriszhang.github.io/post/ml/decision_tree/</link>
+      <link>http://cherishzhang.github.io/post/ml/decision_tree/</link>
       <pubDate>Mon, 01 Aug 2016 00:00:00 +0000</pubDate>
       
-      <guid>http://cheriszhang.github.io/post/ml/decision_tree/</guid>
+      <guid>http://cherishzhang.github.io/post/ml/decision_tree/</guid>
       <description>
 
 &lt;h2 id=&#34;1-intro:998e3d52f8819c2e5f687d19cc26909b&#34;&gt;1.Intro&lt;/h2&gt;
@@ -1914,10 +1914,10 @@ metadata:DecisionTreeMetadata): (Array[Array[Split]], Array[Array[Bin]]) =
     
     <item>
       <title>[ml] Boosting</title>
-      <link>http://cheriszhang.github.io/post/ml/boosting/</link>
+      <link>http://cherishzhang.github.io/post/ml/boosting/</link>
       <pubDate>Fri, 20 May 2016 00:00:00 +0000</pubDate>
       
-      <guid>http://cheriszhang.github.io/post/ml/boosting/</guid>
+      <guid>http://cherishzhang.github.io/post/ml/boosting/</guid>
       <description>
 
 &lt;h2 id=&#34;intro:d21755d9d058d9a9b44db3100ac0dea8&#34;&gt;Intro&lt;/h2&gt;
@@ -2017,10 +2017,10 @@ $$f_{M(x)} = \sum_{m=1}^M T(x; \Theta_m)$$
     
     <item>
       <title>Data Quality in Recommendation</title>
-      <link>http://cheriszhang.github.io/post/paper/Data%20Quality%20in%20Recommendation/</link>
+      <link>http://cherishzhang.github.io/post/paper/Data%20Quality%20in%20Recommendation/</link>
       <pubDate>Wed, 16 Mar 2016 00:00:00 +0000</pubDate>
       
-      <guid>http://cheriszhang.github.io/post/paper/Data%20Quality%20in%20Recommendation/</guid>
+      <guid>http://cherishzhang.github.io/post/paper/Data%20Quality%20in%20Recommendation/</guid>
       <description>
 
 &lt;p&gt;论文名称：&lt;a href=&#34;http://dl.acm.org/citation.cfm?id=2799670&amp;amp;preflayout=tabs&#34;&gt;Data Quality Matters in Recommender Systems, RecSys &amp;lsquo;15&lt;/a&gt;&lt;/p&gt;
@@ -2114,10 +2114,10 @@ $$f_{M(x)} = \sum_{m=1}^M T(x; \Theta_m)$$
     
     <item>
       <title>Telstra Network Disruptions</title>
-      <link>http://cheriszhang.github.io/post/kaggle/Telstra/</link>
+      <link>http://cherishzhang.github.io/post/kaggle/Telstra/</link>
       <pubDate>Wed, 02 Mar 2016 21:03:56 +0800</pubDate>
       
-      <guid>http://cheriszhang.github.io/post/kaggle/Telstra/</guid>
+      <guid>http://cherishzhang.github.io/post/kaggle/Telstra/</guid>
       <description>
 
 &lt;h2 id=&#34;1-overview:43e8ca42a888262ca3ed3923385c58f2&#34;&gt;&lt;strong&gt;1. Overview&lt;/strong&gt;&lt;/h2&gt;

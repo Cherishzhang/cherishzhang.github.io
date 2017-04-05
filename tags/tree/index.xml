@@ -2,19 +2,19 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Tree on Learn and record</title>
-    <link>http://cheriszhang.github.io/tags/tree/</link>
+    <link>http://cherishzhang.github.io/tags/tree/</link>
     <description>Recent content in Tree on Learn and record</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Mon, 01 Aug 2016 00:00:00 +0000</lastBuildDate>
-    <atom:link href="http://cheriszhang.github.io/tags/tree/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://cherishzhang.github.io/tags/tree/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
       <title>[ml] Decision Tree模型</title>
-      <link>http://cheriszhang.github.io/post/ml/decision_tree/</link>
+      <link>http://cherishzhang.github.io/post/ml/decision_tree/</link>
       <pubDate>Mon, 01 Aug 2016 00:00:00 +0000</pubDate>
       
-      <guid>http://cheriszhang.github.io/post/ml/decision_tree/</guid>
+      <guid>http://cherishzhang.github.io/post/ml/decision_tree/</guid>
       <description>
 
 &lt;h2 id=&#34;1-intro:998e3d52f8819c2e5f687d19cc26909b&#34;&gt;1.Intro&lt;/h2&gt;
@@ -233,10 +233,10 @@ metadata:DecisionTreeMetadata): (Array[Array[Split]], Array[Array[Bin]]) =
     
     <item>
       <title>[ml] Boosting</title>
-      <link>http://cheriszhang.github.io/post/ml/boosting/</link>
+      <link>http://cherishzhang.github.io/post/ml/boosting/</link>
       <pubDate>Fri, 20 May 2016 00:00:00 +0000</pubDate>
       
-      <guid>http://cheriszhang.github.io/post/ml/boosting/</guid>
+      <guid>http://cherishzhang.github.io/post/ml/boosting/</guid>
       <description>
 
 &lt;h2 id=&#34;intro:d21755d9d058d9a9b44db3100ac0dea8&#34;&gt;Intro&lt;/h2&gt;

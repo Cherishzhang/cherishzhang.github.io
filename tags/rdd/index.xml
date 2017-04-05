@@ -2,19 +2,19 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Rdd on Learn and record</title>
-    <link>http://cheriszhang.github.io/tags/rdd/</link>
+    <link>http://cherishzhang.github.io/tags/rdd/</link>
     <description>Recent content in Rdd on Learn and record</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Sat, 20 Aug 2016 00:00:00 +0000</lastBuildDate>
-    <atom:link href="http://cheriszhang.github.io/tags/rdd/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://cherishzhang.github.io/tags/rdd/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
       <title>Spark之RDD</title>
-      <link>http://cheriszhang.github.io/post/spark/sparkRDD/</link>
+      <link>http://cherishzhang.github.io/post/spark/sparkRDD/</link>
       <pubDate>Sat, 20 Aug 2016 00:00:00 +0000</pubDate>
       
-      <guid>http://cheriszhang.github.io/post/spark/sparkRDD/</guid>
+      <guid>http://cherishzhang.github.io/post/spark/sparkRDD/</guid>
       <description>
 
 &lt;h3 id=&#34;rdd:1676227db8a33b6ba8c0a321eafd5577&#34;&gt;RDD&lt;/h3&gt;
