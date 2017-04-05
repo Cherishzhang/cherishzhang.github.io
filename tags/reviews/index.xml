@@ -2,18 +2,19 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Reviews on Learn and record</title>
-    <link>http://cherishzhang.github.io/tags/reviews/index.xml</link>
+    <link>http://cheriszhang.github.io/tags/reviews/</link>
     <description>Recent content in Reviews on Learn and record</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <atom:link href="http://cherishzhang.github.io/tags/reviews/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 25 Sep 2016 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://cheriszhang.github.io/tags/reviews/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
       <title>笔试/面试总结</title>
-      <link>http://cherishzhang.github.io/post/interviews/list/</link>
+      <link>http://cheriszhang.github.io/post/interviews/list/</link>
       <pubDate>Sun, 25 Sep 2016 00:00:00 +0000</pubDate>
       
-      <guid>http://cherishzhang.github.io/post/interviews/list/</guid>
+      <guid>http://cheriszhang.github.io/post/interviews/list/</guid>
       <description>&lt;p&gt;关于笔试/面试基本知识点总结：&lt;/p&gt;
 
 &lt;ol&gt;

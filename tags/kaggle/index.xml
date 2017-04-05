@@ -2,25 +2,26 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Kaggle on Learn and record</title>
-    <link>http://cherishzhang.github.io/tags/kaggle/index.xml</link>
+    <link>http://cheriszhang.github.io/tags/kaggle/</link>
     <description>Recent content in Kaggle on Learn and record</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <atom:link href="http://cherishzhang.github.io/tags/kaggle/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 24 Feb 2017 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://cheriszhang.github.io/tags/kaggle/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
       <title>[ml] Stacking</title>
-      <link>http://cherishzhang.github.io/post/ml/stacking/</link>
+      <link>http://cheriszhang.github.io/post/ml/stacking/</link>
       <pubDate>Fri, 24 Feb 2017 00:00:00 +0000</pubDate>
       
-      <guid>http://cherishzhang.github.io/post/ml/stacking/</guid>
+      <guid>http://cheriszhang.github.io/post/ml/stacking/</guid>
       <description>
 
-&lt;h2 id=&#34;intro&#34;&gt;Intro&lt;/h2&gt;
+&lt;h2 id=&#34;intro:5d2f1f98b2cffb7fb28a28b223ce8215&#34;&gt;Intro&lt;/h2&gt;
 
 &lt;p&gt;机器学习比赛中常常会用到的一个技巧：stacking，它通过组合不同的预测模型来提高最终结果的准确率。下面内容主要是阅读&lt;a href=&#34;https://burakhimmetoglu.com/2016/12/01/stacking-models-for-improved-predictions/&#34;&gt;文章&lt;/a&gt;后，总结学习到的一些东西。&lt;/p&gt;
 
-&lt;h2 id=&#34;example&#34;&gt;Example&lt;/h2&gt;
+&lt;h2 id=&#34;example:5d2f1f98b2cffb7fb28a28b223ce8215&#34;&gt;Example&lt;/h2&gt;
 
 &lt;p&gt;以kaggle上&lt;a href=&#34;https://www.kaggle.com/c/house-prices-advanced-regression-techniques&#34;&gt;房屋价格预测&lt;/a&gt;为例，该挑战给出了有关房屋的多维特征，目标是通过构建模型，预测房屋的价格。stacking的可行做法如下：&lt;/p&gt;
 
@@ -32,7 +33,7 @@
 &lt;p&gt;level 2: 每个模型产生了一个9 folds大小的预测结果，将它们当成训练的feature，训练一个线性模型，并在最后一份数据上面做验证。&lt;/p&gt;
 &lt;/blockquote&gt;
 
-&lt;h2 id=&#34;some-points&#34;&gt;Some points&lt;/h2&gt;
+&lt;h2 id=&#34;some-points:5d2f1f98b2cffb7fb28a28b223ce8215&#34;&gt;Some points&lt;/h2&gt;
 
 &lt;ul&gt;
 &lt;li&gt;&lt;strong&gt;out-of-example&lt;/strong&gt;&lt;/li&gt;
@@ -61,7 +62,7 @@
 
 &lt;p&gt;一旦确定stacking可以提高预测结果的精度，将整个流程再次运行一次。此时不再保留第 N folds作为holdout data。用N-1 folds训练模型，得到剩余1折的预测结果。集齐训练集的全部预测结果，作为level 2的输入，训练模型，输出最终测试集的结果。&lt;/p&gt;
 
-&lt;h2 id=&#34;ref&#34;&gt;Ref&lt;/h2&gt;
+&lt;h2 id=&#34;ref:5d2f1f98b2cffb7fb28a28b223ce8215&#34;&gt;Ref&lt;/h2&gt;
 
 &lt;p&gt;1.&lt;a href=&#34;https://burakhimmetoglu.com/2016/12/01/stacking-models-for-improved-predictions/&#34;&gt;Stacking models for improved predictions&lt;/a&gt;&lt;/p&gt;
 
@@ -73,13 +74,13 @@
     
     <item>
       <title>概率分布函数</title>
-      <link>http://cherishzhang.github.io/post/probability_distribution/</link>
+      <link>http://cheriszhang.github.io/post/probability_distribution/</link>
       <pubDate>Thu, 22 Dec 2016 00:00:00 +0000</pubDate>
       
-      <guid>http://cherishzhang.github.io/post/probability_distribution/</guid>
+      <guid>http://cheriszhang.github.io/post/probability_distribution/</guid>
       <description>
 
-&lt;h2 id=&#34;intro&#34;&gt;Intro&lt;/h2&gt;
+&lt;h2 id=&#34;intro:5218043356d7a0fea7d0b5c3b9f7ba2b&#34;&gt;Intro&lt;/h2&gt;
 
 &lt;p&gt;&amp;ldquo;Jingle bells, jingle bells, jingle all the way&amp;hellip;.&amp;rdquo;&lt;/p&gt;
 
@@ -89,7 +90,7 @@
 
 &lt;p&gt;这是kaggle上&lt;a href=&#34;https://www.kaggle.com/c/santas-uncertain-bags&#34;&gt;一个赛题&lt;/a&gt;的背景，由于精灵误操作数据库，导致所有礼物对应的重量信息丢失了。在不能重新称重所有礼物的前提下，如何估计礼物重量，从而将礼物更合适地装入包裹中。&lt;/p&gt;
 
-&lt;h2 id=&#34;概率分布&#34;&gt;概率分布&lt;/h2&gt;
+&lt;h2 id=&#34;概率分布:5218043356d7a0fea7d0b5c3b9f7ba2b&#34;&gt;概率分布&lt;/h2&gt;
 
 &lt;p&gt;已知礼物(gift)分为&lt;r&gt;9类&lt;/r&gt;，共&lt;r&gt;1000个包裹&lt;/r&gt;(bag)，每个包裹要满足&lt;r&gt;三个条件&lt;/r&gt;:&lt;/p&gt;
 
@@ -171,19 +172,19 @@
 
 &lt;p&gt;下面介绍一下几个概率分布函数。&lt;/p&gt;
 
-&lt;h4 id=&#34;1-正态分布-normal-distribution&#34;&gt;1. 正态分布(Normal distribution)&lt;/h4&gt;
+&lt;h4 id=&#34;1-正态分布-normal-distribution:5218043356d7a0fea7d0b5c3b9f7ba2b&#34;&gt;1. 正态分布(Normal distribution)&lt;/h4&gt;
 
 &lt;p&gt;又名高斯分布。正态曲线呈钟型，两头低，中间高，左右对称，又称之为钟型曲线。&lt;/p&gt;
 
 &lt;p&gt;若随机变量X服从一个数学期望为\( \mu \)(位置)、方差为\( \sigma^2 \)(幅度)的正态分布，记为\( N(\mu, \sigma^2) \)。该图形有3个特征，集中性(均数位于中央)；对称性；均匀变动性。&lt;/p&gt;
 
-&lt;h4 id=&#34;2-二项分布-binomial-distribution&#34;&gt;2. 二项分布(Binomial distribution)&lt;/h4&gt;
+&lt;h4 id=&#34;2-二项分布-binomial-distribution:5218043356d7a0fea7d0b5c3b9f7ba2b&#34;&gt;2. 二项分布(Binomial distribution)&lt;/h4&gt;
 
 &lt;p&gt;重复n次&lt;r&gt;独立&lt;/r&gt;的伯努利实验，每次实验只有两种可能的结果，其发生与否互相对立且独立。当实验次数为1时，二项分布服从0-1分布。&lt;/p&gt;
 
 &lt;p&gt;举个例子，抛硬币正面向上的概率为0.5，抛N次，正面朝上发生K次的概率是服从二项分布的。&lt;/p&gt;
 
-&lt;h4 id=&#34;3-贝塔分布-beta-distribution&#34;&gt;3. 贝塔分布(Beta distribution)&lt;/h4&gt;
+&lt;h4 id=&#34;3-贝塔分布-beta-distribution:5218043356d7a0fea7d0b5c3b9f7ba2b&#34;&gt;3. 贝塔分布(Beta distribution)&lt;/h4&gt;
 
 &lt;p&gt;可以看作一个概率的概率分布。&lt;/p&gt;
 
@@ -191,17 +192,17 @@
 
 &lt;p&gt;为了&lt;r&gt;测试系统成功的概率p&lt;/r&gt;，进行n次实验，统计成功次数为k，于是很直观计算出p=k/n。但由于系统成功的概率是未知的，计算出的p只是真实概率的一个最佳估计。这时p也是一个随机变量，它符合beta分布。&lt;/p&gt;
 
-&lt;h4 id=&#34;4-卡方分布-chi-square-distribution&#34;&gt;4. 卡方分布(chi-square distribution)&lt;/h4&gt;
+&lt;h4 id=&#34;4-卡方分布-chi-square-distribution:5218043356d7a0fea7d0b5c3b9f7ba2b&#34;&gt;4. 卡方分布(chi-square distribution)&lt;/h4&gt;
 
 &lt;p&gt;若n个相互独立的随机变量，均服从&lt;r&gt;标准正态分布&lt;/r&gt;，则这n个服从标准正态分布的随机变量的平方和构成一新的随机变量，其分布规律称为卡方分布。&lt;/p&gt;
 
 &lt;p&gt;卡方分布是由正态分布构造而成的一个新的分布。当n很大时，近似为正态分布。&lt;/p&gt;
 
-&lt;h4 id=&#34;5-gamma分布&#34;&gt;5. Gamma分布&lt;/h4&gt;
+&lt;h4 id=&#34;5-gamma分布:5218043356d7a0fea7d0b5c3b9f7ba2b&#34;&gt;5. Gamma分布&lt;/h4&gt;
 
 &lt;p&gt;\(\alpha\)表示事件发生的次数，\(\beta\)表示该事件发生一次的概率，那么gamma分布代表这一事件发生\(\alpha\)次所需要时间的分布。&lt;/p&gt;
 
-&lt;h4 id=&#34;6-三角分布&#34;&gt;6. 三角分布&lt;/h4&gt;
+&lt;h4 id=&#34;6-三角分布:5218043356d7a0fea7d0b5c3b9f7ba2b&#34;&gt;6. 三角分布&lt;/h4&gt;
 
 &lt;p&gt;如其名，其概率密度函数是一个三角形状的。&lt;/p&gt;
 

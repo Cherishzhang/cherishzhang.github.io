@@ -14,7 +14,7 @@
   <meta name="viewport" content="width=device-width,user-scalable=no,maximum-scale=1,initial-scale=1">
 
   
-  <link rel="canonical" href="http://cherishzhang.github.io/post/spark/sparkRDD/"/>
+  <link rel="canonical" href="http://cheriszhang.github.io/post/spark/sparkRDD/"/>
 
   
   <link rel="stylesheet" href="/css/sanitize.css">
@@ -24,8 +24,8 @@
   <link rel="stylesheet" href="/css/custom.css">
 
   
-  <link href="http://cherishzhang.github.io/index.xml" rel="alternate" type="application/rss+xml" title="Learn and record" />
-  <link href="http://cherishzhang.github.io/index.xml" rel="feed" type="application/rss+xml" title="Learn and record" />
+  <link href="http://cheriszhang.github.io/index.xml" rel="alternate" type="application/rss+xml" title="Learn and record" />
+  <link href="http://cheriszhang.github.io/index.xml" rel="feed" type="application/rss+xml" title="Learn and record" />
 
   
   
@@ -51,7 +51,7 @@
   <header role="banner">
     <div class="row gutters">
       <div id="site-title" class="col span_6">
-        <h1><a href="http://cherishzhang.github.io/">Learn and record</a></h1>
+        <h1><a href="http://cheriszhang.github.io/">Learn and record</a></h1>
         
       </div>
       
@@ -59,7 +59,7 @@
       
       <div id="social" class="col span_4">
         <ul>
-          <li><a href="http://cherishzhang.github.io/about" target="_blank">About me</a></li>
+          <li><a href="http://cheriszhang.github.io/about" target="_blank">About me</a></li>
           <li><a href="https://github.com/Cherishzhang" target="_blank">GitHub</a></li>
           <li><a href="mailto:cherishzhang920508@gmail.com" target="_blank">Email</a></li>
         </ul>
@@ -83,7 +83,7 @@
     <article style="padding:30px; border: 2px solid;border-radius: 4px; border-color: #ddd;">
       
 
-<h3 id="rdd">RDD</h3>
+<h3 id="rdd:1676227db8a33b6ba8c0a321eafd5577">RDD</h3>
 
 <p>RDD，全称为Resilient Distributed Datasets（弹性分布式数据集）。简单接触了spark后，萌发了想要深入且透彻的了解RDD到底是什么。</p>
 
@@ -213,7 +213,7 @@ val rdd3 = sc.parallelize(List(1,2),(3,4),(3,6)))
 
 <p>上图说明了narrow和wide之间的区别。 narrow dependencies可以支持在同一个cluster node上以管道形式执行多条命令，而且它的失败恢复更有效，只需要重新计算丢失的parent partition即可；wide dependencies需要所有的父分区都是可用的，牵涉到RDD各级的多个Parent Partitions。</p>
 
-<h3 id="共享变量">共享变量</h3>
+<h3 id="共享变量:1676227db8a33b6ba8c0a321eafd5577">共享变量</h3>
 
 <p><r>broadcast</r>变量：只读的共享变量 每个节点上都有一个拷贝。</p>
 
@@ -229,7 +229,7 @@ sc.parallelize(1 to 1000000).foreach(x =&gt; accum+= 1)
 println(accum.name + &quot;:&quot; + accum.value)
 </code></pre>
 
-<h3 id="sparkcontext">SparkContext</h3>
+<h3 id="sparkcontext:1676227db8a33b6ba8c0a321eafd5577">SparkContext</h3>
 
 
       
@@ -238,10 +238,10 @@ println(accum.name + &quot;:&quot; + accum.value)
 
   <nav class="pagination-single">
     
-      <span class="previous">&larr; <a href="http://cherishzhang.github.io/about/" rel="prev">About Me</a></span>
+      <span class="previous">&larr; <a href="http://cheriszhang.github.io/about/" rel="prev">About Me</a></span>
     
     
-      <span class="next"><a href="http://cherishzhang.github.io/post/rec/recommender/" rel="next">[rec] 推荐系统总结</a> &rarr;</span>
+      <span class="next"><a href="http://cheriszhang.github.io/post/rec/recommender/" rel="next">[rec] 推荐系统总结</a> &rarr;</span>
     
   </nav>
   

@@ -14,7 +14,7 @@
   <meta name="viewport" content="width=device-width,user-scalable=no,maximum-scale=1,initial-scale=1">
 
   
-  <link rel="canonical" href="http://cherishzhang.github.io/post/rec/recommender/"/>
+  <link rel="canonical" href="http://cheriszhang.github.io/post/rec/recommender/"/>
 
   
   <link rel="stylesheet" href="/css/sanitize.css">
@@ -24,8 +24,8 @@
   <link rel="stylesheet" href="/css/custom.css">
 
   
-  <link href="http://cherishzhang.github.io/index.xml" rel="alternate" type="application/rss+xml" title="Learn and record" />
-  <link href="http://cherishzhang.github.io/index.xml" rel="feed" type="application/rss+xml" title="Learn and record" />
+  <link href="http://cheriszhang.github.io/index.xml" rel="alternate" type="application/rss+xml" title="Learn and record" />
+  <link href="http://cheriszhang.github.io/index.xml" rel="feed" type="application/rss+xml" title="Learn and record" />
 
   
   
@@ -51,7 +51,7 @@
   <header role="banner">
     <div class="row gutters">
       <div id="site-title" class="col span_6">
-        <h1><a href="http://cherishzhang.github.io/">Learn and record</a></h1>
+        <h1><a href="http://cheriszhang.github.io/">Learn and record</a></h1>
         
       </div>
       
@@ -59,7 +59,7 @@
       
       <div id="social" class="col span_4">
         <ul>
-          <li><a href="http://cherishzhang.github.io/about" target="_blank">About me</a></li>
+          <li><a href="http://cheriszhang.github.io/about" target="_blank">About me</a></li>
           <li><a href="https://github.com/Cherishzhang" target="_blank">GitHub</a></li>
           <li><a href="mailto:cherishzhang920508@gmail.com" target="_blank">Email</a></li>
         </ul>
@@ -89,7 +89,7 @@
 
 <p>推荐系统的核心问题是<strong><r>如何评估一个用户(user)对一个物品(item)的评分(喜欢程度)</r></strong>。</p>
 
-<h2 id="场景和指标">场景和指标</h2>
+<h2 id="场景和指标:0ddb80b7e0dcbf864c099ae18a623ad9">场景和指标</h2>
 
 <p>推荐系统主要用来解决信息过量负载(<r>information overload</r>)的问题，可以应用<strong><r>多种场景</r></strong>中。如:</p>
 
@@ -180,7 +180,7 @@
 <li><p>算法迭代</p></li>
 </ul>
 
-<h2 id="非个性化-推荐-热度排行-popularity"><strong>非个性化</strong>推荐：热度排行(Popularity)</h2>
+<h2 id="非个性化-推荐-热度排行-popularity:0ddb80b7e0dcbf864c099ae18a623ad9"><strong>非个性化</strong>推荐：热度排行(Popularity)</h2>
 
 <p>排行榜算法<r>主要分为</r>：</p>
 
@@ -188,7 +188,7 @@
 
 <p>这个方法容易实现，可以解决<r>新用户的冷启动</r>问题。但无法对用户做出个性化推荐。通常情况下，可以先对新用户做热度排行推荐，然后根据用户的互动历史，做个性化推荐。</p>
 
-<h2 id="协同过滤-collaborative-filtering"><strong>协同过滤</strong>(Collaborative Filtering)</h2>
+<h2 id="协同过滤-collaborative-filtering:0ddb80b7e0dcbf864c099ae18a623ad9"><strong>协同过滤</strong>(Collaborative Filtering)</h2>
 
 <p>它的来源很简单，即朋友之间会互相推荐自己喜爱的产品。基本组成元素有：<r>评分矩阵</r>和<r>相似度度量</r>。</p>
 
@@ -201,7 +201,7 @@
 </ul>
 
 <blockquote>
-<h4 id="user-based">User-based</h4>
+<h4 id="user-based:0ddb80b7e0dcbf864c099ae18a623ad9">User-based</h4>
 
 <blockquote>
 <p>计算目标用户的(前k个)相似用户(相似度度量：Pearson,Jaccard,cosine)</p>
@@ -213,7 +213,7 @@
 <p>将剩余物品按照预测评分排序，返回top-N物品</p>
 </blockquote>
 
-<h4 id="item-based">Item-based</h4>
+<h4 id="item-based:0ddb80b7e0dcbf864c099ae18a623ad9">Item-based</h4>
 
 <blockquote>
 <p>计算item之间的两两相似性</p>
@@ -235,7 +235,7 @@ item-based: <r>准确性</r>好，便于离线计算；但推荐缺乏多样性�
 <p>优点：模型通用性好，实现简单。</br>
 缺点：<r>冷启动</r>问题，<r>数据稀疏性</r>；假定“过去的行为决定现在”，没有考虑<r>具体情景</r>的差异；<r>热门倾向性</r>(Popularity Bias)，很难推荐出小众偏好。</p>
 
-<h4 id="关联规则">关联规则</h4>
+<h4 id="关联规则:0ddb80b7e0dcbf864c099ae18a623ad9">关联规则</h4>
 
 <p>基于物品之间的<r>共现性</r>挖掘频繁项，应用场景为：买了又买，看了又看。主要有A-priori和FP-growth两种算法。</p>
 
@@ -249,7 +249,7 @@ item-based: <r>准确性</r>好，便于离线计算；但推荐缺乏多样性�
 
 <p><em>ps: 辛普森悖论，两组数据分别讨论时满足某种性质，一旦合并考虑，却可能导致相反的结论。<r>主要原因</r>是数据的不同分组之间基数差异很大（通常一个组相对于其他组来说数量占绝对优势）。一个<r>结论</r>：分析数据时合理地将数据分组很重要。</em></p>
 
-<h4 id="聚类-clustering">聚类(Clustering)</h4>
+<h4 id="聚类-clustering:0ddb80b7e0dcbf864c099ae18a623ad9">聚类(Clustering)</h4>
 
 <p>可以对用户按爱好分群，商品按相似度聚类。常用的算法有：</p>
 
@@ -261,25 +261,25 @@ item-based: <r>准确性</r>好，便于离线计算；但推荐缺乏多样性�
 
 <p>聚类可以一定程度上解决<strong>数据稀疏性问题</strong>，但精准度往往不如协同过滤好。</p>
 
-<h4 id="分类-回归">分类/回归</h4>
+<h4 id="分类-回归:0ddb80b7e0dcbf864c099ae18a623ad9">分类/回归</h4>
 
 <p>它的基本思想是把<r>评分预测</r>看作一个多分类(回归)问题。常用的分类器有LR,Navie Bayes，把item的特征向量作为模型的输入。</p>
 
 <p>比较通用，可以和其他方法组合，提高预测的准确性；需要大量训练数据，防止过拟合现象。</p>
 
-<h4 id="svd">SVD</h4>
+<h4 id="svd:0ddb80b7e0dcbf864c099ae18a623ad9">SVD</h4>
 
 <p>它的原理是将(用户,物品)的评分矩阵R，分解成三个矩阵U,S,V。SVD本身要求矩阵必须是稠密矩阵，而评分矩阵非常稀疏；此外，SVD的计算复杂度很高。</p>
 
 <p>于是，就出现了关于SVD的一系列变形，如FunkSVD,BiasSVD,SVD++。具体可参见开源算法包<r>svdfeture</r>。</p>
 
-<h4 id="item的向量化">Item的向量化</h4>
+<h4 id="item的向量化:0ddb80b7e0dcbf864c099ae18a623ad9">Item的向量化</h4>
 
 <p>向量化的目的是将Item进行知识、概念层次上的表达。常用方法有pLSA,LDA,<a href="http://cherishzhang.github.io/post/word2vec/">Word2Vec</a>。</p>
 
 <p>向量化时大多基于行为数据，<r>行为少的item向量化效果不好</r>。</p>
 
-<h4 id="玻尔兹曼机">玻尔兹曼机</h4>
+<h4 id="玻尔兹曼机:0ddb80b7e0dcbf864c099ae18a623ad9">玻尔兹曼机</h4>
 
 <p>Boltzmann机：两层神经网络(无输出层)；对称、全连接；每个神经元有0/1(激活/未激活)两种状态，某个时刻的状态是随机的，由一定概率确定。</p>
 
@@ -287,13 +287,13 @@ item-based: <r>准确性</r>好，便于离线计算；但推荐缺乏多样性�
 
 <p>如何对(user,item)进行建模？一个用户一个RBM，共享隐层，权重W和偏置b。</p>
 
-<h4 id="图模型">图模型</h4>
+<h4 id="图模型:0ddb80b7e0dcbf864c099ae18a623ad9">图模型</h4>
 
 <p>多用于社交网络中人与人的关系挖掘。方法有SimRank,SimRank++,Markov模型。</p>
 
 <p>借助图的结构的传导性，可以发现协同过滤发现不了的弱相似性，给推荐带来一定的惊喜性。但该模型仍面临数据稀疏性和冷启动问题。</p>
 
-<h2 id="基于-内容-content-based">基于<strong>内容</strong>(Content-based)</h2>
+<h2 id="基于-内容-content-based:0ddb80b7e0dcbf864c099ae18a623ad9">基于<strong>内容</strong>(Content-based)</h2>
 
 <p>内容包括：<r>文本描述</r>（通常用NLP技术挖掘关键词）、<r>Item属性</r>(如电影的主题，职位的行业)、<r>Item特征</r>(如语音信号表示、图像向量表示)</p>
 
@@ -345,7 +345,7 @@ item-based: <r>准确性</r>好，便于离线计算；但推荐缺乏多样性�
 </tbody>
 </table>
 
-<h2 id="混合-方法-hybrid-approaches"><strong>混合</strong>方法(Hybrid Approaches)</h2>
+<h2 id="混合-方法-hybrid-approaches:0ddb80b7e0dcbf864c099ae18a623ad9"><strong>混合</strong>方法(Hybrid Approaches)</h2>
 
 <p>通常比单个算法好，需要在不同算法之间、理论效果和实际可行性之间权衡。</p>
 
@@ -390,27 +390,27 @@ item-based: <r>准确性</r>好，便于离线计算；但推荐缺乏多样性�
 </tbody>
 </table>
 
-<h2 id="一些新进展">一些新进展</h2>
+<h2 id="一些新进展:0ddb80b7e0dcbf864c099ae18a623ad9">一些新进展</h2>
 
-<h3 id="learning-to-rank">Learning to rank</h3>
+<h3 id="learning-to-rank:0ddb80b7e0dcbf864c099ae18a623ad9">Learning to rank</h3>
 
 <p>将排序看做一个ML问题，评价准则为NDCG(normalized discounted cumulative gain)或MRR(mean reciprocal rank)。算法分为三类：Pointwise, Pairwise, Listwise。</p>
 
-<h3 id="页面整体优化-page-optimization">页面整体优化(Page Optimization)</h3>
+<h3 id="页面整体优化-page-optimization:0ddb80b7e0dcbf864c099ae18a623ad9">页面整体优化(Page Optimization)</h3>
 
 <p>关于用户注意力建模的一篇文章Modeling User Attention and Interaction on the Web。</p>
 
-<h3 id="情景推荐-context-aware">情景推荐(Context-aware)</h3>
+<h3 id="情景推荐-context-aware:0ddb80b7e0dcbf864c099ae18a623ad9">情景推荐(Context-aware)</h3>
 
 <p>针对不同推荐场景，情景也有所不同。看电影，是周末还是工作日？订餐，餐厅距离？网购，用户心情？母婴：孩子年龄？</p>
 
 <p>算法主要有<r>张量分解(Tensor Factorization)</r>，<r>分解机(Factorization Machine)</r>。其中后者的效果更好。</p>
 
-<h3 id="深度学习">深度学习</h3>
+<h3 id="深度学习:0ddb80b7e0dcbf864c099ae18a623ad9">深度学习</h3>
 
 <p>主要用到的有卷积神经网络(CNN)和循环神经网络(RNN)。</p>
 
-<h2 id="参考链接">参考链接</h2>
+<h2 id="参考链接:0ddb80b7e0dcbf864c099ae18a623ad9">参考链接</h2>
 
 <p><a href="http://mp.weixin.qq.com/s?__biz=MzIzOTU0NTQ0MA==&amp;mid=2247483811&amp;idx=1&amp;sn=fc3ee4ddfc4a8d6014a4cd90cdb5983c">常用推荐算法</a></p>
 
@@ -423,10 +423,10 @@ item-based: <r>准确性</r>好，便于离线计算；但推荐缺乏多样性�
 
   <nav class="pagination-single">
     
-      <span class="previous">&larr; <a href="http://cherishzhang.github.io/post/spark/sparkRDD/" rel="prev">Spark之RDD</a></span>
+      <span class="previous">&larr; <a href="http://cheriszhang.github.io/post/spark/sparkRDD/" rel="prev">Spark之RDD</a></span>
     
     
-      <span class="next"><a href="http://cherishzhang.github.io/post/interviews/list/" rel="next">笔试/面试总结</a> &rarr;</span>
+      <span class="next"><a href="http://cheriszhang.github.io/post/interviews/list/" rel="next">笔试/面试总结</a> &rarr;</span>
     
   </nav>
   

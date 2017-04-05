@@ -2,21 +2,22 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Gradient on Learn and record</title>
-    <link>http://cherishzhang.github.io/tags/gradient/index.xml</link>
+    <link>http://cheriszhang.github.io/tags/gradient/</link>
     <description>Recent content in Gradient on Learn and record</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <atom:link href="http://cherishzhang.github.io/tags/gradient/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 20 May 2016 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://cheriszhang.github.io/tags/gradient/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
       <title>[ml] Boosting</title>
-      <link>http://cherishzhang.github.io/post/ml/boosting/</link>
+      <link>http://cheriszhang.github.io/post/ml/boosting/</link>
       <pubDate>Fri, 20 May 2016 00:00:00 +0000</pubDate>
       
-      <guid>http://cherishzhang.github.io/post/ml/boosting/</guid>
+      <guid>http://cheriszhang.github.io/post/ml/boosting/</guid>
       <description>
 
-&lt;h2 id=&#34;intro&#34;&gt;Intro&lt;/h2&gt;
+&lt;h2 id=&#34;intro:d21755d9d058d9a9b44db3100ac0dea8&#34;&gt;Intro&lt;/h2&gt;
 
 &lt;p&gt;&lt;a href=&#34;https://en.wikipedia.org/wiki/Gradient_boosting&#34;&gt;Boosting&lt;/a&gt; can be interpreted as &lt;strong&gt;an optimization algorithm&lt;/strong&gt; on a suitable cost function. The algorithms that optimize a cost &lt;strong&gt;function over function&lt;/strong&gt; space by &lt;r&gt;iteratively&lt;/r&gt; choosing a function(week hypothesis) that points in the &lt;strong&gt;negative gradient direction&lt;/strong&gt;.&lt;/p&gt;
 
@@ -24,7 +25,7 @@
 
 &lt;p&gt;围绕提升方法，有&lt;strong&gt;&lt;r&gt;两个问题&lt;/r&gt;&lt;/strong&gt;需要考虑：1.每一轮如何改变训练数据的概率或权值分布；2.如何将弱分类器组合成一个强分类器。&lt;/p&gt;
 
-&lt;h2 id=&#34;adaboost-adaptive-boosting&#34;&gt;AdaBoost(Adaptive Boosting)&lt;/h2&gt;
+&lt;h2 id=&#34;adaboost-adaptive-boosting:d21755d9d058d9a9b44db3100ac0dea8&#34;&gt;AdaBoost(Adaptive Boosting)&lt;/h2&gt;
 
 &lt;p&gt;AdaBoost提高那些被前几轮弱分类器线性组成的分类器&lt;r&gt;错误分类&lt;/r&gt;的样本权值，在下一轮的弱分类器中更加关注没有得到正确分类的数据；采用&lt;r&gt;加权多数表决&lt;/r&gt;的方法，误差率小的弱分类器权值大，误差率大的弱
 分类器权值小。&lt;/p&gt;
@@ -59,7 +60,7 @@ $$G(x) = sign(f(x))$$&lt;/p&gt;&lt;/li&gt;
 
 &lt;p&gt;AdaBoost的一个解释是，模型为&lt;strong&gt;加法模型，损失函数为指数函数，学习算法为前向分步算法的二分类学习方法&lt;/strong&gt;。前向分步算法(forward stagewise algorithm)求解优化问题的思路是：从前向后，每一步只学习一个基函数及其系数，逐步逼近优化目标函数式，就可以简化优化的复杂度。&lt;/p&gt;
 
-&lt;h2 id=&#34;boosting-tree-提升树&#34;&gt;Boosting Tree(提升树)&lt;/h2&gt;
+&lt;h2 id=&#34;boosting-tree-提升树:d21755d9d058d9a9b44db3100ac0dea8&#34;&gt;Boosting Tree(提升树)&lt;/h2&gt;
 
 &lt;p&gt;采用&lt;strong&gt;加法模型(基函数的线性组合)与前向分步算法，以决策树为基函数的提升方法&lt;/strong&gt;称为提升树，分类问题采用二叉分类树，回归问题采用二叉回归树。&lt;/p&gt;
 
@@ -86,7 +87,7 @@ $$f_{M(x)} = \sum_{m=1}^M T(x; \Theta_m)$$
 &lt;li&gt;得到最终提升树：\(f_M(x)=\sum_{m=1}^M T(x;\Theta_m)\)&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;h2 id=&#34;gradient-boosting-梯度提升&#34;&gt;Gradient Boosting(梯度提升)&lt;/h2&gt;
+&lt;h2 id=&#34;gradient-boosting-梯度提升:d21755d9d058d9a9b44db3100ac0dea8&#34;&gt;Gradient Boosting(梯度提升)&lt;/h2&gt;
 
 &lt;p&gt;前向分布算法针对特殊的损失函数(平方和指数)，对于一般的损失函数，Freidman提出了梯度提升算法。它利用最速下降法的近似方法，其&lt;r&gt;&lt;strong&gt;关键&lt;/strong&gt;&lt;/r&gt;是利用损失函数的负梯度在当前模型的值最为回归问题提升树算法中的残差的近似值，拟合一个回归树。&lt;/p&gt;
 

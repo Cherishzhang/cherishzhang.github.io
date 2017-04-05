@@ -2,25 +2,26 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Atoi on Learn and record</title>
-    <link>http://cherishzhang.github.io/tags/atoi/index.xml</link>
+    <link>http://cheriszhang.github.io/tags/atoi/</link>
     <description>Recent content in Atoi on Learn and record</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <atom:link href="http://cherishzhang.github.io/tags/atoi/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 01 Dec 2016 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://cheriszhang.github.io/tags/atoi/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
       <title>[c&#43;&#43;] atoi函数</title>
-      <link>http://cherishzhang.github.io/post/cplus/atoi/</link>
+      <link>http://cheriszhang.github.io/post/cplus/atoi/</link>
       <pubDate>Thu, 01 Dec 2016 00:00:00 +0000</pubDate>
       
-      <guid>http://cherishzhang.github.io/post/cplus/atoi/</guid>
+      <guid>http://cheriszhang.github.io/post/cplus/atoi/</guid>
       <description>
 
-&lt;h2 id=&#34;intro&#34;&gt;Intro&lt;/h2&gt;
+&lt;h2 id=&#34;intro:3bc06ac4f925047d156733e1af084b5a&#34;&gt;Intro&lt;/h2&gt;
 
 &lt;p&gt;这是遇到过的一道面试题，在很多工程代码中也经常用到。该函数主要实现将字符串转化成整数。&lt;/p&gt;
 
-&lt;h2 id=&#34;code&#34;&gt;Code&lt;/h2&gt;
+&lt;h2 id=&#34;code:3bc06ac4f925047d156733e1af084b5a&#34;&gt;Code&lt;/h2&gt;
 
 &lt;p&gt;一种最简单的方法，遍历字符串，然后依次解析每个字符。&lt;/p&gt;
 

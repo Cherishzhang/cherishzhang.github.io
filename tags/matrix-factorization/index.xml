@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Matrix Factorization on Learn and record</title>
+    <link>http://cherishzhang.github.io/tags/matrix-factorization/</link>
+    <description>Recent content in Matrix Factorization on Learn and record</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sat, 18 Mar 2017 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://cherishzhang.github.io/tags/matrix-factorization/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>[ml] pmf-概率矩阵分解</title>
+      <link>http://cherishzhang.github.io/post/ml/pmf/</link>
+      <pubDate>Sat, 18 Mar 2017 00:00:00 +0000</pubDate>
+      
+      <guid>http://cherishzhang.github.io/post/ml/pmf/</guid>
+      <description>&lt;p&gt;读论文前，一直有个问题，pmf和mf的区别是什么？&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

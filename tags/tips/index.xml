@@ -2,27 +2,28 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Tips on Learn and record</title>
-    <link>http://cherishzhang.github.io/tags/tips/index.xml</link>
+    <link>http://cheriszhang.github.io/tags/tips/</link>
     <description>Recent content in Tips on Learn and record</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <atom:link href="http://cherishzhang.github.io/tags/tips/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 17 Dec 2016 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://cheriszhang.github.io/tags/tips/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
       <title>[tips]日常总结1</title>
-      <link>http://cherishzhang.github.io/post/daily_tips_1/</link>
+      <link>http://cheriszhang.github.io/post/daily_tips_1/</link>
       <pubDate>Sat, 17 Dec 2016 00:00:00 +0000</pubDate>
       
-      <guid>http://cherishzhang.github.io/post/daily_tips_1/</guid>
+      <guid>http://cheriszhang.github.io/post/daily_tips_1/</guid>
       <description>
 
-&lt;h2 id=&#34;intro&#34;&gt;Intro&lt;/h2&gt;
+&lt;h2 id=&#34;intro:48b8812e0e384a98adb6eae935b10abd&#34;&gt;Intro&lt;/h2&gt;
 
 &lt;p&gt;下面笔者会记录一下日常中学习到的小知识点，以备查看。当一些知识储备充足，会系统地再做整理。&lt;/p&gt;
 
-&lt;h2 id=&#34;12-17&#34;&gt;12-17&lt;/h2&gt;
+&lt;h2 id=&#34;12-17:48b8812e0e384a98adb6eae935b10abd&#34;&gt;12-17&lt;/h2&gt;
 
-&lt;h4 id=&#34;1-merge-join-concat-in-pandas-http-pandas-pydata-org-pandas-docs-stable-merging-html&#34;&gt;1. &lt;a href=&#34;http://pandas.pydata.org/pandas-docs/stable/merging.html&#34;&gt;merge,join,concat in pandas&lt;/a&gt;&lt;/h4&gt;
+&lt;h4 id=&#34;1-merge-join-concat-in-pandas-http-pandas-pydata-org-pandas-docs-stable-merging-html:48b8812e0e384a98adb6eae935b10abd&#34;&gt;1. &lt;a href=&#34;http://pandas.pydata.org/pandas-docs/stable/merging.html&#34;&gt;merge,join,concat in pandas&lt;/a&gt;&lt;/h4&gt;
 
 &lt;p&gt;之前接触过pandas，用的比较多的是merge，对于join的用法一直比较模糊。&lt;/p&gt;
 
@@ -66,9 +67,9 @@ keys=None, levels=None, names=None, verify_integrity=False,copy=True)
 &lt;li&gt;axis=1情况下与merge相同。&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;h2 id=&#34;12-18&#34;&gt;12-18&lt;/h2&gt;
+&lt;h2 id=&#34;12-18:48b8812e0e384a98adb6eae935b10abd&#34;&gt;12-18&lt;/h2&gt;
 
-&lt;h4 id=&#34;1-malloc-realloc-calloc&#34;&gt;1. malloc, realloc, calloc&lt;/h4&gt;
+&lt;h4 id=&#34;1-malloc-realloc-calloc:48b8812e0e384a98adb6eae935b10abd&#34;&gt;1. malloc, realloc, calloc&lt;/h4&gt;
 
 &lt;p&gt;在stdlib.h函数库中，它们的返回值是请求系统分配的地址，如果失败返回NULL。函数原型如下：&lt;/p&gt;
 
@@ -90,9 +91,9 @@ void* realloc(void* ptr, unsigned newsize);
 &lt;li&gt;realloc可以对给定指针所指的空间进行扩大或者缩小，但原有内容保持不变。&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;h2 id=&#34;12-25&#34;&gt;12-25&lt;/h2&gt;
+&lt;h2 id=&#34;12-25:48b8812e0e384a98adb6eae935b10abd&#34;&gt;12-25&lt;/h2&gt;
 
-&lt;h4 id=&#34;1-histogram&#34;&gt;1. histogram&lt;/h4&gt;
+&lt;h4 id=&#34;1-histogram:48b8812e0e384a98adb6eae935b10abd&#34;&gt;1. histogram&lt;/h4&gt;
 
 &lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;##Compute the histogram of a set of data
 numpy.histogram(a, bins=10, range=None, normed=False, weights=None, density=None)

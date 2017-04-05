@@ -2,25 +2,26 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Stacking on Learn and record</title>
-    <link>http://cherishzhang.github.io/tags/stacking/index.xml</link>
+    <link>http://cheriszhang.github.io/tags/stacking/</link>
     <description>Recent content in Stacking on Learn and record</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <atom:link href="http://cherishzhang.github.io/tags/stacking/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 24 Feb 2017 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://cheriszhang.github.io/tags/stacking/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
       <title>[ml] Stacking</title>
-      <link>http://cherishzhang.github.io/post/ml/stacking/</link>
+      <link>http://cheriszhang.github.io/post/ml/stacking/</link>
       <pubDate>Fri, 24 Feb 2017 00:00:00 +0000</pubDate>
       
-      <guid>http://cherishzhang.github.io/post/ml/stacking/</guid>
+      <guid>http://cheriszhang.github.io/post/ml/stacking/</guid>
       <description>
 
-&lt;h2 id=&#34;intro&#34;&gt;Intro&lt;/h2&gt;
+&lt;h2 id=&#34;intro:5d2f1f98b2cffb7fb28a28b223ce8215&#34;&gt;Intro&lt;/h2&gt;
 
 &lt;p&gt;机器学习比赛中常常会用到的一个技巧：stacking，它通过组合不同的预测模型来提高最终结果的准确率。下面内容主要是阅读&lt;a href=&#34;https://burakhimmetoglu.com/2016/12/01/stacking-models-for-improved-predictions/&#34;&gt;文章&lt;/a&gt;后，总结学习到的一些东西。&lt;/p&gt;
 
-&lt;h2 id=&#34;example&#34;&gt;Example&lt;/h2&gt;
+&lt;h2 id=&#34;example:5d2f1f98b2cffb7fb28a28b223ce8215&#34;&gt;Example&lt;/h2&gt;
 
 &lt;p&gt;以kaggle上&lt;a href=&#34;https://www.kaggle.com/c/house-prices-advanced-regression-techniques&#34;&gt;房屋价格预测&lt;/a&gt;为例，该挑战给出了有关房屋的多维特征，目标是通过构建模型，预测房屋的价格。stacking的可行做法如下：&lt;/p&gt;
 
@@ -32,7 +33,7 @@
 &lt;p&gt;level 2: 每个模型产生了一个9 folds大小的预测结果，将它们当成训练的feature，训练一个线性模型，并在最后一份数据上面做验证。&lt;/p&gt;
 &lt;/blockquote&gt;
 
-&lt;h2 id=&#34;some-points&#34;&gt;Some points&lt;/h2&gt;
+&lt;h2 id=&#34;some-points:5d2f1f98b2cffb7fb28a28b223ce8215&#34;&gt;Some points&lt;/h2&gt;
 
 &lt;ul&gt;
 &lt;li&gt;&lt;strong&gt;out-of-example&lt;/strong&gt;&lt;/li&gt;
@@ -61,7 +62,7 @@
 
 &lt;p&gt;一旦确定stacking可以提高预测结果的精度，将整个流程再次运行一次。此时不再保留第 N folds作为holdout data。用N-1 folds训练模型，得到剩余1折的预测结果。集齐训练集的全部预测结果，作为level 2的输入，训练模型，输出最终测试集的结果。&lt;/p&gt;
 
-&lt;h2 id=&#34;ref&#34;&gt;Ref&lt;/h2&gt;
+&lt;h2 id=&#34;ref:5d2f1f98b2cffb7fb28a28b223ce8215&#34;&gt;Ref&lt;/h2&gt;
 
 &lt;p&gt;1.&lt;a href=&#34;https://burakhimmetoglu.com/2016/12/01/stacking-models-for-improved-predictions/&#34;&gt;Stacking models for improved predictions&lt;/a&gt;&lt;/p&gt;
 

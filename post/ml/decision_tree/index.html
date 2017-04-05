@@ -14,7 +14,7 @@
   <meta name="viewport" content="width=device-width,user-scalable=no,maximum-scale=1,initial-scale=1">
 
   
-  <link rel="canonical" href="http://cherishzhang.github.io/post/ml/decision_tree/"/>
+  <link rel="canonical" href="http://cheriszhang.github.io/post/ml/decision_tree/"/>
 
   
   <link rel="stylesheet" href="/css/sanitize.css">
@@ -24,8 +24,8 @@
   <link rel="stylesheet" href="/css/custom.css">
 
   
-  <link href="http://cherishzhang.github.io/index.xml" rel="alternate" type="application/rss+xml" title="Learn and record" />
-  <link href="http://cherishzhang.github.io/index.xml" rel="feed" type="application/rss+xml" title="Learn and record" />
+  <link href="http://cheriszhang.github.io/index.xml" rel="alternate" type="application/rss+xml" title="Learn and record" />
+  <link href="http://cheriszhang.github.io/index.xml" rel="feed" type="application/rss+xml" title="Learn and record" />
 
   
   
@@ -51,7 +51,7 @@
   <header role="banner">
     <div class="row gutters">
       <div id="site-title" class="col span_6">
-        <h1><a href="http://cherishzhang.github.io/">Learn and record</a></h1>
+        <h1><a href="http://cheriszhang.github.io/">Learn and record</a></h1>
         
       </div>
       
@@ -59,7 +59,7 @@
       
       <div id="social" class="col span_4">
         <ul>
-          <li><a href="http://cherishzhang.github.io/about" target="_blank">About me</a></li>
+          <li><a href="http://cheriszhang.github.io/about" target="_blank">About me</a></li>
           <li><a href="https://github.com/Cherishzhang" target="_blank">GitHub</a></li>
           <li><a href="mailto:cherishzhang920508@gmail.com" target="_blank">Email</a></li>
         </ul>
@@ -85,7 +85,7 @@
     <article style="padding:30px; border: 2px solid;border-radius: 4px; border-color: #ddd;">
       
 
-<h2 id="1-intro">1.Intro</h2>
+<h2 id="1-intro:998e3d52f8819c2e5f687d19cc26909b">1.Intro</h2>
 
 <p>决策树常用的算法有<r>ID3</r>,<r>C4.5</r>和<r>CART</r>，学习过程分为三部分：<r>特征选择</r>，<r>决策树生成</r>和<r>决策树剪枝</r>。</p>
 
@@ -93,7 +93,7 @@
 
 <p>They are easy to <r>interpret</r>, <r>handle categorical features</r>, extend to the <r>multiclass classification setting</r>, do not require <r>feature scaling</r>, and are able to <r>capture non-linearities and feature interactions</r>.</p>
 
-<h2 id="2-准则函数">2.准则函数</h2>
+<h2 id="2-准则函数:998e3d52f8819c2e5f687d19cc26909b">2.准则函数</h2>
 
 <p>主要用来衡量节点数据集合的有序性，有<r>熵(Entropy)</r>，<r>基尼指数(Gini)</r>，<r>方差(Variance)</r>，其中前两种针对分类问题，而方差针对回归问题。寻找最好的分割点是通过量化<strong>分割后</strong>类的纯度来确定的，计算方式总结如下表：</p>
 
@@ -137,11 +137,11 @@
 
 <p>ID3s算法选择信息增益作分类，为了校正信息增益存在“偏向选择取值较多的特征”的缺点，C4.5采用<r>信息增益比</r>\(IG_R(D,s) = \frac{IG(D,s)}{E_s(D)}\), \(E_s(D)= \sum_{i=1}^K -\frac{|D_i|}{|D|}*log_2(\frac{|D_i|}{|D|})\), 其中K是特征s的取值个数。</p>
 
-<h2 id="3-生成算法">3 生成算法</h2>
+<h2 id="3-生成算法:998e3d52f8819c2e5f687d19cc26909b">3 生成算法</h2>
 
 <p><strong>具体方法</strong>：从根节点开始，计算所有可能的特征的准则值(应用准则函数)，选择最优的特征作为节点的特征，由该特征的不同取值建立子节点；再对子节点递归调用以上方法，构建决策树。</p>
 
-<h4 id="cart">CART</h4>
+<h4 id="cart:998e3d52f8819c2e5f687d19cc26909b">CART</h4>
 
 <p>CART(classification and regression tree)，又称分类与回归树。</p>
 
@@ -160,13 +160,13 @@
 
 <p>算法的<r>停止条件</r>是节点中的样本个数小于预定阈值，或样本集的基尼指数小于预订阈值（样本基本属于同一类），或没有更多特征。</p>
 
-<h2 id="4-剪枝过程-pruning">4 剪枝过程(pruning)</h2>
+<h2 id="4-剪枝过程-pruning:998e3d52f8819c2e5f687d19cc26909b">4 剪枝过程(pruning)</h2>
 
 <p>将已生成的树进行简化的过程，通过极小化决策树整体的损失函数（loss function）来实现。 分为前向剪枝和后向剪枝。前向剪枝是在构造决策树的同时对树进行剪枝；后向剪枝是在决策树构建完成后，对树从根节点向上递归剪枝。</p>
 
-<h2 id="5-mllib实现">5.MLlib实现</h2>
+<h2 id="5-mllib实现:998e3d52f8819c2e5f687d19cc26909b">5.MLlib实现</h2>
 
-<h4 id="连续值特征">连续值特征</h4>
+<h4 id="连续值特征:998e3d52f8819c2e5f687d19cc26909b">连续值特征</h4>
 
 <p>对于连续值类型的特征，单台机器上的做法是选取所有出现过的值作为切分点候选集。加速计算的方法是对该集合按值大小排序，用排序好的数组做候选集。</p>
 
@@ -174,7 +174,7 @@
 
 <p><r>采样策略</r>为选取样本集中的<strong><r>max</r>(maxBins*maxBins, 10000)</strong>条记录。<r>等频分箱策略</r>有三种(<strong>Sort</strong>,MinMax,ApproxHist)，目前只支持第一种。规定分箱总数不能超过训练样本的实例数(maxBins的默认值为32)。</p>
 
-<h4 id="类别值特征">类别值特征</h4>
+<h4 id="类别值特征:998e3d52f8819c2e5f687d19cc26909b">类别值特征</h4>
 
 <p>对于离散值类型的特征，有m个值，那么最多产生\(2^{m-1}-1\)种划分可能，\(2*(2^{m-1}-1)\)个分箱。对于二分类或回归问题，可以将划分候选缩减到m-1种可能。</p>
 
@@ -182,7 +182,7 @@
 
 <p>多分类问题中，离散特征会产生\(2^{m-1}-1\)种划分可能，当划分数大于maxBins，将m个类别值根据impurity排序，产生共m-1种划分可能。</p>
 
-<h4 id="bin和split">bin和split</h4>
+<h4 id="bin和split:998e3d52f8819c2e5f687d19cc26909b">bin和split</h4>
 
 <p>split是划分点，bin是划分区间。每个特征都分别有一组bin和split。</p>
 
@@ -190,14 +190,14 @@
 
 <p>特征选择时，对于某个特征，计算不同切分变量下信息增益的大小，确定出该特征下的最佳切分点。选择全部候选特征集中最优的切分点作为当前决策。特征选择是树的level级别的并行，对于同一层次的节点，查找可以并行，查找操作的时间复杂度为O(L),L为树的层数(<gr><strong>优化点</strong></gr>)。</p>
 
-<h4 id="终止条件">终止条件</h4>
+<h4 id="终止条件:998e3d52f8819c2e5f687d19cc26909b">终止条件</h4>
 
 <p>为了防止过拟合，采用前向剪枝。当任一以下情况发生，节点就终止划分，形成叶子节点：
 (1)树高度达到maxDepth <br/>
 (2)minInfoGain，当前节点的所有属性分割带来的信息增益都比这个值要小 <br/>
 (3)minInstancesPerNode，需要保证节点分割出的左右子节点的最少的样本数量达到这个值 <br/></p>
 
-<h4 id="源码分析">源码分析</h4>
+<h4 id="源码分析:998e3d52f8819c2e5f687d19cc26909b">源码分析</h4>
 
 <p>下面就一起揭开decision tree的真正面纱吧！</p>
 
@@ -291,7 +291,7 @@ metadata:DecisionTreeMetadata): (Array[Array[Split]], Array[Array[Bin]]) =
 
 <p>Loss与Impurity情况类似，它是损失函数的抽象类，其三个子类分别是AbsoluteError,SquaredError,LogLoss。Losses是Loss的工厂类，负责判断损失的所属类别。</p>
 
-<h2 id="参考链接">参考链接</h2>
+<h2 id="参考链接:998e3d52f8819c2e5f687d19cc26909b">参考链接</h2>
 
 <p><a href="http://spark.apache.org/docs/latest/mllib-decision-tree.html">spark mllib - decision tree</a></p>
 
@@ -304,10 +304,10 @@ metadata:DecisionTreeMetadata): (Array[Array[Split]], Array[Array[Bin]]) =
 
   <nav class="pagination-single">
     
-      <span class="previous">&larr; <a href="http://cherishzhang.github.io/post/ml/boosting/" rel="prev">[ml] Boosting</a></span>
+      <span class="previous">&larr; <a href="http://cheriszhang.github.io/post/ml/boosting/" rel="prev">[ml] Boosting</a></span>
     
     
-      <span class="next"><a href="http://cherishzhang.github.io/post/ml/word2vec/" rel="next">[ml] word2vec模型和源码解析</a> &rarr;</span>
+      <span class="next"><a href="http://cheriszhang.github.io/post/ml/word2vec/" rel="next">[ml] word2vec模型和源码解析</a> &rarr;</span>
     
   </nav>
   

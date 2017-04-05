@@ -14,7 +14,7 @@
   <meta name="viewport" content="width=device-width,user-scalable=no,maximum-scale=1,initial-scale=1">
 
   
-  <link rel="canonical" href="http://cherishzhang.github.io/post/ml/stacking/"/>
+  <link rel="canonical" href="http://cheriszhang.github.io/post/ml/stacking/"/>
 
   
   <link rel="stylesheet" href="/css/sanitize.css">
@@ -24,8 +24,8 @@
   <link rel="stylesheet" href="/css/custom.css">
 
   
-  <link href="http://cherishzhang.github.io/index.xml" rel="alternate" type="application/rss+xml" title="Learn and record" />
-  <link href="http://cherishzhang.github.io/index.xml" rel="feed" type="application/rss+xml" title="Learn and record" />
+  <link href="http://cheriszhang.github.io/index.xml" rel="alternate" type="application/rss+xml" title="Learn and record" />
+  <link href="http://cheriszhang.github.io/index.xml" rel="feed" type="application/rss+xml" title="Learn and record" />
 
   
   
@@ -51,7 +51,7 @@
   <header role="banner">
     <div class="row gutters">
       <div id="site-title" class="col span_6">
-        <h1><a href="http://cherishzhang.github.io/">Learn and record</a></h1>
+        <h1><a href="http://cheriszhang.github.io/">Learn and record</a></h1>
         
       </div>
       
@@ -59,7 +59,7 @@
       
       <div id="social" class="col span_4">
         <ul>
-          <li><a href="http://cherishzhang.github.io/about" target="_blank">About me</a></li>
+          <li><a href="http://cheriszhang.github.io/about" target="_blank">About me</a></li>
           <li><a href="https://github.com/Cherishzhang" target="_blank">GitHub</a></li>
           <li><a href="mailto:cherishzhang920508@gmail.com" target="_blank">Email</a></li>
         </ul>
@@ -87,11 +87,11 @@
     <article style="padding:30px; border: 2px solid;border-radius: 4px; border-color: #ddd;">
       
 
-<h2 id="intro">Intro</h2>
+<h2 id="intro:5d2f1f98b2cffb7fb28a28b223ce8215">Intro</h2>
 
 <p>机器学习比赛中常常会用到的一个技巧：stacking，它通过组合不同的预测模型来提高最终结果的准确率。下面内容主要是阅读<a href="https://burakhimmetoglu.com/2016/12/01/stacking-models-for-improved-predictions/">文章</a>后，总结学习到的一些东西。</p>
 
-<h2 id="example">Example</h2>
+<h2 id="example:5d2f1f98b2cffb7fb28a28b223ce8215">Example</h2>
 
 <p>以kaggle上<a href="https://www.kaggle.com/c/house-prices-advanced-regression-techniques">房屋价格预测</a>为例，该挑战给出了有关房屋的多维特征，目标是通过构建模型，预测房屋的价格。stacking的可行做法如下：</p>
 
@@ -103,7 +103,7 @@
 <p>level 2: 每个模型产生了一个9 folds大小的预测结果，将它们当成训练的feature，训练一个线性模型，并在最后一份数据上面做验证。</p>
 </blockquote>
 
-<h2 id="some-points">Some points</h2>
+<h2 id="some-points:5d2f1f98b2cffb7fb28a28b223ce8215">Some points</h2>
 
 <ul>
 <li><strong>out-of-example</strong></li>
@@ -132,7 +132,7 @@
 
 <p>一旦确定stacking可以提高预测结果的精度，将整个流程再次运行一次。此时不再保留第 N folds作为holdout data。用N-1 folds训练模型，得到剩余1折的预测结果。集齐训练集的全部预测结果，作为level 2的输入，训练模型，输出最终测试集的结果。</p>
 
-<h2 id="ref">Ref</h2>
+<h2 id="ref:5d2f1f98b2cffb7fb28a28b223ce8215">Ref</h2>
 
 <p>1.<a href="https://burakhimmetoglu.com/2016/12/01/stacking-models-for-improved-predictions/">Stacking models for improved predictions</a></p>
 
@@ -147,10 +147,10 @@
 
   <nav class="pagination-single">
     
-      <span class="previous">&larr; <a href="http://cherishzhang.github.io/post/probability_distribution/" rel="prev">概率分布函数</a></span>
+      <span class="previous">&larr; <a href="http://cheriszhang.github.io/post/probability_distribution/" rel="prev">概率分布函数</a></span>
     
     
-      <span class="next"><a href="http://cherishzhang.github.io/post/ml/glove/" rel="next">[ml] GloVe模型理解</a> &rarr;</span>
+      <span class="next"><a href="http://cheriszhang.github.io/post/ml/glove/" rel="next">[ml] GloVe模型理解</a> &rarr;</span>
     
   </nav>
   

@@ -2,23 +2,24 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Glove on Learn and record</title>
-    <link>http://cherishzhang.github.io/tags/glove/index.xml</link>
+    <link>http://cheriszhang.github.io/tags/glove/</link>
     <description>Recent content in Glove on Learn and record</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <atom:link href="http://cherishzhang.github.io/tags/glove/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 03 Mar 2017 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://cheriszhang.github.io/tags/glove/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
       <title>[ml] GloVe模型理解</title>
-      <link>http://cherishzhang.github.io/post/ml/glove/</link>
+      <link>http://cheriszhang.github.io/post/ml/glove/</link>
       <pubDate>Fri, 03 Mar 2017 00:00:00 +0000</pubDate>
       
-      <guid>http://cherishzhang.github.io/post/ml/glove/</guid>
+      <guid>http://cheriszhang.github.io/post/ml/glove/</guid>
       <description>
 
 &lt;p&gt;一篇初学者的论文阅读笔记。尽量通俗易懂，尽量不加公式。&lt;/p&gt;
 
-&lt;h2 id=&#34;写在前面的例子&#34;&gt;写在前面的例子&lt;/h2&gt;
+&lt;h2 id=&#34;写在前面的例子:d4a4a0664e02b718076bfd7252ab4c65&#34;&gt;写在前面的例子&lt;/h2&gt;
 
 &lt;p&gt;首先，是一个分析词之间共现概率的例子：&lt;/p&gt;
 
@@ -42,7 +43,7 @@
 
 &lt;p&gt;比起单纯分析两个词共现概率的值大小，共现概率的比更能说明词与词之间的相关程度。打个不恰当的比方，没有对比就没有伤害。&lt;/p&gt;
 
-&lt;h2 id=&#34;关于模型&#34;&gt;关于模型&lt;/h2&gt;
+&lt;h2 id=&#34;关于模型:d4a4a0664e02b718076bfd7252ab4c65&#34;&gt;关于模型&lt;/h2&gt;
 
 &lt;p&gt;这也就因此引出了本文的正题。&lt;/p&gt;
 
